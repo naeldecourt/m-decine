@@ -14,6 +14,7 @@ navigateur.
 |---|---|
 | `index.html` | Accueil, chiffres clés, présentation |
 | `items.html` | Liste des items : tours T1-T8, confiance, ressources, filtres, tri, pagination, import/export |
+| `repartition.html` | Tous les items avec leur collège référent et les autres collèges qui les traitent |
 | `specialites.html` | Une carte par collège : couverture, tours, temps, confiance moyenne |
 | `stats.html` | Chiffres du jour, courbes des 7 derniers jours, priorités, classement des collèges |
 | `planning.html` | Compte à rebours, séance du jour, calendrier mensuel annotable, to-do list |
@@ -87,6 +88,7 @@ assets/js/items.js          données du programme (collèges, lignes, items)
 assets/js/store.js          stockage local, rappel espacé, synthèses, import/export
 assets/js/ui.js             thème, icônes SVG, modale « enregistrer le tour »
 assets/js/page-items.js     liste des items
+assets/js/page-repartition.js  table item / collège référent / autres collèges
 assets/js/page-specialites.js  cartes par collège
 assets/js/page-stats.js     statistiques et courbes
 assets/js/page-planning.js  calendrier, séance du jour, to-do list
@@ -102,6 +104,13 @@ relais sans casser la mise en page.
 intitulés et leur rattachement aux 24 collèges, plus 14 chapitres de collège
 hors programme (affichés « HP »). Les numéros 35, 96 et 119 n'existent pas dans
 le programme actuel.
+
+Un même item est souvent traité par plusieurs collèges — 205 des 364 items, 1,87
+collège par item en moyenne — parfois sous un intitulé légèrement différent. La
+page `repartition.html` donne cette correspondance item par item.
+
+Les numéros 35, 96 et 119 sont absents : ces items ont été absorbés par d'autres
+chapitres, repérables aux mentions `(+ITEM …)` dans les intitulés.
 
 Ces données sont fournies à titre indicatif : **le référentiel officiel publié
 par l'UNESS fait seul foi**. En cas d'écart, corrige `assets/js/items.js`.

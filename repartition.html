@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="fr" data-theme="clair">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Répartition des items par collège | Révision EDN</title>
+<meta name="description" content="Tableau de tous les items du programme EDN avec leur collège référent et les autres collèges qui les traitent, intitulés divergents compris.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%232f6bff'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='15' font-weight='bold' fill='white' text-anchor='middle'%3EDN%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="assets/css/style.css">
+<script src="assets/js/items.js"></script>
+<script src="assets/js/store.js"></script>
+<script src="assets/js/ui.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar__inner">
+    <a class="brand" href="index.html">
+      <span class="brand__mark">DN</span>
+      <span>Révision EDN</span>
+    </a>
+    <nav class="tabs" aria-label="Navigation principale">
+      <a href="stats.html"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10h-10z"/><path d="M14 2.5A10 10 0 0 1 21.5 10H14z" opacity=".55"/></svg><span>Statistiques</span></a>
+      <a href="specialites.html"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="3" y="8" width="7" height="13" rx="1"/><rect x="12" y="3" width="9" height="18" rx="1" opacity=".6"/></svg><span>Spécialités</span></a>
+      <a href="items.html"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="3.5" cy="6" r="1.6"/><circle cx="3.5" cy="12" r="1.6"/><circle cx="3.5" cy="18" r="1.6"/></svg><span>Items</span></a>
+      <a href="repartition.html" aria-current="page"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="4.5" r="2.6"/><circle cx="5" cy="19" r="2.6"/><circle cx="19" cy="19" r="2.6"/><path d="M12 7.5v4.5M12 12H5.5v4M12 12h6.5v4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Répartition</span></a>
+      <a href="planning.html"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Planning</span></a>
+      <a href="fiches.html"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 3h8l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 3v6h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span>Fiches</span></a>
+    </nav>
+    <div class="themes" role="group" aria-label="Thème">
+      <button type="button" data-theme="clair" aria-pressed="true">Clair</button>
+      <button type="button" data-theme="sombre" aria-pressed="false">Sombre</button>
+      <button type="button" data-theme="pastel" aria-pressed="false">Pastel</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<div class="wrap">
+
+  <section>
+    <h1 class="mb0">Répartition des items</h1>
+    <p class="muted" style="max-width:68ch">Un item du programme est rarement l'affaire d'un seul
+    collège. Ce tableau donne, pour chacun, son <strong>collège référent</strong> — celui qui le
+    traite en entier, marqué ★ — et les <strong>autres collèges</strong> qui le reprennent, souvent
+    sous un angle et un intitulé différents.</p>
+  </section>
+
+  <section>
+    <div class="grid grid--4">
+      <div class="stat-card" style="--accent-color:var(--blue)">
+        <div class="stat-card__head"><span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="3.5" cy="6" r="1.6"/><circle cx="3.5" cy="12" r="1.6"/><circle cx="3.5" cy="18" r="1.6"/></svg></span>
+          <span class="stat-card__label">items au programme</span></div>
+        <div class="stat-card__value" id="k-items">—</div>
+      </div>
+      <div class="stat-card" style="--accent-color:var(--violet)">
+        <div class="stat-card__head"><span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="4.5" r="2.6"/><circle cx="5" cy="19" r="2.6"/><circle cx="19" cy="19" r="2.6"/><path d="M12 7.5v4.5M12 12H5.5v4M12 12h6.5v4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="stat-card__label">traités par plusieurs collèges</span></div>
+        <div class="stat-card__value" id="k-multi">—</div>
+      </div>
+      <div class="stat-card" style="--accent-color:var(--green)">
+        <div class="stat-card__head"><span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="3" y="8" width="7" height="13" rx="1"/><rect x="12" y="3" width="9" height="18" rx="1" opacity=".6"/></svg></span>
+          <span class="stat-card__label">collèges par item en moyenne</span></div>
+        <div class="stat-card__value" id="k-moyenne">—</div>
+      </div>
+      <div class="stat-card" style="--accent-color:var(--amber)">
+        <div class="stat-card__head"><span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 3h8l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 3v6h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+          <span class="stat-card__label">items à l'intitulé variable</span></div>
+        <div class="stat-card__value" id="k-variantes">—</div>
+      </div>
+    </div>
+    <p class="small muted" style="margin-top:10px">Le plus partagé : <span id="k-champion">—</span></p>
+  </section>
+
+  <section>
+    <div class="row" style="gap:10px">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <label class="vh" for="f-q">Rechercher</label>
+        <input type="search" id="f-q" placeholder="Rechercher un item, un numéro, un collège…" autocomplete="off">
+      </div>
+      <div class="filters">
+        <label class="vh" for="f-ref">Collège référent</label>
+        <select id="f-ref"><option value="">Référent : tous</option></select>
+        <label class="vh" for="f-present">Présent dans</label>
+        <select id="f-present"><option value="">Présent dans : tous</option></select>
+        <label class="vh" for="f-transversal">Transversalité</label>
+        <select id="f-transversal">
+          <option value="">Tous les items</option>
+          <option value="mono">Un seul collège</option>
+          <option value="multi">Deux collèges et plus</option>
+          <option value="trois">Trois collèges et plus</option>
+          <option value="variantes">Intitulés divergents</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="card" id="table-card">
+      <div class="card--pad" style="border-bottom:1px solid var(--line)">
+        <div class="row" style="gap:12px">
+          <div class="sec-title" style="margin:0">
+            <span class="sec-title__icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="4.5" r="2.6"/><circle cx="5" cy="19" r="2.6"/><circle cx="19" cy="19" r="2.6"/><path d="M12 7.5v4.5M12 12H5.5v4M12 12h6.5v4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <h2>Item par item</h2>
+          </div>
+          <span class="tag tag--blue" id="compte">—</span>
+          <div class="spacer"></div>
+          <label class="row small" style="font-weight:500;text-transform:none;letter-spacing:0;color:var(--ink);cursor:pointer;margin:0;gap:7px">
+            <input type="checkbox" id="f-intitules" style="width:auto;min-height:0;accent-color:var(--blue)">
+            Afficher les intitulés divergents
+          </label>
+          <button type="button" class="btn btn--sm" id="x-csv">Exporter en CSV</button>
+          <button type="button" class="btn btn--sm btn--ghost" id="f-reset">Réinitialiser</button>
+        </div>
+      </div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th class="sortable" data-tri="n" aria-sort="ascending">N° <span class="arrow">▲</span></th>
+              <th class="sortable" data-tri="titre">Intitulé <span class="arrow">↕</span></th>
+              <th class="sortable" data-tri="ref">Collège référent <span class="arrow">↕</span></th>
+              <th>Aussi traité par</th>
+              <th class="sortable nowrap center" data-tri="nbCols">Collèges <span class="arrow">↕</span></th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="notice notice--info">
+      <p><strong>À quoi ça sert.</strong> Quand tu travailles un item dans son collège référent,
+      cette page te dit d'un coup d'œil quels autres collèges le reprennent — donc où tu risques
+      de le recroiser, et quels chapitres tu peux enchaîner pendant que le sujet est frais.
+      Un numéro te renvoie directement à sa ligne dans la liste des items.</p>
+      <p><strong>« Référent déduit »</strong> signale les rares items pour lesquels aucun collège
+      n'est déclaré référent dans les données : le premier collège de la liste est alors retenu
+      par défaut.</p>
+      <p class="mb0"><strong>Les numéros absents.</strong> Les items <strong>35</strong>,
+      <strong>96</strong> et <strong>119</strong> ne figurent pas dans ce tableau : ils ont été
+      absorbés par d'autres chapitres. Cherche <code>+ITEM</code> dans la barre de recherche pour
+      voir lesquels les reprennent.</p>
+    </div>
+  </section>
+
+</div>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p class="mb0">
+      Outil personnel de révision des EDN — &copy; <span id="annee"></span>.
+      Tes données restent dans ton navigateur : aucun compte, aucun serveur.
+      Pense à <a href="items.html#donnees">exporter ta sauvegarde</a> régulièrement.
+    </p>
+    <p class="mb0 small" style="margin-top:6px">
+      Programme et intitulés d'items donnés à titre indicatif : le référentiel officiel
+      publié par l'UNESS fait seul foi.
+    </p>
+  </div>
+</footer>
+<script src="assets/js/page-repartition.js"></script>
+
+</body>
+</html>

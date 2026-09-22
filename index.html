@@ -3,27 +3,33 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Révision EDN — tableur des 367 items, planning et fiches</title>
-<meta name="description" content="Suivi de révision des EDN : tableur des 367 items (tours, confiance, dates), planning personnalisé, statistiques par spécialité et fiches pratiques.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233d5afe'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='16' font-weight='bold' fill='white' text-anchor='middle'%3EE%3C/text%3E%3C/svg%3E">
+<title>Révision EDN — tableur des items, planning et statistiques</title>
+<meta name="description" content="Suivi de révision des EDN : tableur des items du programme (8 tours, confiance, ressources), planning, statistiques par collège et fiches pratiques.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%232f6bff'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='15' font-weight='bold' fill='white' text-anchor='middle'%3EDN%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="assets/css/style.css">
-<script src="assets/js/theme.js"></script>
+<script src="assets/js/items.js"></script>
+<script src="assets/js/store.js"></script>
+<script src="assets/js/ui.js"></script>
 </head>
 <body>
-<header class="site-header">
-  <div class="site-header__inner">
+
+<header class="topbar">
+  <div class="topbar__inner">
     <a class="brand" href="index.html">
-      <span class="brand__mark">E</span>
+      <span class="brand__mark">DN</span>
       <span>Révision EDN</span>
     </a>
-    <nav class="site-nav" aria-label="Navigation principale">
-      <a href="index.html" aria-current="page">Accueil</a>
-      <a href="tableur.html">Tableur</a>
-      <a href="planning.html">Planning</a>
-      <a href="stats.html">Statistiques</a>
-      <a href="fiches.html">Fiches</a>
+    <nav class="tabs" aria-label="Navigation principale">
+      <a href="stats.html"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10h-10z"/><path d="M14 2.5A10 10 0 0 1 21.5 10H14z" opacity=".55"/></svg><span>Statistiques</span></a>
+      <a href="specialites.html"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="3" y="8" width="7" height="13" rx="1"/><rect x="12" y="3" width="9" height="18" rx="1" opacity=".6"/></svg><span>Spécialités</span></a>
+      <a href="items.html"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="3.5" cy="6" r="1.6"/><circle cx="3.5" cy="12" r="1.6"/><circle cx="3.5" cy="18" r="1.6"/></svg><span>Items</span></a>
+      <a href="planning.html"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Planning</span></a>
+      <a href="fiches.html"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 3h8l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 3v6h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span>Fiches</span></a>
     </nav>
-    <div class="theme-switch" role="group" aria-label="Thème">
+    <div class="themes" role="group" aria-label="Thème">
       <button type="button" data-theme="clair" aria-pressed="true">Clair</button>
       <button type="button" data-theme="sombre" aria-pressed="false">Sombre</button>
       <button type="button" data-theme="pastel" aria-pressed="false">Pastel</button>
@@ -35,16 +41,16 @@
 
 <div class="wrap">
 
-  <section style="margin-bottom:8px">
-    <p class="badge badge--accent" style="margin-bottom:10px">367 items · R2C · rangs A et B</p>
-    <h1 style="max-width:18ch">Ton tableur de révision des EDN, toujours à portée de main.</h1>
-    <p class="muted" style="font-size:1.08rem;max-width:62ch">
-      Un seul endroit pour suivre tes tours sur les 367 items : combien de fois tu as vu
-      chaque item, quand, avec quel support, et à quel point tu le maîtrises. Le site te
-      ressort ensuite ce qu'il faut revoir en priorité.
+  <section>
+    <span class="tag tag--blue">364 items · 24 collèges · 8 tours par ligne</span>
+    <h1 style="max-width:19ch;margin-top:12px">Ton tableur de révision des EDN, toujours à portée de main.</h1>
+    <p class="muted" style="font-size:1.06rem;max-width:64ch">
+      Un seul endroit pour suivre tes tours sur tout le programme : combien de fois tu as vu
+      chaque item, quand, avec quel support, et à quel point tu le maîtrises. Le site te ressort
+      ensuite ce qu'il faut revoir en priorité.
     </p>
-    <div class="btn-row" style="margin-top:18px">
-      <a class="btn btn--primary" href="tableur.html">Ouvrir le tableur</a>
+    <div class="btn-row" style="margin-top:20px">
+      <a class="btn btn--primary" href="items.html">Ouvrir la liste des items</a>
       <a class="btn" href="planning.html">Voir ma séance du jour</a>
       <a class="btn btn--ghost" href="fiches.html">Les fiches pratiques</a>
     </div>
@@ -52,66 +58,82 @@
 
   <section>
     <div class="grid grid--4">
-      <div class="card stat"><div class="stat__value" id="h-progression">—</div><div class="stat__label">items déjà travaillés</div></div>
-      <div class="card stat"><div class="stat__value" id="h-retard">—</div><div class="stat__label">items à revoir maintenant</div></div>
-      <div class="card stat"><div class="stat__value" id="h-tours">—</div><div class="stat__label">tours enregistrés</div></div>
-      <div class="card stat"><div class="stat__value" id="h-heures">—</div><div class="stat__label">heures de révision</div></div>
+      <div class="stat-card" style="--accent-color:var(--blue)">
+        <div class="stat-card__head"><span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10h-10z"/><path d="M14 2.5A10 10 0 0 1 21.5 10H14z" opacity=".55"/></svg></span>
+          <span class="stat-card__label">du programme travaillé</span></div>
+        <div class="stat-card__value" id="h-progression">—</div>
+      </div>
+      <div class="stat-card" style="--accent-color:var(--red)">
+        <div class="stat-card__head"><span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="3.5" cy="6" r="1.6"/><circle cx="3.5" cy="12" r="1.6"/><circle cx="3.5" cy="18" r="1.6"/></svg></span>
+          <span class="stat-card__label">à revoir maintenant</span></div>
+        <div class="stat-card__value" id="h-retard">—</div>
+      </div>
+      <div class="stat-card" style="--accent-color:var(--green)">
+        <div class="stat-card__head"><span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="3" y="8" width="7" height="13" rx="1"/><rect x="12" y="3" width="9" height="18" rx="1" opacity=".6"/></svg></span>
+          <span class="stat-card__label">tours enregistrés</span></div>
+        <div class="stat-card__value" id="h-tours">—</div>
+      </div>
+      <div class="stat-card" style="--accent-color:var(--amber)">
+        <div class="stat-card__head"><span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+          <span class="stat-card__label">de travail cumulé</span></div>
+        <div class="stat-card__value" id="h-temps">—</div>
+      </div>
     </div>
   </section>
 
   <section>
     <h2>Comment ça marche</h2>
     <div class="grid grid--3">
-      <div class="card">
+      <div class="card card--pad">
         <h3>1. Tu enregistres un tour</h3>
-        <p class="muted mb0">Après chaque item travaillé, un clic sur une pastille de 1 à 5
-        suffit : la date part automatiquement. En ouvrant la fiche, tu peux détailler la
-        durée et le support (collège, fiche, QCM, annales, Anki…).</p>
+        <p class="muted mb0">Un clic sur une pastille <strong>T1</strong> à <strong>T8</strong>
+        ouvre la fiche du tour : confiance de 1 à 5, date, durée en heures et minutes, support
+        utilisé. Huit tours possibles par ligne, comme sur un vrai tableur.</p>
       </div>
-      <div class="card">
+      <div class="card card--pad">
         <h3>2. Le site calcule quand revoir</h3>
-        <p class="muted mb0">Chaque niveau de confiance donne un intervalle de rappel —
-        3 jours pour un 1/5, 60 jours pour un 5/5 — qui s'allonge à mesure que tu
-        multiplies les tours. Les items dépassés remontent en tête.</p>
+        <p class="muted mb0">Chaque niveau de confiance donne un intervalle de rappel — 3 jours
+        pour un 1/5, 60 jours pour un 5/5 — qui s'allonge à mesure que tu multiplies les tours.
+        Les lignes dépassées remontent en tête de ta séance du jour.</p>
       </div>
-      <div class="card">
+      <div class="card card--pad">
         <h3>3. Tu vois où tu es fragile</h3>
-        <p class="muted mb0">Couverture, maîtrise et temps passé par spécialité et par UE :
+        <p class="muted mb0">Couverture, tours, temps passé et confiance moyenne par collège :
         tu repères d'un coup d'œil la spé que tu évites depuis trois semaines.</p>
       </div>
     </div>
   </section>
 
   <section>
-    <h2>Ce que tu trouves ici</h2>
+    <h2>Les quatre écrans</h2>
     <div class="grid grid--2">
-      <div class="card">
-        <h3><a href="tableur.html">Le tableur</a></h3>
-        <p class="muted">Les 367 items, filtrables par spécialité, par UE, par statut ou par
-        recherche libre. Tri sur n'importe quelle colonne, saisie en un clic, notes
-        personnelles, intitulés modifiables, export CSV et sauvegarde JSON.</p>
-        <a class="btn btn--sm" href="tableur.html">Ouvrir</a>
+      <div class="card card--pad">
+        <h3><a href="items.html">Liste des items</a></h3>
+        <p class="muted">Tout le programme, filtrable par collège, statut, nombre de tours ou
+        recherche libre. Huit tours par ligne, cases « ressources faites » (QCM, collèges, Anki,
+        fiche perso, EDNi/Codex, conférence), notes personnelles, export CSV et sauvegarde JSON.
+        Deux vues au choix : par collège ou par item.</p>
+        <a class="btn btn--sm" href="items.html">Ouvrir</a>
       </div>
-      <div class="card">
-        <h3><a href="planning.html">Le planning</a></h3>
-        <p class="muted">Ta date d'EDN, ton objectif de tours, ton rythme quotidien : le site
-        en déduit le nombre de tours à tenir par jour, la séance du jour et les sept
-        prochains jours.</p>
-        <a class="btn btn--sm" href="planning.html">Ouvrir</a>
+      <div class="card card--pad">
+        <h3><a href="specialites.html">Liste des spécialités</a></h3>
+        <p class="muted">Une carte par collège : couverture, nombre de tours, temps passé,
+        confiance moyenne et barre de progression. Triable des plus fragiles aux plus avancées.</p>
+        <a class="btn btn--sm" href="specialites.html">Ouvrir</a>
       </div>
-      <div class="card">
-        <h3><a href="stats.html">Les statistiques</a></h3>
-        <p class="muted">Progression globale, activité des 30 derniers jours, répartition des
-        niveaux de confiance, classement des spécialités de la plus fragile à la mieux
-        tenue.</p>
+      <div class="card card--pad">
+        <h3><a href="stats.html">Statistiques</a></h3>
+        <p class="muted">Les chiffres du jour, les courbes des 7 derniers jours (tours, temps,
+        confiance), ta série de jours consécutifs, les lignes à revoir en priorité et le
+        classement des collèges.</p>
         <a class="btn btn--sm" href="stats.html">Ouvrir</a>
       </div>
-      <div class="card">
-        <h3><a href="fiches.html">Les fiches pratiques</a></h3>
-        <p class="muted">Des check-lists à relire avant un stage ou un examen clinique :
-        lecture d'ECG pas à pas, examen clinique complet appareil par appareil, avec les
-        moyens mnémotechniques classiques.</p>
-        <a class="btn btn--sm" href="fiches.html">Ouvrir</a>
+      <div class="card card--pad">
+        <h3><a href="planning.html">Planning</a></h3>
+        <p class="muted">Compte à rebours jusqu'aux EDN, rythme quotidien nécessaire, séance du
+        jour calculée, plus un calendrier mensuel où annoter chaque journée et lui coller des
+        collèges — et une to-do list.</p>
+        <a class="btn btn--sm" href="planning.html">Ouvrir</a>
       </div>
     </div>
   </section>
@@ -119,39 +141,39 @@
   <section>
     <div class="notice notice--info">
       <p><strong>Tes données t'appartiennent.</strong> Tout est stocké dans le
-      <code>localStorage</code> de ton navigateur : aucun compte, aucun serveur, rien
-      qui parte ailleurs. En contrepartie, vider le cache du navigateur efface tout —
-      exporte ta sauvegarde JSON de temps en temps depuis le tableur, c'est aussi
-      comme ça que tu passes d'un appareil à l'autre.</p>
+      <code>localStorage</code> de ton navigateur : aucun compte, aucun serveur, rien qui parte
+      ailleurs. En contrepartie, vider le cache du navigateur efface tout — exporte ta sauvegarde
+      JSON de temps en temps depuis la liste des items, c'est aussi comme ça que tu passes d'un
+      appareil à l'autre.</p>
+      <p class="mb0"><strong>Trois thèmes</strong> — clair, sombre et pastel — en haut à droite,
+      sur toutes les pages. Ton choix est conservé d'une session à l'autre.</p>
     </div>
   </section>
 
 </div>
 
-<script src="assets/js/items.js"></script>
-<script src="assets/js/store.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   var s = Store.synthese();
   document.getElementById('h-progression').textContent = Math.round(s.progression * 100) + ' %';
   document.getElementById('h-retard').textContent = s.retard;
-  document.getElementById('h-tours').textContent = s.toursTotal;
-  document.getElementById('h-heures').textContent = (s.minutesTotal / 60).toFixed(1).replace('.', ',');
+  document.getElementById('h-tours').textContent = s.tours;
+  document.getElementById('h-temps').textContent = Store.duree(s.minutes);
 });
 </script>
 
 </main>
 
-<footer class="site-footer">
+<footer class="foot">
   <div class="wrap">
     <p class="mb0">
-      Outil personnel de révision des EDN — &copy; <span id="year"></span>.
-      Tes données restent dans ton navigateur (aucun compte, aucun serveur).
-      Pense à <a href="tableur.html">exporter ta sauvegarde</a> régulièrement.
+      Outil personnel de révision des EDN — &copy; <span id="annee"></span>.
+      Tes données restent dans ton navigateur : aucun compte, aucun serveur.
+      Pense à <a href="items.html#donnees">exporter ta sauvegarde</a> régulièrement.
     </p>
     <p class="mb0 small" style="margin-top:6px">
-      Les intitulés d'items sont donnés à titre indicatif : réfère-toi toujours au
-      programme officiel publié par l'UNESS.
+      Programme et intitulés d'items donnés à titre indicatif : le référentiel officiel
+      publié par l'UNESS fait seul foi.
     </p>
   </div>
 </footer>

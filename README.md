@@ -1,29 +1,34 @@
 # Révision EDN
 
-Site statique de révision pour les EDN (Épreuves Dématérialisées Nationales) :
-un tableur de suivi des 367 items, un planning à rappel espacé, des statistiques
-par spécialité et des fiches pratiques.
+Site statique de suivi de révision pour les EDN : liste des items du programme
+avec 8 tours par ligne, progression par collège, statistiques, planning
+mensuel et fiches pratiques.
 
-Aucun compte, aucun serveur, aucune dépendance : du HTML, du CSS et du JavaScript
-vanilla. Les données de révision vivent dans le `localStorage` du navigateur.
+Aucun compte, aucun serveur, aucune dépendance JavaScript : du HTML, du CSS et
+du JavaScript vanilla. Les données de révision vivent dans le `localStorage` du
+navigateur.
 
 ## Pages
 
 | Fichier | Contenu |
 |---|---|
 | `index.html` | Accueil, chiffres clés, présentation |
-| `tableur.html` | Les 367 items : tours, confiance, dates, supports, notes, filtres, tri, import/export |
-| `planning.html` | Compte à rebours, rythme conseillé, séance du jour, semaine à venir, retards |
-| `stats.html` | Progression globale, activité quotidienne, couverture par spécialité et par UE |
+| `items.html` | Liste des items : tours T1-T8, confiance, ressources, filtres, tri, pagination, import/export |
+| `specialites.html` | Une carte par collège : couverture, tours, temps, confiance moyenne |
+| `stats.html` | Chiffres du jour, courbes des 7 derniers jours, priorités, classement des collèges |
+| `planning.html` | Compte à rebours, séance du jour, calendrier mensuel annotable, to-do list |
 | `fiches.html` | Index des fiches pratiques |
 | `fiche-ecg.html` | Lecture d'ECG en 7 temps (F.R.A.C.H.I.D.) |
 | `fiche-examen-clinique.html` | Check-list d'examen clinique appareil par appareil |
 
 ## Fonctionnement
 
-Un **tour** = une session de travail sur un item : date, niveau de confiance
-(1 à 5), durée et support. À partir du dernier tour, le site calcule une date de
-révision conseillée selon un intervalle de rappel espacé :
+Un **tour** = une session de travail sur une ligne : date, niveau de confiance
+(1 à 5), durée en heures et minutes, support utilisé (QCM/DP, collèges, Anki,
+fiche perso, EDNi/Codex, conférence). Huit tours au maximum par ligne.
+
+À partir du dernier tour, le site calcule une date de révision conseillée selon
+un intervalle de rappel espacé :
 
 | Confiance | Intervalle de base |
 |---|---|
@@ -34,8 +39,33 @@ révision conseillée selon un intervalle de rappel espacé :
 | 5 / 5 | 60 jours |
 
 Cet intervalle est allongé de 30 % par tour supplémentaire, plafonné à ×2,5.
-Le **score de priorité** qui classe la séance du jour combine le retard accumulé,
-le niveau de confiance et le nombre de tours déjà effectués.
+Le **score de priorité** qui classe la séance du jour combine le retard
+accumulé, le niveau de confiance et le nombre de tours déjà effectués. Les
+lignes à égalité (typiquement celles jamais travaillées) sont réparties en
+tourniquet entre collèges, pour ne pas enchaîner dix lignes de la même spé.
+
+## Deux vues du programme
+
+Un même item peut être traité par plusieurs collèges. Le site propose donc deux
+vues, permutables depuis la liste des items :
+
+- **Par collège** — 750 lignes, une par couple item-collège. Les tours sont
+  suivis séparément dans chaque collège, et le collège de référence porte
+  l'étoile ★.
+- **Par item** — 364 lignes, une par numéro d'item, les collèges concernés
+  affichés en badges. Un seul suivi de tours par item.
+
+Les tours sont stockés sous des clés différentes selon la vue (`231` contre
+`231@cardiologie`) : changer de vue ne perd rien, mais les compteurs diffèrent.
+Mieux vaut choisir la sienne au début et s'y tenir.
+
+## Thèmes
+
+Trois thèmes — **clair**, **sombre**, **pastel** — commutables en haut à droite
+sur toutes les pages. Le choix est conservé d'une session à l'autre ; à la
+première visite, le thème suit la préférence système (`prefers-color-scheme`).
+Tout passe par des variables CSS redéfinies sous `[data-theme]` : ajouter un
+quatrième thème revient à ajouter un bloc dans `assets/css/style.css`.
 
 ## Développement
 
@@ -46,35 +76,40 @@ python3 -m http.server 8000
 # puis http://127.0.0.1:8000
 ```
 
-Le site se déploie tel quel sur GitHub Pages ou n'importe quel hébergeur statique.
+Le site se déploie tel quel sur GitHub Pages ou n'importe quel hébergeur
+statique.
 
 ## Structure
 
 ```
-assets/css/style.css   thèmes (clair / sombre / pastel) et composants
-assets/js/items.js     données du programme : 367 items, spécialité, UE
-assets/js/store.js     stockage local, calculs de priorité, import/export
-assets/js/theme.js     bascule de thème, persistée
-assets/js/tableur.js   tableur : filtres, tri, saisie
-assets/js/planning.js  planning et séance du jour
-assets/js/stats.js     statistiques et graphique d'activité
+assets/css/style.css        thèmes et composants
+assets/js/items.js          données du programme (collèges, lignes, items)
+assets/js/store.js          stockage local, rappel espacé, synthèses, import/export
+assets/js/ui.js             thème, icônes SVG, modale « enregistrer le tour »
+assets/js/page-items.js     liste des items
+assets/js/page-specialites.js  cartes par collège
+assets/js/page-stats.js     statistiques et courbes
+assets/js/page-planning.js  calendrier, séance du jour, to-do list
 ```
 
-## À propos de la liste des items
+La seule ressource externe est la police Outfit servie par Google Fonts, chargée
+en `display=swap` : si elle n'arrive pas, la pile de polices système prend le
+relais sans casser la mise en page.
 
-La liste des 367 items livrée dans `assets/js/items.js` est une **liste de
-travail reconstituée** : la numérotation et les intitulés peuvent différer du
-référentiel officiel publié par l'UNESS. Deux façons de la corriger :
+## Données du programme
 
-- item par item, en ouvrant un item dans le tableur et en modifiant son intitulé ;
-- en masse, via **Importer des intitulés (CSV)** — un fichier de deux colonnes
-  `numéro ; intitulé`, séparateur `;` ou tabulation, une ligne par item.
+`assets/js/items.js` contient les 364 numéros d'items du programme R2C, leurs
+intitulés et leur rattachement aux 24 collèges, plus 14 chapitres de collège
+hors programme (affichés « HP »). Les numéros 35, 96 et 119 n'existent pas dans
+le programme actuel.
 
-Les corrections sont conservées dans le navigateur et incluses dans l'export JSON.
+Ces données sont fournies à titre indicatif : **le référentiel officiel publié
+par l'UNESS fait seul foi**. En cas d'écart, corrige `assets/js/items.js`.
 
 ## Sauvegarde
 
 Les données ne quittent jamais le navigateur : vider le cache ou changer
-d'appareil les fait disparaître. Le bouton **Exporter ma sauvegarde (JSON)** du
-tableur produit un fichier complet (tours, notes, intitulés, réglages) qui se
-réimporte sur n'importe quel appareil.
+d'appareil les fait disparaître. Le bouton **Exporter ma sauvegarde** de la page
+items produit un JSON complet (tours, ressources, notes, planning, to-do,
+réglages) qui se réimporte sur n'importe quel appareil. L'export CSV, lui, sert
+à ouvrir le suivi dans un tableur.

@@ -4,26 +4,32 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Planning de révision EDN | Révision EDN</title>
-<meta name="description" content="Planning de révision des EDN : compte à rebours, rythme quotidien conseillé, séance du jour et items en retard.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233d5afe'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='16' font-weight='bold' fill='white' text-anchor='middle'%3EE%3C/text%3E%3C/svg%3E">
+<meta name="description" content="Planning de révision EDN : compte à rebours, rythme quotidien, séance du jour, calendrier mensuel annotable et to-do list.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%232f6bff'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='15' font-weight='bold' fill='white' text-anchor='middle'%3EDN%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="assets/css/style.css">
-<script src="assets/js/theme.js"></script>
+<script src="assets/js/items.js"></script>
+<script src="assets/js/store.js"></script>
+<script src="assets/js/ui.js"></script>
 </head>
 <body>
-<header class="site-header">
-  <div class="site-header__inner">
+
+<header class="topbar">
+  <div class="topbar__inner">
     <a class="brand" href="index.html">
-      <span class="brand__mark">E</span>
+      <span class="brand__mark">DN</span>
       <span>Révision EDN</span>
     </a>
-    <nav class="site-nav" aria-label="Navigation principale">
-      <a href="index.html">Accueil</a>
-      <a href="tableur.html">Tableur</a>
-      <a href="planning.html" aria-current="page">Planning</a>
-      <a href="stats.html">Statistiques</a>
-      <a href="fiches.html">Fiches</a>
+    <nav class="tabs" aria-label="Navigation principale">
+      <a href="stats.html"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10h-10z"/><path d="M14 2.5A10 10 0 0 1 21.5 10H14z" opacity=".55"/></svg><span>Statistiques</span></a>
+      <a href="specialites.html"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="3" y="8" width="7" height="13" rx="1"/><rect x="12" y="3" width="9" height="18" rx="1" opacity=".6"/></svg><span>Spécialités</span></a>
+      <a href="items.html"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="3.5" cy="6" r="1.6"/><circle cx="3.5" cy="12" r="1.6"/><circle cx="3.5" cy="18" r="1.6"/></svg><span>Items</span></a>
+      <a href="planning.html" aria-current="page"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Planning</span></a>
+      <a href="fiches.html"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 3h8l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 3v6h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span>Fiches</span></a>
     </nav>
-    <div class="theme-switch" role="group" aria-label="Thème">
+    <div class="themes" role="group" aria-label="Thème">
       <button type="button" data-theme="clair" aria-pressed="true">Clair</button>
       <button type="button" data-theme="sombre" aria-pressed="false">Sombre</button>
       <button type="button" data-theme="pastel" aria-pressed="false">Pastel</button>
@@ -36,99 +42,156 @@
 <div class="wrap">
 
   <section>
-    <h1 class="mb0">Planning</h1>
-    <p class="muted">Renseigne ta date d'EDN et ton objectif, le site en déduit ton rythme
-    et te sort la liste des items à travailler aujourd'hui.</p>
-  </section>
-
-  <section>
-    <div class="card">
-      <div class="toolbar">
-        <div class="field">
+    <div class="card card--pad">
+      <div class="row" style="gap:18px">
+        <div style="flex:1 1 180px">
           <label for="r-date">Date des EDN</label>
           <input type="date" id="r-date">
         </div>
-        <div class="field">
+        <div style="flex:0 1 150px">
           <label for="r-items">Items par jour</label>
           <input type="number" id="r-items" min="1" max="40" step="1">
         </div>
-        <div class="field">
-          <label for="r-tours">Objectif de tours par item</label>
-          <input type="number" id="r-tours" min="1" max="10" step="1">
+        <div style="flex:0 1 190px">
+          <label for="r-tours">Objectif de tours</label>
+          <input type="number" id="r-tours" min="1" max="8" step="1">
         </div>
       </div>
     </div>
   </section>
 
   <section>
-    <div class="grid grid--3">
-      <div class="card stat">
-        <div class="stat__value" id="p-jours">—</div>
-        <div class="stat__label" id="p-jours-label">jours avant les EDN</div>
+    <div class="grid grid--4">
+      <div class="stat-card" style="--accent-color:var(--blue)">
+        <div class="stat-card__head"><span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+          <span class="stat-card__label" id="p-jours-note">jours avant les EDN</span></div>
+        <div class="stat-card__value" id="p-jours">—</div>
       </div>
-      <div class="card stat">
-        <div class="stat__value" id="p-rythme">—</div>
-        <div class="stat__label" id="p-rythme-note">rythme quotidien conseillé</div>
+      <div class="stat-card" style="--accent-color:var(--green)">
+        <div class="stat-card__head"><span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M20 4v7h-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="stat-card__label" id="p-rythme-note">rythme quotidien conseillé</span></div>
+        <div class="stat-card__value" id="p-rythme">—</div>
       </div>
-      <div class="card stat">
-        <div class="stat__value" id="p-restants">—</div>
-        <div class="stat__label">tours restants pour atteindre <span id="p-objectif">3</span> tours/item</div>
+      <div class="stat-card" style="--accent-color:var(--amber)">
+        <div class="stat-card__head"><span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 3h10M7 21h10M8 3c0 5 8 5 8 9s-8 4-8 9M16 3c0 5-8 5-8 9s8 4 8 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+          <span class="stat-card__label">tours restants pour <span id="p-objectif">3</span> tours/ligne</span></div>
+        <div class="stat-card__value" id="p-restants">—</div>
+      </div>
+      <div class="stat-card" style="--accent-color:var(--violet)">
+        <div class="stat-card__head"><span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10h-10z"/><path d="M14 2.5A10 10 0 0 1 21.5 10H14z" opacity=".55"/></svg></span>
+          <span class="stat-card__label">du programme travaillé</span></div>
+        <div class="stat-card__value" id="p-progression">—</div>
       </div>
     </div>
   </section>
 
   <section>
-    <h2>Ta séance du jour</h2>
-    <div class="card" id="p-seance"></div>
+    <div class="sec-title">
+      <span class="sec-title__icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="3.5" cy="6" r="1.6"/><circle cx="3.5" cy="12" r="1.6"/><circle cx="3.5" cy="18" r="1.6"/></svg></span>
+      <h2>Ta séance du jour</h2>
+    </div>
+    <div class="card card--pad" id="p-seance"></div>
     <p class="small muted" style="margin-top:8px">
-      Sélection par score de priorité : un item jamais travaillé passe devant, puis viennent
-      les plus en retard, les moins bien maîtrisés et ceux qui ont le moins de tours.
+      Sélection par score de priorité : un item jamais travaillé passe devant, puis les plus en
+      retard, les moins bien maîtrisés et ceux qui ont le moins de tours. Les ex æquo sont
+      répartis entre collèges pour éviter d'enchaîner dix lignes de la même spé.
     </p>
   </section>
 
   <section>
-    <h2>Les sept prochains jours</h2>
-    <div class="grid grid--3" id="p-semaine"></div>
-    <p class="small muted" style="margin-top:8px">
-      Projection à partir de la file de priorité d'aujourd'hui : elle se recalcule dès que tu
-      enregistres un tour, donc consulte-la au jour le jour plutôt que comme un planning figé.
-    </p>
-  </section>
+    <div class="grid grid--planning">
 
-  <section>
-    <h2>Items les plus en retard</h2>
-    <div class="card" id="p-retards"></div>
+      <div class="card" style="align-self:start">
+        <div class="todo__head">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="3.5" cy="6" r="1.6"/><circle cx="3.5" cy="12" r="1.6"/><circle cx="3.5" cy="18" r="1.6"/></svg>
+          <h2>To-Do List</h2>
+          <span class="todo__count" id="todo-compte">0/0</span>
+        </div>
+        <div class="todo__body">
+          <form class="row" style="gap:8px;flex-wrap:nowrap" id="todo-form">
+            <label class="vh" for="todo-input">Nouvelle tâche</label>
+            <input type="text" id="todo-input" placeholder="Ajouter une tâche…" autocomplete="off">
+            <button type="submit" class="btn btn--violet" style="flex:none;width:46px;padding:0" aria-label="Ajouter"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>
+          </form>
+          <ul class="todo__list" id="todo-liste"></ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card--pad" style="border-bottom:1px solid var(--line)">
+          <div class="row" style="gap:12px">
+            <h2 style="margin:0;font-size:1.5rem;text-transform:capitalize" id="cal-titre">—</h2>
+            <span class="pager__page" id="cal-annee">—</span>
+            <div class="spacer"></div>
+            <div class="pager">
+              <button type="button" class="btn btn--sm" id="cal-prec" aria-label="Mois précédent"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M15 5 8 12l7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <button type="button" class="btn btn--sm btn--primary" id="cal-auj">Aujourd'hui</button>
+              <button type="button" class="btn btn--sm" id="cal-suiv" aria-label="Mois suivant"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            </div>
+            <label class="vh" for="sel-mois">Mois</label>
+            <select id="sel-mois" style="width:auto;min-width:130px"></select>
+            <label class="vh" for="sel-annee">Année</label>
+            <select id="sel-annee" style="width:auto;min-width:95px"></select>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table class="cal" style="min-width:680px">
+            <thead>
+              <tr><th>Lun</th><th>Mar</th><th>Mer</th><th>Jeu</th><th>Ven</th><th>Sam</th><th>Dim</th></tr>
+            </thead>
+            <tbody id="cal-corps"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+    <p class="small muted" style="margin-top:8px">
+      Chaque case accepte une note libre et autant de collèges que tu veux : c'est ton planning
+      manuel, il n'écrase jamais la séance du jour calculée au-dessus.
+    </p>
   </section>
 
   <section>
     <div class="notice notice--info">
-      <p class="mb0"><strong>Le rappel espacé, en une phrase :</strong> on ne relit pas
-      un item parce qu'on l'a oublié, on le relit <em>juste avant</em> de l'oublier.
-      D'où les intervalles qui s'allongent — 3 j, 7 j, 14 j, 30 j, 60 j selon ta confiance —
-      et qui grandissent encore de 30 % à chaque tour supplémentaire.</p>
+      <p class="mb0"><strong>Le rappel espacé en une phrase :</strong> on ne relit pas un item
+      parce qu'on l'a oublié, on le relit <em>juste avant</em> de l'oublier. D'où les intervalles
+      qui s'allongent — 3 j, 7 j, 14 j, 30 j, 60 j selon ta confiance — et qui grandissent encore
+      de 30 % à chaque tour supplémentaire.</p>
     </div>
   </section>
 
 </div>
 
+<dialog id="choix" class="large" aria-labelledby="ch-titre">
+  <div class="modal__head" style="text-align:left">
+    <button type="button" class="modal__close" id="ch-fermer" aria-label="Fermer">✕</button>
+    <h3 id="ch-titre">Collèges du jour</h3>
+    <p id="ch-date"></p>
+  </div>
+  <div class="modal__body">
+    <div class="ch-liste" id="ch-liste"></div>
+  </div>
+  <div class="modal__foot">
+    <button type="button" class="btn btn--primary" onclick="document.getElementById('choix').close()">Terminé</button>
+  </div>
+</dialog>
+
 </main>
 
-<footer class="site-footer">
+<footer class="foot">
   <div class="wrap">
     <p class="mb0">
-      Outil personnel de révision des EDN — &copy; <span id="year"></span>.
-      Tes données restent dans ton navigateur (aucun compte, aucun serveur).
-      Pense à <a href="tableur.html">exporter ta sauvegarde</a> régulièrement.
+      Outil personnel de révision des EDN — &copy; <span id="annee"></span>.
+      Tes données restent dans ton navigateur : aucun compte, aucun serveur.
+      Pense à <a href="items.html#donnees">exporter ta sauvegarde</a> régulièrement.
     </p>
     <p class="mb0 small" style="margin-top:6px">
-      Les intitulés d'items sont donnés à titre indicatif : réfère-toi toujours au
-      programme officiel publié par l'UNESS.
+      Programme et intitulés d'items donnés à titre indicatif : le référentiel officiel
+      publié par l'UNESS fait seul foi.
     </p>
   </div>
 </footer>
-<script src="assets/js/items.js"></script>
-<script src="assets/js/store.js"></script>
-<script src="assets/js/planning.js"></script>
+<script src="assets/js/page-planning.js"></script>
 
 </body>
 </html>

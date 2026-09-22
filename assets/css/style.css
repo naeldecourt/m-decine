@@ -328,6 +328,7 @@ select {
   display: inline-flex; gap: 5px; align-items: center;
 }
 .legend b { font-weight: 800; letter-spacing: .04em; }
+.legend em { font-style: normal; }
 
 /* ---------------------------------------------------------------- table */
 
@@ -376,8 +377,9 @@ td.nowrap, th.nowrap { white-space: nowrap; }
   font-size: .78rem; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--ink-2);
   cursor: pointer; padding: 2px 0;
 }
-.res input { width: 15px; height: 15px; min-height: 0; accent-color: var(--blue); margin: 0; flex: none; }
+.res input { width: 16px; height: 16px; min-height: 0; accent-color: var(--blue); margin: 0; flex: none; }
 .res label:hover { color: var(--ink); }
+.res label::after { display: none; }
 
 /* pagination */
 .pager { display: flex; align-items: center; gap: 8px; }
@@ -418,6 +420,11 @@ dialog {
   width: calc(100% - 28px); max-width: 480px;
 }
 dialog::backdrop { background: rgba(8, 14, 26, .55); backdrop-filter: blur(3px); }
+/* en-tête et pied figés, corps défilant : le bouton de validation reste
+   toujours atteignable, y compris en feuille basse sur téléphone */
+dialog[open] { display: flex; flex-direction: column; max-height: 90vh; }
+.modal__head, .modal__foot { flex: none; }
+.modal__body { flex: 1 1 auto; overflow-y: auto; -webkit-overflow-scrolling: touch; }
 .modal__head { position: relative; padding: 22px 24px 6px; text-align: center; }
 .modal__head h3 { margin: 0; font-size: 1.32rem; }
 .modal__head p { margin: 4px 0 0; font-size: .86rem; color: var(--ink-2); }
@@ -465,7 +472,7 @@ dialog::backdrop { background: rgba(8, 14, 26, .55); backdrop-filter: blur(3px);
 
 /* ---------------------------------------------------------- calendrier */
 
-.cal { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+.cal { width: 100%; min-width: 680px; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
 .cal th {
   padding: 12px 8px; font-size: .76rem; font-weight: 700; letter-spacing: .07em;
   text-transform: uppercase; color: var(--ink-2); background: var(--card-2);
@@ -565,27 +572,241 @@ dialog::backdrop { background: rgba(8, 14, 26, .55); backdrop-filter: blur(3px);
 
 /* --------------------------------------------------------- responsive */
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .topbar__inner { padding: 0 14px; gap: 10px; }
-  .brand span:last-child { display: none; }
   .wrap { padding: 0 14px; }
-  .card--pad { padding: 15px; }
-  .filters select { flex: 1 1 140px; min-width: 0; }
+  .card--pad { padding: 16px; }
+  .filters select { flex: 1 1 150px; min-width: 0; }
 }
 
-@media (max-width: 640px) {
-  body { font-size: 14.5px; }
-  .tabs { order: 3; flex-basis: 100%; }
-  .tabs a { font-size: .86rem; padding: 8px 11px; }
+/* ------------------------------------------------- tablette et téléphone */
+
+@media (max-width: 760px) {
+
+  body { font-size: 15px; }
+
+  /* en-tête compact : marque + thèmes sur une ligne, onglets en icônes dessous */
+  .topbar { padding: 8px 0 2px; }
+  .topbar__inner { gap: 8px; padding: 0 12px; }
+  .brand span:last-child { display: none; }
+  .brand__mark { width: 30px; height: 30px; }
+  .themes { margin-left: auto; padding: 3px; }
+  .themes button { padding: 7px 11px; font-size: .78rem; min-height: 36px; }
+  .tabs { order: 3; flex-basis: 100%; padding: 4px; }
+  .tabs a { padding: 8px 6px; }
   .tabs a span { display: none; }
-  .tabs a svg { width: 19px; height: 19px; }
-  .themes button { padding: 6px 9px; font-size: .78rem; }
-  .cal td { height: 92px; }
-  .cal .jour__notes { display: none; }
+  .tabs svg { width: 20px; height: 20px; }
+
+  .wrap { padding: 0 12px; }
+  main { padding: 14px 0 60px; }
+  section + section { margin-top: 18px; }
+
+  h1 { font-size: 1.45rem; }
+  h2 { font-size: 1.15rem; }
+  .sec-title h2 { font-size: 1.1rem; }
+
+  /* champs plus ramassés — 16px minimum pour éviter le zoom auto d'iOS */
+  input[type="text"], input[type="search"], input[type="number"],
+  input[type="date"], select, textarea { font-size: 16px; min-height: 44px; }
+  .search input { min-height: 46px; }
+  .filters { gap: 8px; }
+  .filters select { min-height: 44px; flex: 1 1 calc(50% - 4px); }
+
+  .card--pad { padding: 14px; }
+  .grid { gap: 12px; }
+  .grid--2, .grid--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid--3 { grid-template-columns: minmax(0, 1fr); }
+
+  .stat-card { padding: 14px 14px 16px; }
+  .stat-card__head { gap: 8px; margin-bottom: 6px; }
+  .stat-card__icon { width: 30px; height: 30px; border-radius: 9px; }
+  .stat-card__icon svg { width: 15px; height: 15px; }
+  .stat-card__label { font-size: .8rem; }
+  .stat-card__value { font-size: 1.5rem; }
+
+  /* ---- tableaux : une carte par ligne, plus de défilement horizontal ---- */
+
+  .tbl-wrap { overflow-x: visible; }
+
+  table.tbl {
+    display: block;
+    min-width: 0 !important;
+    width: 100%;
+    font-size: .92rem;
+  }
+  table.tbl thead { display: none; }
+  table.tbl tbody { display: block; }
+
+  table.tbl tbody tr {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 2px 10px;
+    align-items: start;
+    padding: 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  table.tbl tbody tr:hover td,
+  table.tbl tbody tr:hover td.spe-cell { background: none; }
+
+  table.tbl tbody td {
+    display: block;
+    grid-column: 1 / -1;
+    padding: 0;
+    border: 0;
+    background: none !important;
+  }
+  table.tbl tbody td:empty { display: none; }
+
+  table.tbl tbody td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 5px;
+    font-size: .64rem;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  table.tbl tbody td[data-label] { margin-top: 12px; }
+
+  /* la première ligne de la carte : numéro en pastille, puis l'intitulé */
+  table.tbl tbody td.num {
+    grid-column: 1;
+    grid-row: 1;
+    width: auto;
+    padding: 2px 9px;
+    border-radius: 8px;
+    background: var(--blue-soft) !important;
+    font-size: .8rem;
+  }
+  table.tbl tbody td.num a { color: inherit; }
+  table.tbl tbody td.nom {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+  table.tbl tbody td.nom .btn {
+    padding: 4px 0 !important; min-height: 34px; font-size: inherit;
+    align-items: flex-start;
+  }
+  table.tbl tbody td.center { text-align: left; }
+
+  /* cibles tactiles */
+  .tours { flex-wrap: wrap; gap: 6px; }
+  .tours button { width: 36px; height: 36px; font-size: .74rem; }
+  .btn { min-height: 44px; }
+  .btn--sm { min-height: 38px; padding: 7px 13px; }
+
+  /* légende : le code seul, le nom long tient dans l'infobulle */
+  .legend { gap: 5px; }
+  .legend span { padding: 4px 9px; }
+  .legend em { display: none; }
+
+  /* ressources : six pastilles à code court au lieu de six cases à cocher */
+  .res { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
+  .res label {
+    position: relative; padding: 0; gap: 0;
+    min-width: 50px; height: 34px;
+  }
+  .res label input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+  .res label > span { display: none; }
+  .res label::after {
+    content: attr(data-court);
+    display: grid; place-items: center;
+    width: 100%; height: 100%; padding: 0 10px;
+    border: 1.5px solid var(--line-2); border-radius: 9px;
+    font-size: .68rem; font-weight: 800; letter-spacing: .04em;
+    color: var(--ink-3);
+  }
+  .res label.on::after {
+    background: var(--sup); border-color: transparent; color: #fff;
+  }
+
+  /* table dense (liste des items) : on retire les intitulés de colonne
+     que la mise en forme rend évidents, pour tenir plus d'items à l'écran */
+  table.tbl--dense tbody tr { gap: 2px 9px; padding: 12px 14px; }
+  table.tbl--dense tbody td[data-label] { margin-top: 9px; }
+  table.tbl--dense tbody td.spe-cell[data-label]::before,
+  table.tbl--dense tbody td[data-label="Tours"]::before,
+  table.tbl--dense tbody td[data-label="Ressources faites"]::before { content: none; }
+  table.tbl--dense tbody td.spe-cell[data-label] { margin-top: 7px; }
+  table.tbl--dense tbody td[data-label="Dernière révision"] {
+    margin-top: 9px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    font-size: .8rem; color: var(--ink-2);
+  }
+  table.tbl--dense tbody td[data-label="Dernière révision"]::before {
+    content: attr(data-label) " ·"; margin: 0;
+  }
+  table.tbl--dense tbody td[data-label="Dernière révision"] > div { display: contents; }
+
+  /* modale en feuille basse */
+  dialog, dialog[open] {
+    width: 100%;
+    max-width: none;
+    margin: auto 0 0;
+    top: auto;
+    bottom: 0;
+    max-height: 88vh;
+    border-radius: 22px 22px 0 0;
+  }
+  .modal__foot { padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px)); }
+  .modal__head { padding: 18px 18px 4px; }
+  .modal__body { padding: 14px 18px 4px; max-height: none; overscroll-behavior: contain; }
+  .modal__foot { padding: 14px 18px 18px; }
+  .conf { gap: 7px; }
+  .conf button { height: 54px; font-size: 1.15rem; border-radius: 12px; }
   .supports { grid-template-columns: repeat(2, 1fr); }
-  .conf button { height: 52px; font-size: 1.15rem; border-radius: 11px; }
-  .stat-card__value { font-size: 1.7rem; }
+
+  /* calendrier : il tient dans la largeur, sans défilement horizontal */
+  .cal-wrap { overflow-x: auto; }
+  .cal { min-width: 0; }
+  .cal td { height: 84px; }
+  .cal th { padding: 9px 4px; font-size: .68rem; }
+  .cal .jour { padding: 6px 5px 4px; gap: 3px; }
+  .cal .jour__notes { display: none; }
+  .cal .jour__num { font-size: .82rem; }
+  .cal td.auj .jour__num { width: 22px; height: 22px; font-size: .75rem; }
+  .cal .jour__add {
+    min-height: 32px; display: flex; align-items: center; justify-content: center;
+    font-size: .8rem; font-weight: 700; border-radius: 7px; background: var(--bg-2);
+  }
+  .cal .jour__add span { display: none; }   /* juste « + » : les cases sont étroites */
+  .cal .jour__spes button { min-height: 22px; }
+
+  /* tableaux des fiches : défilables plutôt que débordants */
+  .prose table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: normal; }
+  .prose { overflow-wrap: anywhere; }
+
+  /* cartes de collège */
+  .spe-card { padding: 14px 14px 16px; }
+  .spe-card__meta { gap: 10px; font-size: .8rem; }
 }
+
+@media (max-width: 430px) {
+  /* les cartes de texte et de collège passent sur une colonne, mais les tuiles
+     de chiffres restent à deux : à une par ligne, la page devient interminable */
+  .grid--2, .grid--3 { grid-template-columns: minmax(0, 1fr); }
+  .grid--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stat-card__value { font-size: 1.35rem; }
+  .stat-card__label { font-size: .76rem; }
+  .filters select { flex: 1 1 100%; }
+  .tabs a { padding: 8px 4px; }
+  .cal td { height: 72px; }
+  .cal .jour__spes button { font-size: .55rem; padding: 1px 4px; }
+}
+
+/* encoches et barres système */
+@supports (padding: env(safe-area-inset-left)) {
+  .wrap, .topbar__inner {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+  .foot { padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px)); }
+}
+
+
 
 @media print {
   .topbar, .foot, .no-print { display: none !important; }
@@ -595,6 +816,10 @@ dialog::backdrop { background: rgba(8, 14, 26, .55); backdrop-filter: blur(3px);
 
 /* petite icône inline dans un texte ou un badge */
 svg.ic { width: 14px; height: 14px; vertical-align: -2px; flex: none; }
+
+/* cases à cocher hors tableau : assez grandes pour le doigt */
+input[type="checkbox"] { width: 18px; height: 18px; min-height: 0; accent-color: var(--blue); }
+@media (max-width: 760px) { input[type="checkbox"] { width: 22px; height: 22px; } }
 .tag svg.ic { width: 12px; height: 12px; }
 
 /* sélecteur de collège dans le planning */
@@ -616,3 +841,14 @@ dialog.large { max-width: 640px; }
 /* icônes dans les en-têtes colorés (to-do list) */
 .todo__head > svg { width: 20px; height: 20px; flex: none; }
 .sec-title__icon > svg { width: 16px; height: 16px; }
+
+/* réglages du planning : la date prend la ligne, les deux compteurs la partagent */
+.reglages { display: flex; flex-wrap: wrap; gap: 14px; }
+.reglages > div { min-width: 0; }
+@media (max-width: 760px) {
+  .reglages { gap: 10px; }
+  .reglages > div:first-child { flex: 1 1 100%; }
+}
+
+/* libellé portant une case à cocher : cible tactile confortable */
+label.check { min-height: 40px; align-items: center; cursor: pointer; }

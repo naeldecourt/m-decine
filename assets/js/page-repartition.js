@@ -117,12 +117,13 @@
       return '<tr>' +
         '<td class="num"><a href="items.html?item=' + r.n + '">' + (r.n < 10 ? '0' + r.n : r.n) + '</a></td>' +
         '<td class="nom">' + esc(r.titre) + '</td>' +
-        '<td class="spe-cell" style="--spe:' + S.college(r.ref.id).couleur + '">' +
+        '<td class="spe-cell" data-label="Collège référent" style="--spe:' +
+          S.college(r.ref.id).couleur + '">' +
           pastille(r.ref.id, true) +
           (r.refDeclare ? '' : '<div class="small muted" style="margin-top:3px">référent déduit</div>') +
         '</td>' +
-        '<td>' + colonneAutres(r) + '</td>' +
-        '<td class="nowrap center">' +
+        '<td data-label="Aussi traité par">' + colonneAutres(r) + '</td>' +
+        '<td class="nowrap center" data-label="Nombre de collèges">' +
           '<span class="tag ' + (r.nbCols > 1 ? 'tag--blue' : '') + '">' + r.nbCols + '</span>' +
         '</td>' +
         '</tr>';

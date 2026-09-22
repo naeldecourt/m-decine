@@ -110,8 +110,10 @@
   };
 
   function celluleSpe(l) {
+    var etiquette = S.vue() === 'item' ? 'Collèges' : 'Collège';
     if (S.vue() === 'item') {
-      return '<td class="spe-cell" style="--spe:' + S.college(l.cols[0]).couleur + '">' +
+      return '<td class="spe-cell" data-label="' + etiquette + '" style="--spe:' +
+        S.college(l.cols[0]).couleur + '">' +
         (l.cols || []).map(function (id) {
           var c = S.college(id);
           return '<span class="spe" style="--spe:' + c.couleur + '" title="' + esc(c.nom) + '">' +
@@ -119,10 +121,10 @@
         }).join(' ') + '</td>';
     }
     var c = S.college(l.col);
-    return '<td class="spe-cell" style="--spe:' + c.couleur + '">' +
+    return '<td class="spe-cell" data-label="' + etiquette + '" style="--spe:' + c.couleur + '">' +
       '<span class="spe" style="--spe:' + c.couleur + '">' +
       '<span class="spe__code">' + esc(c.court) + '</span>' + esc(c.nom) + '</span>' +
-      (l.ref ? '<div style="margin-top:5px"><span class="tag tag--ref">★ Référence</span></div>' : '') +
+      (l.ref ? ' <span class="tag tag--ref">★ Référence</span>' : '') +
       '</td>';
   }
 
@@ -139,10 +141,15 @@
     return html + '</div>';
   }
 
+  /* Le libellé porte le code court et la couleur du support : la CSS en fait
+     des cases à cocher sur grand écran et des pastilles compactes sur mobile. */
   function cellulesRessources(l) {
     return '<div class="res">' + S.SUPPORTS.map(function (s) {
-      return '<label><input type="checkbox" data-res="' + s.id + '"' +
-        (l.ressources.indexOf(s.id) !== -1 ? ' checked' : '') + '>' + esc(s.nom) + '</label>';
+      var actif = l.ressources.indexOf(s.id) !== -1;
+      return '<label class="res__c' + (actif ? ' on' : '') + '" data-court="' + esc(s.court) +
+        '" style="--sup:' + s.couleur + '" title="' + esc(s.nom) + '">' +
+        '<input type="checkbox" data-res="' + s.id + '"' + (actif ? ' checked' : '') + '>' +
+        '<span>' + esc(s.nom) + '</span></label>';
     }).join('') + '</div>';
   }
 
@@ -161,9 +168,9 @@
           'style="text-align:left;justify-content:flex-start;padding:3px 5px;white-space:normal;font-weight:500">' +
           esc(l.titre) + (l.note ? ' <span title="note personnelle">📝</span>' : '') + '</button></td>' +
         celluleSpe(l) +
-        '<td class="nowrap">' + chipsTours(l) + '</td>' +
-        '<td>' + cellulesRessources(l) + '</td>' +
-        '<td class="nowrap">' + (l.dernier
+        '<td class="nowrap" data-label="Tours">' + chipsTours(l) + '</td>' +
+        '<td data-label="Ressources faites">' + cellulesRessources(l) + '</td>' +
+        '<td class="nowrap" data-label="Dernière révision">' + (l.dernier
             ? S.formatFr(l.dernier.d) + '<div style="margin-top:4px"><span class="' + st.classe + '">' + st.texte + '</span></div>'
             : '<span class="' + st.classe + '">' + st.texte + '</span>') + '</td>' +
         '</tr>';
@@ -294,6 +301,7 @@
       if (!box) return;
       var tr = ev.target.closest('tr[data-cle]');
       S.basculeRessource(tr.dataset.cle, box.dataset.res);
+      box.parentNode.classList.toggle('on', box.checked);
     });
 
     /* fiche détaillée */
@@ -369,8 +377,10 @@
     S.colleges().forEach(function (c) {
       sel.insertAdjacentHTML('beforeend', '<option value="' + esc(c.id) + '">' + esc(c.nom) + '</option>');
     });
+    // Le nom long est masqué sur téléphone : le code suffit à lire les pastilles.
     $('#legende').innerHTML = S.SUPPORTS.map(function (s) {
-      return '<span style="background:' + s.couleur + '"><b>' + esc(s.court) + '</b>' + esc(s.nom) + '</span>';
+      return '<span style="background:' + s.couleur + '" title="' + esc(s.nom) + '"><b>' +
+        esc(s.court) + '</b><em>' + esc(s.nom) + '</em></span>';
     }).join('');
   }
 

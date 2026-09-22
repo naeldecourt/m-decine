@@ -86,9 +86,11 @@
         'font-size="11" fill="var(--ink-3)">' + esc(etiquetteJour(p.date)) + '</text>';
     });
 
-    $(cible).innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" height="' + H +
-      '" preserveAspectRatio="xMidYMid meet" role="img" aria-label="' +
-      esc($(cible).dataset.label || '') + '">' + svg + '</svg>';
+    // Pas de hauteur fixe : le rapport du viewBox la détermine, sinon le tracé
+    // se retrouve écrasé au milieu de deux bandes vides sur écran étroit.
+    $(cible).innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" ' +
+      'style="width:100%;height:auto;display:block" preserveAspectRatio="xMidYMid meet" ' +
+      'role="img" aria-label="' + esc($(cible).dataset.label || '') + '">' + svg + '</svg>';
   }
 
   function rendreSemaine() {
@@ -135,10 +137,10 @@
         var c = S.college(l.col || l.cols[0]);
         return '<tr><td class="num">' + (l.n || 'HP') + '</td>' +
           '<td class="nom">' + esc(l.titre) + '</td>' +
-          '<td><span class="spe" style="--spe:' + c.couleur + '"><span class="spe__code">' +
-            esc(c.court) + '</span></span></td>' +
-          '<td class="nowrap">' + S.formatFr(l.dernier.d) + '</td>' +
-          '<td class="nowrap"><span class="tag tag--red">+' + l.retard + ' j</span></td></tr>';
+          '<td data-label="Collège"><span class="spe" style="--spe:' + c.couleur + '"><span class="spe__code">' +
+            esc(c.court) + '</span>' + esc(c.nom) + '</span></td>' +
+          '<td class="nowrap" data-label="Dernier tour">' + S.formatFr(l.dernier.d) + '</td>' +
+          '<td class="nowrap" data-label="Retard"><span class="tag tag--red">+' + l.retard + ' j</span></td></tr>';
       }).join('') + '</tbody></table></div>';
   }
 
@@ -151,16 +153,16 @@
       '<th class="nowrap">À revoir</th><th class="nowrap">Confiance</th><th class="nowrap">Temps</th></tr></thead><tbody>' +
       g.map(function (x) {
         return '<tr>' +
-          '<td><span class="spe" style="--spe:' + x.couleur + '"><span class="spe__code">' + esc(x.court) +
+          '<td class="nom"><span class="spe" style="--spe:' + x.couleur + '"><span class="spe__code">' + esc(x.court) +
             '</span>' + esc(x.nom) + '</span></td>' +
-          '<td style="min-width:170px"><div class="bar"><span style="width:' + (x.couverture * 100).toFixed(1) +
-            '%;background:' + x.couleur + '"></span></div>' +
+          '<td style="min-width:170px" data-label="Couverture"><div class="bar"><span style="width:' +
+            (x.couverture * 100).toFixed(1) + '%;background:' + x.couleur + '"></span></div>' +
             '<div class="small muted" style="margin-top:3px">' + x.vus + '/' + x.total + ' — ' +
             Math.round(x.couverture * 100) + ' %</div></td>' +
-          '<td class="nowrap">' + x.tours + '</td>' +
-          '<td class="nowrap">' + (x.retard ? '<span class="tag tag--red">' + x.retard + '</span>' : '<span class="muted">0</span>') + '</td>' +
-          '<td class="nowrap">' + (x.confMoyenne ? x.confMoyenne.toFixed(1).replace('.', ',') : '—') + '</td>' +
-          '<td class="nowrap">' + S.duree(x.minutes) + '</td>' +
+          '<td class="nowrap" data-label="Tours">' + x.tours + '</td>' +
+          '<td class="nowrap" data-label="À revoir">' + (x.retard ? '<span class="tag tag--red">' + x.retard + '</span>' : '<span class="muted">0</span>') + '</td>' +
+          '<td class="nowrap" data-label="Confiance">' + (x.confMoyenne ? x.confMoyenne.toFixed(1).replace('.', ',') : '—') + '</td>' +
+          '<td class="nowrap" data-label="Temps">' + S.duree(x.minutes) + '</td>' +
           '</tr>';
       }).join('') + '</tbody></table></div>';
   }

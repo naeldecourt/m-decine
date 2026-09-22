@@ -44,7 +44,8 @@
                   '" title="Retirer ' + esc(c.nom) + '">' + esc(c.court) + '</button>';
               }).join('') +
             '</div>' +
-            '<button type="button" class="jour__add" data-ajouter>+ Collège</button>' +
+            '<button type="button" class="jour__add" data-ajouter ' +
+              'aria-label="Ajouter un collège au ' + S.formatFr(k) + '">+<span>&nbsp;Collège</span></button>' +
           '</div></td>';
       }
       html += '</tr>';

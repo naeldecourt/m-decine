@@ -60,6 +60,31 @@ Les tours sont stockés sous des clés différentes selon la vue (`231` contre
 `231@cardiologie`) : changer de vue ne perd rien, mais les compteurs diffèrent.
 Mieux vaut choisir la sienne au début et s'y tenir.
 
+## Sur téléphone
+
+Le site est pensé pour être utilisé au doigt autant qu'au clavier.
+
+- **Les tableaux deviennent des cartes** sous 760 px : une carte par item, plus
+  aucun défilement horizontal. Les six ressources passent de cases à cocher à
+  six pastilles à code court (QCM, COL, ANK, PER, COD, CNF), colorées quand
+  elles sont validées.
+- **Cibles tactiles d'au moins 32 px**, feuille basse pour la saisie d'un tour
+  (en-tête et bouton de validation toujours visibles, le corps défile), champs
+  à 16 px pour éviter le zoom automatique d'iOS, marges d'encoche respectées.
+- **Installable sur l'écran d'accueil** : `manifest.webmanifest`, icônes 192 et
+  512 px dont une maskable, `apple-touch-icon`, trois raccourcis (items, séance
+  du jour, statistiques). La barre système prend la couleur du thème actif.
+- **Utilisable hors connexion** : `sw.js` met en cache les neuf pages et leurs
+  ressources. Les pages sont servies réseau d'abord (pour recevoir les mises à
+  jour) avec repli sur le cache ; les scripts, styles et icônes cache d'abord.
+  Dans le métro, on continue d'enregistrer ses tours — tout est en local de
+  toute façon.
+
+Le service worker exige HTTPS (GitHub Pages convient) ou `localhost`. En
+`http://` il ne s'enregistre pas et le site fonctionne normalement, simplement
+sans cache hors ligne. La police Outfit vient de Google Fonts et n'est pas mise
+en cache : hors connexion, la pile de polices système prend le relais.
+
 ## Thèmes
 
 Trois thèmes — **clair**, **sombre**, **pastel** — commutables en haut à droite
@@ -92,6 +117,9 @@ assets/js/page-repartition.js  table item / collège référent / autres collèg
 assets/js/page-specialites.js  cartes par collège
 assets/js/page-stats.js     statistiques et courbes
 assets/js/page-planning.js  calendrier, séance du jour, to-do list
+assets/icone.svg            icône source, déclinée en PNG 192/512/180
+sw.js                       cache hors connexion
+manifest.webmanifest        installation sur l'écran d'accueil
 ```
 
 La seule ressource externe est la police Outfit servie par Google Fonts, chargée

@@ -1,0 +1,25 @@
+{
+  "name": "Révision EDN",
+  "short_name": "EDN",
+  "description": "Suivi de révision des items de l'EDN : tours, confiance, planning et statistiques.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./items.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f1f5fb",
+  "theme_color": "#2f6bff",
+  "categories": ["education", "medical", "productivity"],
+  "icons": [
+    { "src": "assets/icone-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/icone-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "assets/icone-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "assets/icone.svg", "sizes": "any", "type": "image/svg+xml" }
+  ],
+  "shortcuts": [
+    { "name": "Liste des items", "url": "./items.html" },
+    { "name": "Séance du jour", "url": "./planning.html" },
+    { "name": "Statistiques", "url": "./stats.html" }
+  ]
+}

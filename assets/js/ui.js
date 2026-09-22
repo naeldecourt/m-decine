@@ -18,12 +18,17 @@
     return (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? 'sombre' : 'clair';
   }
 
+  /* La barre système du téléphone prend la couleur de fond du thème. */
+  var FOND = { clair: '#f1f5fb', sombre: '#0d1626', pastel: '#fbf5f0' };
+
   function appliqueTheme(t) {
     document.documentElement.setAttribute('data-theme', t);
     var b = document.querySelectorAll('.themes button[data-theme]');
     for (var i = 0; i < b.length; i++) {
       b[i].setAttribute('aria-pressed', String(b[i].dataset.theme === t));
     }
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', FOND[t] || FOND.clair);
     document.dispatchEvent(new CustomEvent('edn:theme', { detail: t }));
   }
 
@@ -227,7 +232,37 @@
 
     var y = $('#annee');
     if (y) y.textContent = String(new Date().getFullYear());
+
+    enregistreServiceWorker();
   });
+
+  /* Rend le site utilisable hors connexion et installable sur l'écran
+     d'accueil. Sans effet en http:// (hors localhost) : c'est attendu. */
+  function enregistreServiceWorker() {
+    if (!('serviceWorker' in navigator)) return;
+    var base = location.pathname.replace(/[^/]*$/, '');
+    navigator.serviceWorker.register(base + 'sw.js', { scope: base })
+      .then(function (reg) {
+        // Une nouvelle version prend la main dès qu'elle est prête.
+        reg.addEventListener('updatefound', function () {
+          var nouveau = reg.installing;
+          if (!nouveau) return;
+          nouveau.addEventListener('statechange', function () {
+            if (nouveau.state === 'installed' && navigator.serviceWorker.controller) {
+              nouveau.postMessage('skipWaiting');
+            }
+          });
+        });
+      })
+      .catch(function () { /* pas de HTTPS, ou navigateur sans support */ });
+
+    var recharge = false;
+    navigator.serviceWorker.addEventListener('controllerchange', function () {
+      if (recharge) return;
+      recharge = true;
+      location.reload();
+    });
+  }
 
   window.UI = {
     icone: icone, esc: esc, sansAccent: sansAccent, $: $, $$: $$,

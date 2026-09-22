@@ -2,9 +2,17 @@
 <html lang="fr" data-theme="clair">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Liste des items — tableur de révision EDN | Révision EDN</title>
 <meta name="description" content="Les items du programme EDN : 8 tours par item, niveau de confiance, ressources faites, filtres par collège et par statut, export CSV.">
+<meta name="theme-color" content="#f1f5fb">
+<meta name="color-scheme" content="light dark">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="EDN">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%232f6bff'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='15' font-weight='bold' fill='white' text-anchor='middle'%3EDN%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -119,7 +127,7 @@
       </div>
 
       <div class="tbl-wrap">
-        <table class="tbl">
+        <table class="tbl tbl--dense">
           <thead>
             <tr>
               <th class="sortable" data-tri="n" aria-sort="ascending">N° <span class="arrow">▲</span></th>
@@ -200,8 +208,8 @@
       <textarea id="d-note" placeholder="Pièges, tableaux à refaire, liens vers tes fiches…"></textarea>
     </div>
 
-    <label class="row small" style="font-weight:500;text-transform:none;letter-spacing:0;color:var(--ink);cursor:pointer">
-      <input type="checkbox" id="d-masque" style="width:auto;min-height:0;accent-color:var(--blue)">
+    <label class="row small check" style="font-weight:500;text-transform:none;letter-spacing:0;color:var(--ink);cursor:pointer">
+      <input type="checkbox" id="d-masque" >
       Masquer cette ligne de mon programme
     </label>
   </div>

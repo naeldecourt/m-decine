@@ -2,10 +2,10 @@
    Tout est conservé dans le navigateur (localStorage) — aucun serveur.
 
    Deux vues du programme, au choix de l'utilisateur :
-   · « par collège » : une ligne par couple item-collège (750 lignes), comme
+   · « par collège » : une ligne par couple item-collège (753 lignes), comme
      dans les tableurs de révision classiques ; les tours d'un item sont suivis
      séparément dans chaque collège qui le traite.
-   · « par item »    : une ligne par numéro d'item (364 lignes), les collèges
+   · « par item »    : une ligne par numéro d'item (367 lignes), les collèges
      concernés affichés en badges ; un seul suivi de tours par item.
    La clé de stockage d'une ligne dépend de la vue : "231" ou "231@cardiologie". */
 (function () {

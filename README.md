@@ -50,10 +50,10 @@ tourniquet entre collèges, pour ne pas enchaîner dix lignes de la même spé.
 Un même item peut être traité par plusieurs collèges. Le site propose donc deux
 vues, permutables depuis la liste des items :
 
-- **Par collège** — 750 lignes, une par couple item-collège. Les tours sont
+- **Par collège** — 753 lignes, une par couple item-collège. Les tours sont
   suivis séparément dans chaque collège, et le collège de référence porte
   l'étoile ★.
-- **Par item** — 364 lignes, une par numéro d'item, les collèges concernés
+- **Par item** — 367 lignes, une par numéro d'item, les collèges concernés
   affichés en badges. Un seul suivi de tours par item.
 
 Les tours sont stockés sous des clés différentes selon la vue (`231` contre
@@ -100,17 +100,18 @@ relais sans casser la mise en page.
 
 ## Données du programme
 
-`assets/js/items.js` contient les 364 numéros d'items du programme R2C, leurs
+`assets/js/items.js` contient les 367 numéros d'items du programme R2C, leurs
 intitulés et leur rattachement aux 24 collèges, plus 14 chapitres de collège
-hors programme (affichés « HP »). Les numéros 35, 96 et 119 n'existent pas dans
-le programme actuel.
+hors programme (affichés « HP »).
 
-Un même item est souvent traité par plusieurs collèges — 205 des 364 items, 1,87
+Un même item est souvent traité par plusieurs collèges — 205 des 367 items, 1,87
 collège par item en moyenne — parfois sous un intitulé légèrement différent. La
 page `repartition.html` donne cette correspondance item par item.
 
-Les numéros 35, 96 et 119 sont absents : ces items ont été absorbés par d'autres
-chapitres, repérables aux mentions `(+ITEM …)` dans les intitulés.
+Les items **35** (Gynéco), **96** (Neurologie) et **119** (MPR) ne figuraient pas
+dans les données d'origine : leurs chapitres avaient été fusionnés dans des
+chapitres voisins, repérables aux mentions `(+ITEM …)` dans les intitulés. Ils
+ont été rétablis comme lignes à part entière dans leur collège.
 
 Ces données sont fournies à titre indicatif : **le référentiel officiel publié
 par l'UNESS fait seul foi**. En cas d'écart, corrige `assets/js/items.js`.

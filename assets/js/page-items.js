@@ -124,7 +124,7 @@
     return '<td class="spe-cell" data-label="' + etiquette + '" style="--spe:' + c.couleur + '">' +
       '<span class="spe" style="--spe:' + c.couleur + '">' +
       '<span class="spe__code">' + esc(c.court) + '</span>' + esc(c.nom) + '</span>' +
-
+      (l.ref ? ' <span class="tag tag--ref">★ Référence</span>' : '') +
       '</td>';
   }
 

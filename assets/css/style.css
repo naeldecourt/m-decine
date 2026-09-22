@@ -318,6 +318,12 @@ select {
   background: color-mix(in srgb, var(--spe, var(--blue)) var(--tint), transparent);
   color: var(--spe, var(--blue));
 }
+/* Le collège référent d'un item : même pastille, mais appuyée. */
+.spe--ref { font-weight: 800; }
+.spe--ref .spe__code {
+  background: color-mix(in srgb, var(--spe, var(--blue)) 26%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--spe, var(--blue)) 55%, transparent);
+}
 .spe-cell { background: color-mix(in srgb, var(--spe) 7%, transparent); }
 :root[data-theme="sombre"] .spe-cell { background: color-mix(in srgb, var(--spe) 12%, transparent); }
 

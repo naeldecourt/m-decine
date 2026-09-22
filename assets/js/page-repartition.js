@@ -1,15 +1,15 @@
 /* Page « Répartition » : pour chaque item, tous les collèges où il figure.
    Un même item est souvent au programme de plusieurs collèges, parfois sous un
-   intitulé légèrement différent. Aucun collège n'est présenté comme principal :
-   la donnée d'origine porte bien un marqueur par couple item-collège, mais sa
-   signification n'est pas établie, on ne l'expose donc pas. */
+   intitulé légèrement différent. Le collège référent — celui qui porte l'item —
+   est marqué d'une étoile et passe en tête ; les autres suivent par ordre
+   alphabétique, sur la même ligne. */
 (function () {
   'use strict';
 
   var S = window.Store, U = window.UI;
   var $ = U.$, $$ = U.$$, esc = U.esc;
 
-  var etat = { q: '', present: '', transversal: '', tri: 'n', sens: 1, intitules: false };
+  var etat = { q: '', ref: '', present: '', transversal: '', tri: 'n', sens: 1, intitules: false };
   var TABLE = null;
 
   /* ------------------------------------------------------- construction */
@@ -25,32 +25,32 @@
       var deja = null;
       for (var i = 0; i < e.cols.length; i++) if (e.cols[i].id === l.c) { deja = e.cols[i]; break; }
       if (deja) {
+        if (l.ref) deja.ref = 1;
         if (deja.titres.indexOf(l.t) === -1) deja.titres.push(l.t);
         return;
       }
-      e.cols.push({ id: l.c, titres: [l.t] });
+      e.cols.push({ id: l.c, ref: l.ref ? 1 : 0, titres: [l.t] });
     });
 
     TABLE = Object.keys(parNum).map(function (k) {
       var e = parNum[k];
-      // Tous les collèges sont sur le même plan : un item y est présent, point.
-      var cols = e.cols.slice().sort(function (x, y) {
-        return S.college(x.id).nom.localeCompare(S.college(y.id).nom, 'fr');
-      });
-      // L'intitulé affiché est le plus répandu parmi les collèges, à défaut le premier.
-      var comptes = {};
-      cols.forEach(function (c) { comptes[c.titres[0]] = (comptes[c.titres[0]] || 0) + 1; });
-      var titre = cols[0].titres[0];
-      Object.keys(comptes).forEach(function (t) {
-        if (comptes[t] > comptes[titre]) titre = t;
-      });
+      var ref = null;
+      for (var i = 0; i < e.cols.length; i++) if (e.cols[i].ref) { ref = e.cols[i]; break; }
+      var refDeclare = !!ref;
+      if (!ref) ref = e.cols[0];                // aucun référent déclaré
+      // Le référent d'abord, les autres collèges ensuite par ordre alphabétique.
+      var autres = e.cols.filter(function (c) { return c !== ref; })
+        .sort(function (x, y) { return S.college(x.id).nom.localeCompare(S.college(y.id).nom, 'fr'); });
+      var cols = [ref].concat(autres);
       return {
         n: e.n,
-        titre: titre,
+        titre: ref.titres[0],                   // l'intitulé du collège référent fait foi
+        ref: ref,
+        refDeclare: refDeclare,
         cols: cols,
         nbCols: cols.length,
-        // collèges dont l'intitulé s'écarte de celui qui est affiché
-        variantes: cols.filter(function (c) { return c.titres[0] !== titre; }).length
+        // collèges dont l'intitulé s'écarte de celui du référent
+        variantes: autres.filter(function (c) { return c.titres[0] !== ref.titres[0]; }).length
       };
     }).sort(function (a, b) { return a.n - b.n; });
     return TABLE;
@@ -68,6 +68,7 @@
   function filtre() {
     var q = U.sansAccent(etat.q.trim());
     return construire().filter(function (r) {
+      if (etat.ref && r.ref.id !== etat.ref) return false;
       if (etat.present && !r.cols.some(function (c) { return c.id === etat.present; })) return false;
       if (etat.transversal === 'mono' && r.nbCols !== 1) return false;
       if (etat.transversal === 'multi' && r.nbCols < 2) return false;
@@ -82,7 +83,7 @@
     var k = etat.tri;
     if (k === 'titre') return a.titre.localeCompare(b.titre, 'fr') * etat.sens || a.n - b.n;
     if (k === 'cols') {
-      return S.college(a.cols[0].id).nom.localeCompare(S.college(b.cols[0].id).nom, 'fr') * etat.sens
+      return S.college(a.ref.id).nom.localeCompare(S.college(b.ref.id).nom, 'fr') * etat.sens
         || a.n - b.n;
     }
     if (k === 'nbCols') return (a.nbCols - b.nbCols) * etat.sens || a.n - b.n;
@@ -91,19 +92,25 @@
 
   /* --------------------------------------------------------------- rendu */
 
-  function pastille(id) {
+  function pastille(id, etoile) {
     var c = S.college(id);
-    return '<span class="spe" style="--spe:' + c.couleur + '">' +
-      '<span class="spe__code">' + esc(c.court) + '</span>' + esc(c.nom) + '</span>';
+    return '<span class="spe' + (etoile ? ' spe--ref' : '') + '" style="--spe:' + c.couleur + '">' +
+      '<span class="spe__code">' + esc(c.court) + '</span>' +
+      (etoile ? '★ ' : '') + esc(c.nom) + '</span>';
   }
 
-  /** Tous les collèges où l'item figure, sans hiérarchie entre eux. */
+  /** Tous les collèges où l'item figure, le référent en tête avec son étoile. */
   function colonneColleges(r) {
     var html = '<div class="row" style="gap:6px">' +
       r.cols.map(function (c) {
-        return '<span title="' + esc(S.college(c.id).nom + ' — « ' + c.titres[0] + ' »') + '">' +
-          pastille(c.id) + '</span>';
+        var ref = c === r.ref;
+        var titre = S.college(c.id).nom + ' — « ' + c.titres[0] + ' »' +
+          (ref ? ' · collège référent' + (r.refDeclare ? '' : ' (déduit)') : '');
+        return '<span title="' + esc(titre) + '">' + pastille(c.id, ref) + '</span>';
       }).join('') + '</div>';
+    if (!r.refDeclare) {
+      html += '<div class="small muted" style="margin-top:3px">référent déduit</div>';
+    }
     if (etat.intitules && r.variantes) {
       html += '<ul class="small muted" style="margin:7px 0 0;padding-left:1.1em">' +
         r.cols.filter(function (c) { return c.titres[0] !== r.titre; })
@@ -128,7 +135,7 @@
         '</td>' +
         '<td class="num"><a href="items.html?item=' + r.n + '">' + (r.n < 10 ? '0' + r.n : r.n) + '</a></td>' +
         '<td class="nom">' + esc(r.titre) + '</td>' +
-        '<td data-label="Collèges où il figure">' + colonneColleges(r) + '</td>' +
+        '<td data-label="Collèges (★ référent)">' + colonneColleges(r) + '</td>' +
         '<td class="nowrap center" data-label="Nombre de collèges">' +
           '<span class="tag ' + (r.nbCols > 1 ? 'tag--blue' : '') + '">' + r.nbCols + '</span>' +
         '</td>' +
@@ -172,12 +179,13 @@
   }
 
   function exporter() {
-    var lignes = [['Item', 'Intitule', 'Colleges', 'Nombre de colleges',
-                   'Intitules differents'].join(';')];
+    var lignes = [['Item', 'Intitule', 'College referent', 'Autres colleges',
+                   'Nombre de colleges', 'Intitules differents'].join(';')];
     filtre().forEach(function (r) {
       lignes.push([
-        r.n, r.titre,
-        r.cols.map(function (c) { return S.college(c.id).nom; }).join(' / '),
+        r.n, r.titre, S.college(r.ref.id).nom,
+        r.cols.filter(function (c) { return c !== r.ref; })
+          .map(function (c) { return S.college(c.id).nom; }).join(' / '),
         r.nbCols,
         r.cols.filter(function (c) { return c.titres[0] !== r.titre; })
           .map(function (c) { return S.college(c.id).court + ' : ' + c.titres[0]; }).join(' / ')
@@ -205,15 +213,18 @@
     var options = S.colleges().map(function (c) {
       return '<option value="' + esc(c.id) + '">' + esc(c.nom) + '</option>';
     }).join('');
+    $('#f-ref').insertAdjacentHTML('beforeend', options);
     $('#f-present').insertAdjacentHTML('beforeend', options);
 
     $('#f-q').addEventListener('input', function () { etat.q = this.value; rendreTable(); });
+    $('#f-ref').addEventListener('change', function () { etat.ref = this.value; rendreTable(); });
     $('#f-present').addEventListener('change', function () { etat.present = this.value; rendreTable(); });
     $('#f-transversal').addEventListener('change', function () { etat.transversal = this.value; rendreTable(); });
     $('#f-intitules').addEventListener('change', function () { etat.intitules = this.checked; rendreTable(); });
     $('#f-reset').addEventListener('click', function () {
-      etat.q = ''; etat.present = ''; etat.transversal = '';
-      $('#f-q').value = ''; $('#f-present').value = ''; $('#f-transversal').value = '';
+      etat.q = ''; etat.ref = ''; etat.present = ''; etat.transversal = '';
+      $('#f-q').value = ''; $('#f-ref').value = '';
+      $('#f-present').value = ''; $('#f-transversal').value = '';
       rendreTable();
     });
     $('#x-csv').addEventListener('click', exporter);

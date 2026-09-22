@@ -14,7 +14,7 @@ navigateur.
 |---|---|
 | `index.html` | Accueil, chiffres clés, présentation |
 | `items.html` | Liste des items : tours T1-T8, confiance, ressources, filtres, tri, pagination, import/export |
-| `repartition.html` | Tous les items avec tous les collèges où ils figurent, et une case « à faire » |
+| `repartition.html` | Tous les items avec leur collège référent ★ et les autres collèges où ils figurent, et une case « à faire » |
 | `specialites.html` | Une carte par collège : couverture, tours, temps, confiance moyenne |
 | `stats.html` | Chiffres du jour, courbes des 7 derniers jours, priorités, classement des collèges |
 | `planning.html` | Compte à rebours, recherche d'items à planifier, calendrier (mois / semaine / jour), to-do list |
@@ -62,10 +62,15 @@ Mieux vaut choisir la sienne au début et s'y tenir.
 
 ## La page Répartition
 
-Chaque item y est présenté avec **tous les collèges où il figure**, sans
-hiérarchie entre eux : un item traité par trois collèges apparaît avec ses
-trois badges sur le même plan. Quand les collèges lui donnent des intitulés
-différents, la ligne se déplie pour montrer chaque variante.
+Chaque item y est présenté avec **tous les collèges où il figure**, sur une
+seule colonne : le **collège référent**, marqué d'une étoile ★, ouvre la liste,
+les autres suivent par ordre alphabétique. L'intitulé affiché est celui du
+référent ; quand un autre collège lui en donne un différent, la ligne se déplie
+pour montrer chaque variante.
+
+Trois items (35, 96 et 119) ne portent aucun référent dans la donnée source :
+le premier collège rencontré en tient lieu, et la mention « référent déduit »
+le signale plutôt que de laisser croire à une donnée établie.
 
 ## Trouver un item à planifier
 
@@ -239,7 +244,7 @@ assets/js/items.js          données du programme (collèges, lignes, items)
 assets/js/store.js          stockage local, rappel espacé, synthèses, import/export
 assets/js/ui.js             thème, icônes SVG, modale « enregistrer le tour »
 assets/js/page-items.js     liste des items
-assets/js/page-repartition.js  table item / collèges où il figure
+assets/js/page-repartition.js  table item / collège référent / autres collèges
 assets/js/page-specialites.js  cartes par collège
 assets/js/page-stats.js     statistiques et courbes
 assets/js/page-planning.js  calendrier, recherche d'items, to-do list

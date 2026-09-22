@@ -266,6 +266,31 @@
 
   var glisse = null;    // { id } pour une séance, { tache } pour une tâche de la to-do
 
+  /** Heure visée par un dépôt sur une cible, ou undefined si elle est inchangée. */
+  function heureDeLaCible(cible, clientY) {
+    if (cible.dataset.heure === 'null') return null;
+    if (cible.dataset.creneau) return minutesDepuisY(cible, clientY);
+    return undefined;                       // vue mois : on garde l'heure
+  }
+
+  /** Applique un dépôt, qu'il vienne de la souris ou du doigt. */
+  function appliquerDepot(source, cible, heure) {
+    if (!source || !cible) return false;
+    if (source.tache) {
+      // une tâche de la to-do devient une séance ; la tâche reste dans la liste
+      var t = S.todo().filter(function (x) { return x.id === source.tache; })[0];
+      if (!t) return false;
+      S.setEvt({
+        d: cible.dataset.date,
+        h: heure === undefined ? 9 * 60 : heure,
+        m: 60, t: t.t, c: collegeDeLItem(t.n), i: t.n || 0
+      });
+      return true;
+    }
+    S.deplacerEvt(source.id, cible.dataset.date, heure);
+    return true;
+  }
+
   function minutesDepuisY(col, clientY) {
     var r = col.getBoundingClientRect();
     var y = clientY - r.top + col.scrollTop;
@@ -310,24 +335,7 @@
       ev.preventDefault();
       cible.classList.remove('depot');
 
-      var heure;
-      if (cible.dataset.heure === 'null') heure = null;
-      else if (cible.dataset.creneau) heure = minutesDepuisY(cible, ev.clientY);
-      else heure = undefined;                       // vue mois : on garde l'heure
-
-      if (glisse.tache) {
-        // une tâche de la to-do devient une séance ; la tâche reste dans la liste
-        var t = S.todo().filter(function (x) { return x.id === glisse.tache; })[0];
-        if (t) {
-          S.setEvt({
-            d: cible.dataset.date,
-            h: heure === undefined ? 9 * 60 : heure,
-            m: 60, t: t.t, c: collegeDeLItem(t.n), i: t.n || 0
-          });
-        }
-      } else {
-        S.deplacerEvt(glisse.id, cible.dataset.date, heure);
-      }
+      appliquerDepot(glisse, cible, heureDeLaCible(cible, ev.clientY));
       glisse = null;
       rendreTout();
     });
@@ -384,6 +392,8 @@
     /* clic : ouvrir un événement, créer sur un créneau vide */
     corps.addEventListener('click', function (ev) {
       if (ev.target.closest('[data-redim]')) return;
+      // un dépôt au doigt est suivi d'un clic fantôme : on l'ignore
+      if (Date.now() - vientDeGlisser < 400) return;
 
       var menu = ev.target.closest('[data-menu]');
       if (menu) { ev.stopPropagation(); ouvrirMenuJour(menu, menu.dataset.menu); return; }
@@ -416,6 +426,148 @@
     if (!n) return '';
     var it = (window.EDN_ITEMS || []).filter(function (x) { return x.n === Number(n); })[0];
     return it ? it.ref : '';
+  }
+
+  /* --------------------------------- appui long : déplacer au doigt */
+
+  /* L'API de glisser-déposer HTML5 ne fonctionne qu'à la souris. Au doigt, on
+     reproduit le geste des agendas : on reste appuyé sur une séance, elle se
+     décolle, puis on la promène d'un jour ou d'un créneau à l'autre.
+     Un mouvement avant la fin de l'appui annule tout : c'est un défilement. */
+
+  var APPUI_LONG = 380;     // ms avant que la séance ne se décolle
+  var TOLERANCE = 10;       // px de mouvement tolérés pendant l'appui
+
+  var tactile = null;       // { source, depart, minuteur, fantome, actif, cible }
+  var vientDeGlisser = 0;   // horodatage, pour ne pas ouvrir la modale après un dépôt
+
+  function nettoyerTactile() {
+    if (!tactile) return;
+    clearTimeout(tactile.minuteur);
+    if (tactile.fantome) tactile.fantome.remove();
+    if (tactile.origine) tactile.origine.classList.remove('evt--souleve');
+    $$('.depot').forEach(function (e) { e.classList.remove('depot'); });
+    document.body.classList.remove('glisse-tactile');
+    tactile = null;
+  }
+
+  function demarrerGlisserTactile(x, y) {
+    tactile.actif = true;
+    document.body.classList.add('glisse-tactile');
+    if (navigator.vibrate) { try { navigator.vibrate(12); } catch (e) { /* sans effet */ } }
+
+    var r = tactile.origine.getBoundingClientRect();
+    var f = tactile.origine.cloneNode(true);
+    f.className = 'evt fantome';
+    f.style.width = Math.min(r.width, 220) + 'px';
+    f.style.height = 'auto';
+    tactile.decalage = { x: x - r.left, y: y - r.top };
+    document.body.appendChild(f);
+    tactile.fantome = f;
+    tactile.origine.classList.add('evt--souleve');
+    placerFantome(x, y);
+  }
+
+  function placerFantome(x, y) {
+    if (!tactile || !tactile.fantome) return;
+    tactile.fantome.style.left = (x - tactile.decalage.x) + 'px';
+    tactile.fantome.style.top = (y - tactile.decalage.y) + 'px';
+  }
+
+  /** Fait défiler la grille horaire quand le doigt approche de ses bords. */
+  function defilerSiBord(y) {
+    var zone = $('#cal-corps .cal-grille');
+    if (!zone) return;
+    var r = zone.getBoundingClientRect();
+    if (y < r.top + 60) zone.scrollTop -= 12;
+    else if (y > r.bottom - 60) zone.scrollTop += 12;
+  }
+
+  function cibleSous(x, y) {
+    if (tactile && tactile.fantome) tactile.fantome.style.visibility = 'hidden';
+    var el = document.elementFromPoint(x, y);
+    if (tactile && tactile.fantome) tactile.fantome.style.visibility = '';
+    return el && el.closest ? el.closest('[data-depot]') : null;
+  }
+
+  /* On travaille en événements tactiles et non en événements pointeur : c'est
+     le seul moyen de reprendre la main sur le défilement. « touch-action » est
+     figé au premier contact, donc le passer à « none » après coup ne sert à
+     rien — le navigateur a déjà réservé le geste et envoie « pointercancel ».
+     En revanche, un preventDefault() sur le premier touchmove annule bien le
+     défilement, puisque le doigt est resté immobile pendant l'appui. */
+  function brancherTactile() {
+    var zones = [$('#cal-corps'), $('#todo-liste')];
+
+    zones.forEach(function (zone) {
+      zone.addEventListener('touchstart', function (ev) {
+        if (ev.touches.length !== 1) { nettoyerTactile(); return; }
+        if (ev.target.closest('[data-redim]') || ev.target.closest('[data-menu]')) return;
+        if (ev.target.closest('input, button.btn, a')) return;
+
+        var evt = ev.target.closest('[data-evt]');
+        var tache = ev.target.closest('[data-tache]');
+        if (!evt && !tache) return;
+
+        var t = ev.touches[0];
+        nettoyerTactile();
+        tactile = {
+          source: evt ? { id: evt.dataset.evt } : { tache: tache.dataset.tache },
+          origine: evt || tache,
+          depart: { x: t.clientX, y: t.clientY },
+          actif: false
+        };
+        tactile.minuteur = setTimeout(function () {
+          if (tactile) demarrerGlisserTactile(tactile.depart.x, tactile.depart.y);
+        }, APPUI_LONG);
+      }, { passive: true });
+    });
+
+    document.addEventListener('touchmove', function (ev) {
+      if (!tactile) return;
+      var t = ev.touches[0];
+      if (!t) return;
+
+      if (!tactile.actif) {
+        // encore dans l'appui : un mouvement net signifie « je défile »
+        var dx = Math.abs(t.clientX - tactile.depart.x);
+        var dy = Math.abs(t.clientY - tactile.depart.y);
+        if (dx > TOLERANCE || dy > TOLERANCE) nettoyerTactile();
+        return;
+      }
+
+      // Le défilement est désormais à nous. Si l'événement n'est pas annulable
+      // (un défilement déjà lancé), on n'insiste pas mais on poursuit le geste.
+      if (ev.cancelable) ev.preventDefault();
+      placerFantome(t.clientX, t.clientY);
+      defilerSiBord(t.clientY);
+
+      var cible = cibleSous(t.clientX, t.clientY);
+      if (cible !== tactile.cible) {
+        $$('.depot').forEach(function (e) { e.classList.remove('depot'); });
+        if (cible) cible.classList.add('depot');
+        tactile.cible = cible;
+      }
+    }, { passive: false });
+
+    document.addEventListener('touchend', function (ev) {
+      if (!tactile) return;
+      if (!tactile.actif) { nettoyerTactile(); return; }
+
+      if (ev.cancelable) ev.preventDefault();   // pas de clic fantôme après un dépôt
+      var t = ev.changedTouches[0];
+      var cible = t ? cibleSous(t.clientX, t.clientY) : null;
+      var source = tactile.source;
+      var y = t ? t.clientY : 0;
+      nettoyerTactile();
+      vientDeGlisser = Date.now();
+      if (cible) {
+        appliquerDepot(source, cible, heureDeLaCible(cible, y));
+        rendreTout();
+      }
+    }, { passive: false });
+
+    document.addEventListener('touchcancel', nettoyerTactile);
   }
 
   /* -------------------------------------------- menu d'une journée */
@@ -637,6 +789,7 @@
     });
 
     brancherGlisser();
+    brancherTactile();
 
     // modale
     $('#ev-jour').addEventListener('change', majJourEntier);

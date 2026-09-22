@@ -101,6 +101,20 @@ souris, en ouvrant la modale pré-remplie. Une tâche venue de la page
 Répartition transmet son numéro d'item et la couleur de son collège référent,
 et **reste dans la liste** : on la coche quand c'est réellement fait.
 
+### Déplacer au doigt
+
+Sur téléphone, un **appui long** (380 ms) sur une séance la décolle : elle suit
+le doigt, la cible se surligne, on relâche pour déposer. Un mouvement avant la
+fin de l'appui annule tout et reste un défilement. Le geste marche aussi depuis
+une tâche de la to-do.
+
+Techniquement, cette partie utilise les événements **tactiles** et non les
+événements pointeur : `touch-action` est figé au premier contact, si bien que le
+passer à `none` après coup ne sert à rien — le navigateur a déjà réservé le
+geste et émet `pointercancel`. Un `preventDefault()` sur le premier `touchmove`,
+lui, reprend bien la main, puisque le doigt est resté immobile pendant l'appui.
+La souris continue d'utiliser le glisser-déposer HTML5 natif.
+
 ### Répéter une séance
 
 Le champ **Répéter** de la modale crée les occurrences d'un coup : tous les

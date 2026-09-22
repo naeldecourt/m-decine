@@ -1070,3 +1070,34 @@ td.todo-case { width: 132px; }
   .cal-mois__j .jour-menu { position: absolute; top: 1px; right: 1px; z-index: 1; }
   .cal-mois__evts { position: relative; z-index: 2; }
 }
+
+/* ------------------------------------- déplacement au doigt (appui long) */
+
+/* La séance décollée suit le doigt ; l'originale reste en place, estompée. */
+.evt.fantome {
+  position: fixed; z-index: 90; pointer-events: none;
+  max-width: 220px; padding: 6px 10px;
+  border-radius: 9px; border-left-width: 3px;
+  background: color-mix(in srgb, var(--evt) 24%, var(--card));
+  box-shadow: 0 10px 28px rgba(0, 0, 0, .28);
+  transform: scale(1.04); opacity: .96;
+}
+.evt.fantome .evt__poignee { display: none; }
+
+.evt--souleve { opacity: .3; }
+
+/* Pendant le déplacement, plus rien ne défile sous le doigt. */
+body.glisse-tactile { touch-action: none; overscroll-behavior: contain; }
+body.glisse-tactile .cal-grille { touch-action: none; }
+
+/* La cible survolée est franche, au doigt comme à la souris. */
+.cal-mois__j.depot,
+.cal-grille__col.depot,
+.cal-grille__toutjour.depot {
+  box-shadow: inset 0 0 0 2px var(--blue);
+}
+
+@media (hover: none) {
+  /* indice visuel : une séance est saisissable */
+  .evt { touch-action: manipulation; }
+}

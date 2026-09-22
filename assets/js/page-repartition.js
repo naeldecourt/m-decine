@@ -114,7 +114,15 @@
   function rendreTable() {
     var liste = filtre();
     $('#tbody').innerHTML = liste.map(function (r) {
+      var tache = S.tacheItem(r.n);
       return '<tr>' +
+        '<td class="todo-case" data-label="À faire">' +
+          '<label class="case-todo' + (tache ? ' dans' : '') + (tache && tache.f ? ' faite' : '') + '">' +
+            '<input type="checkbox" data-todo="' + r.n + '"' + (tache ? ' checked' : '') +
+            ' aria-label="Ajouter l\'item ' + r.n + ' à la to-do list">' +
+            '<span>' + (tache ? (tache.f ? 'Fait' : 'Dans la liste') : 'À faire') + '</span>' +
+          '</label>' +
+        '</td>' +
         '<td class="num"><a href="items.html?item=' + r.n + '">' + (r.n < 10 ? '0' + r.n : r.n) + '</a></td>' +
         '<td class="nom">' + esc(r.titre) + '</td>' +
         '<td class="spe-cell" data-label="Collège référent" style="--spe:' +
@@ -128,9 +136,19 @@
         '</td>' +
         '</tr>';
     }).join('') ||
-      '<tr><td colspan="5" class="center muted" style="padding:40px">Aucun item ne correspond à ces filtres.</td></tr>';
+      '<tr><td colspan="6" class="center muted" style="padding:40px">Aucun item ne correspond à ces filtres.</td></tr>';
 
     $('#compte').textContent = liste.length + (liste.length > 1 ? ' items' : ' item');
+    majCompteurTodo();
+  }
+
+  /** Rappel du nombre d'items placés dans la to-do, avec lien vers le planning. */
+  function majCompteurTodo() {
+    var n = S.todo().filter(function (t) { return t.n && !t.f; }).length;
+    var el = $('#todo-compteur');
+    if (!el) return;
+    el.classList.toggle('hide', !n);
+    el.innerHTML = n + ' item' + (n > 1 ? 's' : '') + ' à faire';
   }
 
   function rendreSynthese() {
@@ -182,6 +200,9 @@
     });
   }
 
+  // données reçues d'un autre appareil : on redessine
+  document.addEventListener('edn:distant', function () { rendreSynthese(); rendreTable(); });
+
   document.addEventListener('DOMContentLoaded', function () {
     var options = S.colleges().map(function (c) {
       return '<option value="' + esc(c.id) + '">' + esc(c.nom) + '</option>';
@@ -200,6 +221,22 @@
       rendreTable();
     });
     $('#x-csv').addEventListener('click', exporter);
+
+    // Case « à faire » : coche = l'item entre dans la to-do, décoche = il en sort.
+    $('#tbody').addEventListener('change', function (ev) {
+      var box = ev.target.closest('input[data-todo]');
+      if (!box) return;
+      var n = Number(box.dataset.todo);
+      var r = construire().filter(function (x) { return x.n === n; })[0];
+      if (!r) return;
+      S.basculeTacheItem(n, 'Item ' + n + ' — ' + r.titre);
+      var label = box.parentNode;
+      var tache = S.tacheItem(n);
+      label.classList.toggle('dans', !!tache);
+      label.classList.toggle('faite', !!(tache && tache.f));
+      label.querySelector('span').textContent = tache ? (tache.f ? 'Fait' : 'Dans la liste') : 'À faire';
+      majCompteurTodo();
+    });
 
     $$('th.sortable').forEach(function (th) {
       th.addEventListener('click', function () {

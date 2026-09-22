@@ -14,7 +14,7 @@ navigateur.
 |---|---|
 | `index.html` | Accueil, chiffres clés, présentation |
 | `items.html` | Liste des items : tours T1-T8, confiance, ressources, filtres, tri, pagination, import/export |
-| `repartition.html` | Tous les items avec leur collège référent et les autres collèges qui les traitent |
+| `repartition.html` | Tous les items avec leur collège référent, les autres collèges qui les traitent, et une case « à faire » |
 | `specialites.html` | Une carte par collège : couverture, tours, temps, confiance moyenne |
 | `stats.html` | Chiffres du jour, courbes des 7 derniers jours, priorités, classement des collèges |
 | `planning.html` | Compte à rebours, séance du jour, calendrier (mois / semaine / jour), to-do list |
@@ -60,6 +60,18 @@ vues, permutables depuis la liste des items :
 Les tours sont stockés sous des clés différentes selon la vue (`231` contre
 `231@cardiologie`) : changer de vue ne perd rien, mais les compteurs diffèrent.
 Mieux vaut choisir la sienne au début et s'y tenir.
+
+## La to-do list
+
+La page Répartition porte une case **« à faire »** en tête de chaque ligne :
+la cocher place l'item dans la to-do list du planning, la décocher l'en retire.
+Pratique pour se constituer une liste en parcourant les collèges.
+
+Une tâche créée ainsi garde le numéro de son item (`n` dans le modèle) : elle
+s'affiche avec un badge cliquable qui renvoie à la ligne correspondante, et la
+page Répartition sait afficher « Dans la liste » ou « Fait » selon son état.
+Les tâches saisies à la main dans le planning n'ont pas de numéro et
+fonctionnent comme avant.
 
 ## Le calendrier
 

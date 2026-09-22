@@ -121,6 +121,7 @@
             <h2>Item par item</h2>
           </div>
           <span class="tag tag--blue" id="compte">—</span>
+          <a class="tag tag--violet hide" id="todo-compteur" href="planning.html#todo"></a>
           <div class="spacer"></div>
           <label class="row small check" style="font-weight:500;text-transform:none;letter-spacing:0;color:var(--ink);cursor:pointer;margin:0;gap:7px">
             <input type="checkbox" id="f-intitules" >
@@ -134,6 +135,7 @@
         <table class="tbl">
           <thead>
             <tr>
+              <th class="nowrap" title="Cocher pour ajouter l'item à la to-do list du planning">À faire</th>
               <th class="sortable" data-tri="n" aria-sort="ascending">N° <span class="arrow">▲</span></th>
               <th class="sortable" data-tri="titre">Intitulé <span class="arrow">↕</span></th>
               <th class="sortable" data-tri="ref">Collège référent <span class="arrow">↕</span></th>
@@ -156,6 +158,10 @@
       <p><strong>« Référent déduit »</strong> signale les rares items pour lesquels aucun collège
       n'est déclaré référent dans les données : le premier collège de la liste est alors retenu
       par défaut.</p>
+      <p><strong>La case « à faire ».</strong> Elle place l'item dans la to-do list du
+      <a href="planning.html">planning</a>, et l'en retire si tu la décoches. Pratique pour se
+      constituer une liste en parcourant les collèges : tu coches au fil de la lecture, tu
+      retrouves tout au même endroit ensuite.</p>
       <p class="mb0"><strong>Items 35, 96 et 119.</strong> Ces trois numéros manquaient aux
       données d'origine : leurs chapitres avaient été fondus dans des chapitres voisins. Ils sont
       rétablis ici comme lignes à part entière — 35 en Gynéco, 96 en Neurologie, 119 en MPR. Les

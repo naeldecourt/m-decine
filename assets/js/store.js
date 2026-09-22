@@ -430,10 +430,33 @@
 
   function todo() { return load().todo.slice(); }
 
-  function ajouterTache(texte) {
+  /**
+   * Ajoute une tâche.
+   * @param {string} texte
+   * @param {number} [n] numéro d'item rattaché, pour pouvoir retrouver la tâche
+   *                     depuis la liste des items ou la page Répartition.
+   */
+  function ajouterTache(texte, n) {
     if (!texte || !texte.trim()) return false;
-    load().todo.push({ id: String(Date.now()) + Math.random().toString(36).slice(2, 6), t: texte.trim(), f: 0 });
+    var t = { id: String(Date.now()) + Math.random().toString(36).slice(2, 6), t: texte.trim(), f: 0 };
+    if (n) t.n = Number(n);
+    load().todo.push(t);
     return save();
+  }
+
+  /** La tâche rattachée à l'item `n`, ou null. */
+  function tacheItem(n) {
+    var num = Number(n);
+    var l = load().todo;
+    for (var i = 0; i < l.length; i++) if (Number(l[i].n) === num) return l[i];
+    return null;
+  }
+
+  /** Ajoute l'item à la to-do s'il n'y est pas, l'en retire sinon. */
+  function basculeTacheItem(n, texte) {
+    var existante = tacheItem(n);
+    if (existante) return supprimerTache(existante.id);
+    return ajouterTache(texte, n);
   }
 
   function basculeTache(id) {
@@ -685,6 +708,7 @@
     supprimerEvt: supprimerEvt, deplacerEvt: deplacerEvt, couleurEvt: couleurEvt,
     hhmm: hhmm, minutesDepuis: minutesDepuis, migrePlan: migrePlan, normaliseEvt: normaliseEvt,
     todo: todo, ajouterTache: ajouterTache, basculeTache: basculeTache, supprimerTache: supprimerTache,
+    tacheItem: tacheItem, basculeTacheItem: basculeTacheItem,
     cfg: cfg, setCfg: setCfg, reset: reset,
     brut: brut, remplace: remplace,
     lignes: lignes, lignesActives: lignesActives,

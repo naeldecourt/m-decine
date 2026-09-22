@@ -985,3 +985,28 @@ pre.regles {
   .sync__txt { display: none; }
   .sync { padding: 7px 10px; min-width: 36px; justify-content: center; }
 }
+
+/* ------------------------------------------- case « à faire » (Répartition) */
+
+td.todo-case { width: 132px; }
+
+.case-todo {
+  display: inline-flex; align-items: center; gap: 7px; margin: 0; cursor: pointer;
+  font-size: .72rem; font-weight: 600; letter-spacing: 0; text-transform: none;
+  color: var(--ink-3); min-height: 34px; white-space: nowrap;
+}
+.case-todo input { flex: none; accent-color: var(--violet); }
+.case-todo:hover { color: var(--violet); }
+/* une fois dans la liste, le libellé prend la couleur de la to-do */
+.case-todo.dans { color: var(--violet); }
+.case-todo.faite { color: var(--green); }
+.case-todo.faite span { text-decoration: line-through; }
+
+@media (max-width: 760px) {
+  td.todo-case { width: auto; }
+  .case-todo { font-size: .8rem; min-height: 40px; }
+}
+
+/* numéro d'item sur une tâche venue de la page Répartition */
+.todo__list .tag { flex: none; text-decoration: none; }
+.todo__list li.fait .tag { opacity: .5; }

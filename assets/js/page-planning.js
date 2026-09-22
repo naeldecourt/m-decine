@@ -369,9 +369,15 @@
       return;
     }
     $('#todo-liste').innerHTML = liste.map(function (t) {
+      // une tâche venue de la page Répartition porte son numéro d'item
+      var lien = t.n
+        ? '<a class="tag tag--blue" href="items.html?item=' + Number(t.n) +
+          '" title="Ouvrir l\'item ' + Number(t.n) + '">' + Number(t.n) + '</a>'
+        : '';
       return '<li class="' + (t.f ? 'fait' : '') + '">' +
         '<input type="checkbox" data-bascule="' + esc(t.id) + '"' + (t.f ? ' checked' : '') +
           ' aria-label="Terminer : ' + esc(t.t) + '">' +
+        lien +
         '<span>' + esc(t.t) + '</span>' +
         '<button type="button" class="btn btn--sm btn--ghost" data-suppr="' + esc(t.id) +
           '" aria-label="Supprimer">✕</button></li>';

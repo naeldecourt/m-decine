@@ -4,7 +4,12 @@
    d'abord ». Les données de révision, elles, vivent dans localStorage et ne
    passent jamais par ici. */
 
-var VERSION = 'edn-v5';
+/* Le nom du cache est tamponné à chaque déploiement par le workflow GitHub
+   Pages, qui remplace __BUILD__ par l'empreinte du commit. Sans ça, un cache au
+   nom fixe servirait indéfiniment l'ancien JavaScript : les ressources sont
+   servies « cache d'abord » pour la vitesse et le hors connexion. En local, le
+   marqueur reste tel quel, ce qui donne un cache stable pendant le développement. */
+var VERSION = 'edn-__BUILD__';
 var COQUILLE = [
   './',
   './index.html',

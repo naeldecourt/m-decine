@@ -14,10 +14,10 @@ navigateur.
 |---|---|
 | `index.html` | Accueil, chiffres clés, présentation |
 | `items.html` | Liste des items : tours T1-T8, confiance, ressources, filtres, tri, pagination, import/export |
-| `repartition.html` | Tous les items avec leur collège référent, les autres collèges qui les traitent, et une case « à faire » |
+| `repartition.html` | Tous les items avec tous les collèges où ils figurent, et une case « à faire » |
 | `specialites.html` | Une carte par collège : couverture, tours, temps, confiance moyenne |
 | `stats.html` | Chiffres du jour, courbes des 7 derniers jours, priorités, classement des collèges |
-| `planning.html` | Compte à rebours, séance du jour, calendrier (mois / semaine / jour), to-do list |
+| `planning.html` | Compte à rebours, recherche d'items à planifier, calendrier (mois / semaine / jour), to-do list |
 | `sync.html` | Configuration de la synchronisation entre appareils |
 | `fiches.html` | Index des fiches pratiques |
 | `fiche-ecg.html` | Lecture d'ECG en 7 temps (F.R.A.C.H.I.D.) |
@@ -41,10 +41,9 @@ un intervalle de rappel espacé :
 | 5 / 5 | 60 jours |
 
 Cet intervalle est allongé de 30 % par tour supplémentaire, plafonné à ×2,5.
-Le **score de priorité** qui classe la séance du jour combine le retard
-accumulé, le niveau de confiance et le nombre de tours déjà effectués. Les
-lignes à égalité (typiquement celles jamais travaillées) sont réparties en
-tourniquet entre collèges, pour ne pas enchaîner dix lignes de la même spé.
+Les pages Items et Statistiques classent les lignes par **score de priorité**,
+qui combine le retard accumulé, le niveau de confiance et le nombre de tours
+déjà effectués.
 
 ## Deux vues du programme
 
@@ -60,6 +59,20 @@ vues, permutables depuis la liste des items :
 Les tours sont stockés sous des clés différentes selon la vue (`231` contre
 `231@cardiologie`) : changer de vue ne perd rien, mais les compteurs diffèrent.
 Mieux vaut choisir la sienne au début et s'y tenir.
+
+## La page Répartition
+
+Chaque item y est présenté avec **tous les collèges où il figure**, sans
+hiérarchie entre eux : un item traité par trois collèges apparaît avec ses
+trois badges sur le même plan. Quand les collèges lui donnent des intitulés
+différents, la ligne se déplie pour montrer chaque variante.
+
+## Trouver un item à planifier
+
+Le planning porte une **recherche d'items** : numéro, intitulé ou collège,
+avec un filtre par collège. C'est une version réduite de la page Items —
+juste ce qu'il faut pour retrouver un item et le pousser dans le calendrier,
+sans ordre de passage imposé.
 
 ## La to-do list
 
@@ -89,8 +102,8 @@ Le planning reprend la mécanique d'un agenda classique, dans l'habillage du sit
 
 Une séance porte un intitulé, une date, une heure de début et une durée (ou la
 mention « journée entière »), un collège — qui lui donne sa couleur — et une
-note. Le bouton **Planifier** de la séance du jour crée directement la séance
-correspondante.
+note. Le bouton **Planifier** des résultats de recherche crée directement la
+séance correspondante, pré-remplie avec le numéro et l'intitulé de l'item.
 
 ### Planifier depuis la to-do
 
@@ -98,8 +111,8 @@ Une tâche de la to-do se **glisse directement sur le calendrier** pour devenir
 une séance : sur une case du mois, sur un créneau horaire, ou sur la ligne
 « journée entière ». Le bouton 📅 de chaque tâche fait la même chose sans
 souris, en ouvrant la modale pré-remplie. Une tâche venue de la page
-Répartition transmet son numéro d'item et la couleur de son collège référent,
-et **reste dans la liste** : on la coche quand c'est réellement fait.
+Répartition transmet son numéro d'item, et **reste dans la liste** : on la
+coche quand c'est réellement fait.
 
 ### Déplacer au doigt
 
@@ -187,6 +200,12 @@ Le site est pensé pour être utilisé au doigt autant qu'au clavier.
   Dans le métro, on continue d'enregistrer ses tours — tout est en local de
   toute façon.
 
+Le nom du cache est **tamponné à chaque déploiement** : le workflow GitHub
+Pages remplace `__BUILD__` dans `sw.js` par l'empreinte du commit, ce qui force
+la purge de l'ancien cache. Sans cela, un nom de cache figé garderait
+indéfiniment les scripts servis « cache d'abord », et une correction livrée
+n'arriverait jamais sur un appareil ayant déjà visité le site.
+
 Le service worker exige HTTPS (GitHub Pages convient) ou `localhost`. En
 `http://` il ne s'enregistre pas et le site fonctionne normalement, simplement
 sans cache hors ligne. La police Outfit vient de Google Fonts et n'est pas mise
@@ -220,10 +239,10 @@ assets/js/items.js          données du programme (collèges, lignes, items)
 assets/js/store.js          stockage local, rappel espacé, synthèses, import/export
 assets/js/ui.js             thème, icônes SVG, modale « enregistrer le tour »
 assets/js/page-items.js     liste des items
-assets/js/page-repartition.js  table item / collège référent / autres collèges
+assets/js/page-repartition.js  table item / collèges où il figure
 assets/js/page-specialites.js  cartes par collège
 assets/js/page-stats.js     statistiques et courbes
-assets/js/page-planning.js  calendrier, séance du jour, to-do list
+assets/js/page-planning.js  calendrier, recherche d'items, to-do list
 assets/js/sync.js           fusion et synchronisation Firebase
 assets/js/page-sync.js      page de configuration de la synchronisation
 assets/icone.svg            icône source, déclinée en PNG 192/512/180

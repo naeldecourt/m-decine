@@ -680,69 +680,90 @@
     $('#p-progression').textContent = Math.round(s.progression * 100) + ' %';
   }
 
-  function tourniquet(groupe) {
-    if (groupe.length < 3) return groupe;
-    var ordre = [], paquets = {};
-    groupe.forEach(function (l) {
-      var c = l.col || l.cols[0];
-      if (!paquets[c]) { paquets[c] = []; ordre.push(c); }
-      paquets[c].push(l);
+  /* ------------------------------------------- recherche d'items à planifier */
+
+  /* Plutôt qu'une liste imposée par un score de priorité, on cherche soi-même
+     l'item qu'on veut travailler : une version réduite de la liste des items,
+     filtrable par collège, avec un bouton pour le poser dans le calendrier. */
+
+  var MAX_RESULTATS = 12;
+  var recherche = { q: '', col: '' };
+
+  /* On raisonne par numéro d'item, pas par couple item-collège : en vue
+     « par collège », un item présent dans deux collèges apparaîtrait deux fois.
+     L'avancement, lui, est repris des lignes de la vue active et cumulé. */
+  function resultats() {
+    var q = U.sansAccent(recherche.q.trim());
+
+    var avancement = {};
+    S.lignesActives().forEach(function (l) {
+      if (!l.n) return;
+      var a = avancement[l.n] || (avancement[l.n] = { tours: 0, retard: -9999 });
+      a.tours += l.nbTours;
+      if (l.nbTours && l.retard > a.retard) a.retard = l.retard;
     });
-    var sortie = [], reste = groupe.length;
-    while (reste > 0) {
-      ordre.forEach(function (c) { if (paquets[c].length) { sortie.push(paquets[c].shift()); reste--; } });
-    }
-    return sortie;
+
+    return (window.EDN_ITEMS || []).filter(function (it) {
+      if (recherche.col && it.cols.indexOf(recherche.col) === -1) return false;
+      if (!q) return true;
+      var foin = U.sansAccent(it.n + ' ' + it.t + ' ' + it.cols.map(function (c) {
+        return S.college(c).nom + ' ' + S.college(c).court;
+      }).join(' '));
+      return foin.indexOf(q) !== -1;
+    }).map(function (it) {
+      var a = avancement[it.n] || { tours: 0, retard: -9999 };
+      return {
+        n: it.n, titre: it.t, cols: it.cols,
+        nbTours: a.tours,
+        retard: a.retard === -9999 ? 0 : a.retard
+      };
+    });
   }
 
-  function rang(l) { return l.n || 1e6; }
+  function rendreRecherche() {
+    var liste = resultats();
+    var tranche = liste.slice(0, MAX_RESULTATS);
+    $('#p-compte').textContent = liste.length + (liste.length > 1 ? ' items' : ' item');
 
-  function file() {
-    var base = S.lignesActives()
-      .filter(function (l) { return l.nbTours === 0 || l.retard >= 0; })
-      .sort(function (a, b) { return b.priorite - a.priorite || rang(a) - rang(b); });
-    var sortie = [], i = 0;
-    while (i < base.length) {
-      var j = i;
-      while (j < base.length && base[j].priorite === base[i].priorite) j++;
-      sortie = sortie.concat(tourniquet(base.slice(i, j)));
-      i = j;
-    }
-    return sortie;
-  }
-
-  function rendreSeance() {
-    var n = Math.max(1, Number(S.cfg().itemsJour) || 6);
-    var liste = file().slice(0, n);
-    if (!liste.length) {
-      $('#p-seance').innerHTML = '<p class="muted mb0">Rien d\'urgent : tout est à jour.</p>';
+    if (!tranche.length) {
+      $('#p-resultats').innerHTML =
+        '<p class="muted mb0" style="padding:10px 0">Aucun item ne correspond.</p>';
       return;
     }
-    $('#p-seance').innerHTML = '<ul style="list-style:none;margin:0;padding:0">' +
-      liste.map(function (l) {
-        var c = S.college(l.col || l.cols[0]);
-        var motif = !l.nbTours ? '<span class="tag">jamais vu</span>'
-          : (l.retard > 0 ? '<span class="tag tag--red">+' + l.retard + ' j</span>'
-                          : '<span class="tag tag--amber">à consolider</span>');
-        return '<li class="row" style="padding:9px 0;border-bottom:1px solid var(--line);gap:9px">' +
-          '<strong style="min-width:34px;color:var(--blue)">' + (l.n || 'HP') + '</strong>' +
-          '<span style="flex:1 1 200px;min-width:0">' + esc(l.titre) +
-            '<span class="spe" style="--spe:' + c.couleur + ';display:block;margin-top:2px">' +
-            '<span class="spe__code">' + esc(c.court) + '</span></span></span>' +
-          motif +
-          '<button type="button" class="btn btn--sm" data-planifier="' + esc(l.titre) +
-            '" data-col="' + esc(l.col || l.cols[0]) + '">Planifier</button>' +
-          '<a class="btn btn--sm" href="items.html?' +
-            (l.n ? 'item=' + l.n : 'q=' + encodeURIComponent(l.titre)) + '">Ouvrir</a>' +
-          '</li>';
-      }).join('') + '</ul>';
+
+    $('#p-resultats').innerHTML = '<ul class="trouve">' + tranche.map(function (l) {
+      var c = S.college(l.cols[0]);
+      var etat = l.nbTours
+        ? '<span class="tag">' + l.nbTours + ' tour' + (l.nbTours > 1 ? 's' : '') + '</span>'
+        : '<span class="tag">jamais vu</span>';
+      if (l.nbTours && l.retard > 0) etat += ' <span class="tag tag--red">+' + l.retard + ' j</span>';
+      return '<li>' +
+        '<strong class="trouve__n">' + l.n + '</strong>' +
+        '<span class="trouve__t">' + esc(l.titre) +
+          '<span class="row" style="gap:5px;margin-top:3px">' +
+          l.cols.map(function (id) {
+            var x = S.college(id);
+            return '<span class="spe" style="--spe:' + x.couleur + '">' +
+              '<span class="spe__code">' + esc(x.court) + '</span>' + esc(x.nom) + '</span>';
+          }).join('') + '</span></span>' +
+        '<span class="trouve__etat">' + etat + '</span>' +
+        '<button type="button" class="btn btn--sm btn--primary" data-planifier="' + esc(l.titre) +
+          '" data-col="' + esc(l.cols[0]) + '" data-num="' + l.n + '">Planifier</button>' +
+        '<a class="btn btn--sm" href="items.html?item=' + l.n + '">Ouvrir</a>' +
+        '</li>';
+    }).join('') + '</ul>' +
+      (liste.length > MAX_RESULTATS
+        ? '<p class="small muted" style="margin:10px 0 0">' + (liste.length - MAX_RESULTATS) +
+          ' autres résultats — affine la recherche ou choisis un collège.</p>'
+        : '');
   }
+
 
   /* ------------------------------------------------------------- rendu */
 
   function rendreTout() {
     rendreCompteurs();
-    rendreSeance();
+    rendreRecherche();
     rendreCalendrier();
     rendreTodo();
   }
@@ -813,11 +834,24 @@
       if (ev.key === 'Enter' && ev.target.id === 'ev-t') { ev.preventDefault(); enregistrerEvt(); }
     });
 
-    // planifier une ligne de la séance du jour
-    $('#p-seance').addEventListener('click', function (ev) {
+    // recherche d'items à planifier
+    $('#p-col').innerHTML = '<option value="">Tous les collèges</option>' +
+      S.colleges().map(function (c) {
+        return '<option value="' + esc(c.id) + '">' + esc(c.nom) + '</option>';
+      }).join('');
+    $('#p-q').addEventListener('input', function () { recherche.q = this.value; rendreRecherche(); });
+    $('#p-col').addEventListener('change', function () { recherche.col = this.value; rendreRecherche(); });
+    $('#p-reset').addEventListener('click', function () {
+      recherche.q = ''; recherche.col = '';
+      $('#p-q').value = ''; $('#p-col').value = '';
+      rendreRecherche();
+    });
+    $('#p-resultats').addEventListener('click', function (ev) {
       var b = ev.target.closest('[data-planifier]');
       if (!b) return;
-      ouvrirEvt({ d: S.today(), h: 9 * 60, m: 60, t: b.dataset.planifier, c: b.dataset.col });
+      ouvrirEvt({ d: S.iso(ancre), h: 9 * 60, m: 60,
+                  t: 'Item ' + b.dataset.num + ' — ' + b.dataset.planifier,
+                  c: b.dataset.col, i: Number(b.dataset.num) });
     });
 
     // to-do

@@ -1101,3 +1101,21 @@ body.glisse-tactile .cal-grille { touch-action: none; }
   /* indice visuel : une séance est saisissable */
   .evt { touch-action: manipulation; }
 }
+
+/* ------------------------------- recherche d'items dans le planning */
+
+ul.trouve { list-style: none; margin: 0; padding: 0; }
+ul.trouve li {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 10px 0; border-bottom: 1px solid var(--line);
+}
+ul.trouve li:last-child { border-bottom: 0; }
+.trouve__n { min-width: 36px; color: var(--blue); font-variant-numeric: tabular-nums; }
+.trouve__t { flex: 1 1 220px; min-width: 0; font-weight: 500; }
+.trouve__etat { flex: none; display: flex; gap: 5px; }
+
+@media (max-width: 760px) {
+  ul.trouve li { gap: 8px; }
+  .trouve__n { min-width: 30px; }
+  .trouve__t { flex-basis: 100%; }
+}

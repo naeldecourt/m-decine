@@ -27,6 +27,13 @@ jobs:
       - name: Récupérer le dépôt
         uses: actions/checkout@v4
 
+      - name: Tamponner le cache du service worker
+        # Sans empreinte unique, le cache garderait l'ancien JavaScript
+        # indéfiniment chez les visiteurs déjà venus.
+        run: |
+          sed -i "s/__BUILD__/${GITHUB_SHA::8}/" sw.js
+          grep -n "var VERSION" sw.js
+
       - name: Préparer Pages
         uses: actions/configure-pages@v5
 

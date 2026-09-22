@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="fr" data-theme="clair">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Révision EDN — tableur des 367 items, planning et fiches</title>
+<meta name="description" content="Suivi de révision des EDN : tableur des 367 items (tours, confiance, dates), planning personnalisé, statistiques par spécialité et fiches pratiques.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233d5afe'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='16' font-weight='bold' fill='white' text-anchor='middle'%3EE%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/css/style.css">
+<script src="assets/js/theme.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="brand" href="index.html">
+      <span class="brand__mark">E</span>
+      <span>Révision EDN</span>
+    </a>
+    <nav class="site-nav" aria-label="Navigation principale">
+      <a href="index.html" aria-current="page">Accueil</a>
+      <a href="tableur.html">Tableur</a>
+      <a href="planning.html">Planning</a>
+      <a href="stats.html">Statistiques</a>
+      <a href="fiches.html">Fiches</a>
+    </nav>
+    <div class="theme-switch" role="group" aria-label="Thème">
+      <button type="button" data-theme="clair" aria-pressed="true">Clair</button>
+      <button type="button" data-theme="sombre" aria-pressed="false">Sombre</button>
+      <button type="button" data-theme="pastel" aria-pressed="false">Pastel</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<div class="wrap">
+
+  <section style="margin-bottom:8px">
+    <p class="badge badge--accent" style="margin-bottom:10px">367 items · R2C · rangs A et B</p>
+    <h1 style="max-width:18ch">Ton tableur de révision des EDN, toujours à portée de main.</h1>
+    <p class="muted" style="font-size:1.08rem;max-width:62ch">
+      Un seul endroit pour suivre tes tours sur les 367 items : combien de fois tu as vu
+      chaque item, quand, avec quel support, et à quel point tu le maîtrises. Le site te
+      ressort ensuite ce qu'il faut revoir en priorité.
+    </p>
+    <div class="btn-row" style="margin-top:18px">
+      <a class="btn btn--primary" href="tableur.html">Ouvrir le tableur</a>
+      <a class="btn" href="planning.html">Voir ma séance du jour</a>
+      <a class="btn btn--ghost" href="fiches.html">Les fiches pratiques</a>
+    </div>
+  </section>
+
+  <section>
+    <div class="grid grid--4">
+      <div class="card stat"><div class="stat__value" id="h-progression">—</div><div class="stat__label">items déjà travaillés</div></div>
+      <div class="card stat"><div class="stat__value" id="h-retard">—</div><div class="stat__label">items à revoir maintenant</div></div>
+      <div class="card stat"><div class="stat__value" id="h-tours">—</div><div class="stat__label">tours enregistrés</div></div>
+      <div class="card stat"><div class="stat__value" id="h-heures">—</div><div class="stat__label">heures de révision</div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Comment ça marche</h2>
+    <div class="grid grid--3">
+      <div class="card">
+        <h3>1. Tu enregistres un tour</h3>
+        <p class="muted mb0">Après chaque item travaillé, un clic sur une pastille de 1 à 5
+        suffit : la date part automatiquement. En ouvrant la fiche, tu peux détailler la
+        durée et le support (collège, fiche, QCM, annales, Anki…).</p>
+      </div>
+      <div class="card">
+        <h3>2. Le site calcule quand revoir</h3>
+        <p class="muted mb0">Chaque niveau de confiance donne un intervalle de rappel —
+        3 jours pour un 1/5, 60 jours pour un 5/5 — qui s'allonge à mesure que tu
+        multiplies les tours. Les items dépassés remontent en tête.</p>
+      </div>
+      <div class="card">
+        <h3>3. Tu vois où tu es fragile</h3>
+        <p class="muted mb0">Couverture, maîtrise et temps passé par spécialité et par UE :
+        tu repères d'un coup d'œil la spé que tu évites depuis trois semaines.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Ce que tu trouves ici</h2>
+    <div class="grid grid--2">
+      <div class="card">
+        <h3><a href="tableur.html">Le tableur</a></h3>
+        <p class="muted">Les 367 items, filtrables par spécialité, par UE, par statut ou par
+        recherche libre. Tri sur n'importe quelle colonne, saisie en un clic, notes
+        personnelles, intitulés modifiables, export CSV et sauvegarde JSON.</p>
+        <a class="btn btn--sm" href="tableur.html">Ouvrir</a>
+      </div>
+      <div class="card">
+        <h3><a href="planning.html">Le planning</a></h3>
+        <p class="muted">Ta date d'EDN, ton objectif de tours, ton rythme quotidien : le site
+        en déduit le nombre de tours à tenir par jour, la séance du jour et les sept
+        prochains jours.</p>
+        <a class="btn btn--sm" href="planning.html">Ouvrir</a>
+      </div>
+      <div class="card">
+        <h3><a href="stats.html">Les statistiques</a></h3>
+        <p class="muted">Progression globale, activité des 30 derniers jours, répartition des
+        niveaux de confiance, classement des spécialités de la plus fragile à la mieux
+        tenue.</p>
+        <a class="btn btn--sm" href="stats.html">Ouvrir</a>
+      </div>
+      <div class="card">
+        <h3><a href="fiches.html">Les fiches pratiques</a></h3>
+        <p class="muted">Des check-lists à relire avant un stage ou un examen clinique :
+        lecture d'ECG pas à pas, examen clinique complet appareil par appareil, avec les
+        moyens mnémotechniques classiques.</p>
+        <a class="btn btn--sm" href="fiches.html">Ouvrir</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="notice notice--info">
+      <p><strong>Tes données t'appartiennent.</strong> Tout est stocké dans le
+      <code>localStorage</code> de ton navigateur : aucun compte, aucun serveur, rien
+      qui parte ailleurs. En contrepartie, vider le cache du navigateur efface tout —
+      exporte ta sauvegarde JSON de temps en temps depuis le tableur, c'est aussi
+      comme ça que tu passes d'un appareil à l'autre.</p>
+    </div>
+  </section>
+
+</div>
+
+<script src="assets/js/items.js"></script>
+<script src="assets/js/store.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var s = Store.synthese();
+  document.getElementById('h-progression').textContent = Math.round(s.progression * 100) + ' %';
+  document.getElementById('h-retard').textContent = s.retard;
+  document.getElementById('h-tours').textContent = s.toursTotal;
+  document.getElementById('h-heures').textContent = (s.minutesTotal / 60).toFixed(1).replace('.', ',');
+});
+</script>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p class="mb0">
+      Outil personnel de révision des EDN — &copy; <span id="year"></span>.
+      Tes données restent dans ton navigateur (aucun compte, aucun serveur).
+      Pense à <a href="tableur.html">exporter ta sauvegarde</a> régulièrement.
+    </p>
+    <p class="mb0 small" style="margin-top:6px">
+      Les intitulés d'items sont donnés à titre indicatif : réfère-toi toujours au
+      programme officiel publié par l'UNESS.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

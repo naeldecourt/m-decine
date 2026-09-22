@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="fr" data-theme="clair">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tableur de révision EDN — 367 items | Révision EDN</title>
+<meta name="description" content="Tableur en ligne des 367 items de l'EDN : tours de révision, niveau de confiance, dates, supports, filtres par spécialité et export CSV.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233d5afe'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='16' font-weight='bold' fill='white' text-anchor='middle'%3EE%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/css/style.css">
+<script src="assets/js/theme.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="brand" href="index.html">
+      <span class="brand__mark">E</span>
+      <span>Révision EDN</span>
+    </a>
+    <nav class="site-nav" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="tableur.html" aria-current="page">Tableur</a>
+      <a href="planning.html">Planning</a>
+      <a href="stats.html">Statistiques</a>
+      <a href="fiches.html">Fiches</a>
+    </nav>
+    <div class="theme-switch" role="group" aria-label="Thème">
+      <button type="button" data-theme="clair" aria-pressed="true">Clair</button>
+      <button type="button" data-theme="sombre" aria-pressed="false">Sombre</button>
+      <button type="button" data-theme="pastel" aria-pressed="false">Pastel</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<div class="wrap">
+
+  <section>
+    <h1 class="mb0">Tableur de révision</h1>
+    <p class="muted">Les 367 items du programme. Clique sur une pastille de 1 à 5 pour
+    enregistrer un tour daté d'aujourd'hui, ou ouvre un item pour détailler durée,
+    support et notes.</p>
+  </section>
+
+  <section>
+    <div class="card">
+      <div class="row" style="justify-content:space-between;margin-bottom:10px">
+        <strong>Progression globale</strong>
+        <span class="muted small" id="compte">—</span>
+      </div>
+      <div class="bar" style="height:10px;margin-bottom:14px">
+        <span id="s-bar" style="width:0%"></span>
+      </div>
+      <div class="grid grid--4">
+        <div class="stat"><div class="stat__value" id="s-progression">—</div><div class="stat__label">items travaillés</div></div>
+        <div class="stat"><div class="stat__value" id="s-retard">—</div><div class="stat__label">à revoir</div></div>
+        <div class="stat"><div class="stat__value" id="s-acquis">—</div><div class="stat__label">acquis (4-5/5)</div></div>
+        <div class="stat"><div class="stat__value" id="s-jamais">—</div><div class="stat__label">jamais vus</div></div>
+        <div class="stat"><div class="stat__value" id="s-tours">—</div><div class="stat__label">tours enregistrés</div></div>
+        <div class="stat"><div class="stat__value" id="s-heures">—</div><div class="stat__label">temps cumulé</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="card">
+      <div class="toolbar">
+        <div class="field">
+          <label for="f-q">Rechercher</label>
+          <input type="search" id="f-q" placeholder="numéro, intitulé, spécialité…" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="f-specialite">Spécialité</label>
+          <select id="f-specialite"><option value="">Toutes</option></select>
+        </div>
+        <div class="field">
+          <label for="f-ue">Unité d'enseignement</label>
+          <select id="f-ue"><option value="">Toutes</option></select>
+        </div>
+        <div class="field">
+          <label for="f-statut">Statut</label>
+          <select id="f-statut">
+            <option value="">Tous</option>
+            <option value="jamais">Jamais vu</option>
+            <option value="retard">À revoir</option>
+            <option value="encours">En cours</option>
+            <option value="acquis">Acquis</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-row" style="margin-top:12px">
+        <button type="button" class="btn btn--sm btn--primary" id="f-prioritaires">Trier par priorité</button>
+        <button type="button" class="btn btn--sm" id="f-masques" aria-pressed="false">Voir les items masqués</button>
+        <button type="button" class="btn btn--sm btn--ghost" id="f-reset">Réinitialiser les filtres</button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="card">
+      <div class="table-scroll">
+        <table class="items">
+          <thead>
+            <tr>
+              <th class="sortable" data-tri="n" aria-sort="ascending">N°<span class="fleche"></span></th>
+              <th class="sortable" data-tri="titre">Item<span class="fleche"></span></th>
+              <th class="sortable nowrap" data-tri="nbTours">Tours<span class="fleche"></span></th>
+              <th class="nowrap">Confiance</th>
+              <th class="sortable nowrap" data-tri="dernier">Dernier tour<span class="fleche"></span></th>
+              <th class="sortable nowrap" data-tri="priorite">Échéance<span class="fleche"></span></th>
+              <th class="nowrap">Statut</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Mes données</h2>
+    <div class="card">
+      <p class="muted small">Tout est stocké dans ce navigateur. L'export JSON est ta
+      sauvegarde complète (tours, notes, réglages) et te sert aussi à passer d'un appareil
+      à l'autre. L'export CSV s'ouvre dans Excel ou LibreOffice.</p>
+      <div class="btn-row">
+        <button type="button" class="btn" id="x-json">Exporter ma sauvegarde (JSON)</button>
+        <label class="btn" style="margin:0;font-weight:600;color:var(--text)">
+          Importer une sauvegarde
+          <input type="file" id="x-import" accept=".json,application/json" class="visually-hidden">
+        </label>
+        <button type="button" class="btn" id="x-csv">Exporter en CSV</button>
+        <label class="btn" style="margin:0;font-weight:600;color:var(--text)">
+          Importer des intitulés (CSV)
+          <input type="file" id="x-titres" accept=".csv,.txt,text/csv,text/plain" class="visually-hidden">
+        </label>
+        <button type="button" class="btn btn--danger" id="x-reset">Tout effacer</button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="notice">
+      <p><strong>Vérifie les intitulés.</strong> La liste des 367 items fournie ici est une
+      liste de travail : la numérotation et les intitulés peuvent différer du référentiel
+      officiel UNESS. Tu peux corriger un intitulé item par item (bouton <em>Ouvrir</em>),
+      ou remplacer toute la liste d'un coup en important un CSV de deux colonnes
+      <code>numéro ; intitulé</code> (séparateur <code>;</code> ou tabulation).</p>
+    </div>
+  </section>
+
+</div>
+
+<dialog id="detail" aria-labelledby="d-titre">
+  <div class="dialog__head">
+    <div>
+      <h3 id="d-titre">Item</h3>
+      <p class="small muted mb0" id="d-sousTitre"></p>
+    </div>
+    <button type="button" class="btn btn--sm btn--ghost" id="d-fermer" aria-label="Fermer">✕</button>
+  </div>
+  <div class="dialog__body stack">
+
+    <div class="field">
+      <label for="d-intitule">Intitulé</label>
+      <input type="text" id="d-intitule">
+      <p class="small muted" style="margin:4px 0 0">
+        Modifié ? <button type="button" class="btn btn--sm btn--ghost" id="d-restaurer">Rétablir l'intitulé d'origine</button>
+      </p>
+    </div>
+
+    <div class="card" style="box-shadow:none;background:var(--bg-sunken)">
+      <strong class="small">Enregistrer un tour</strong>
+      <div class="toolbar" style="margin-top:8px">
+        <div class="field">
+          <label for="d-date">Date</label>
+          <input type="date" id="d-date">
+        </div>
+        <div class="field">
+          <label for="d-confiance">Confiance</label>
+          <select id="d-confiance">
+            <option value="1">1 — je découvre</option>
+            <option value="2">2 — très fragile</option>
+            <option value="3" selected>3 — moyen</option>
+            <option value="4">4 — à l'aise</option>
+            <option value="5">5 — maîtrisé</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="d-minutes">Durée (min)</label>
+          <input type="number" id="d-minutes" min="0" step="5" placeholder="45">
+        </div>
+        <div class="field">
+          <label for="d-support">Support</label>
+          <select id="d-support"><option value="">—</option></select>
+        </div>
+      </div>
+      <div class="btn-row" style="margin-top:10px">
+        <button type="button" class="btn btn--primary btn--sm" id="d-ajouter">Ajouter ce tour</button>
+      </div>
+      <p class="small muted" style="margin:10px 0 0">
+        Prochaine révision conseillée : <strong id="d-prochaine">—</strong>
+      </p>
+    </div>
+
+    <div>
+      <strong class="small">Historique</strong>
+      <div id="d-historique" style="margin-top:6px"></div>
+    </div>
+
+    <div class="field">
+      <label for="d-note">Note personnelle</label>
+      <textarea id="d-note" placeholder="Pièges, tableaux à refaire, liens vers tes fiches…"></textarea>
+    </div>
+
+    <label class="row small" style="font-weight:500;color:var(--text)">
+      <input type="checkbox" id="d-masque" style="width:auto;min-height:0">
+      Masquer cet item de mon programme
+    </label>
+
+  </div>
+  <div class="dialog__foot">
+    <button type="button" class="btn btn--primary" onclick="document.getElementById('detail').close()">Fermer</button>
+  </div>
+</dialog>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p class="mb0">
+      Outil personnel de révision des EDN — &copy; <span id="year"></span>.
+      Tes données restent dans ton navigateur (aucun compte, aucun serveur).
+      Pense à <a href="tableur.html">exporter ta sauvegarde</a> régulièrement.
+    </p>
+    <p class="mb0 small" style="margin-top:6px">
+      Les intitulés d'items sont donnés à titre indicatif : réfère-toi toujours au
+      programme officiel publié par l'UNESS.
+    </p>
+  </div>
+</footer>
+<script src="assets/js/items.js"></script>
+<script src="assets/js/store.js"></script>
+<script src="assets/js/tableur.js"></script>
+
+</body>
+</html>

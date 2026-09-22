@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="fr" data-theme="clair">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Statistiques de révision EDN | Révision EDN</title>
+<meta name="description" content="Progression des révisions EDN : couverture et maîtrise par spécialité et par UE, activité quotidienne, répartition des niveaux de confiance.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233d5afe'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='16' font-weight='bold' fill='white' text-anchor='middle'%3EE%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/css/style.css">
+<script src="assets/js/theme.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="brand" href="index.html">
+      <span class="brand__mark">E</span>
+      <span>Révision EDN</span>
+    </a>
+    <nav class="site-nav" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="tableur.html">Tableur</a>
+      <a href="planning.html">Planning</a>
+      <a href="stats.html" aria-current="page">Statistiques</a>
+      <a href="fiches.html">Fiches</a>
+    </nav>
+    <div class="theme-switch" role="group" aria-label="Thème">
+      <button type="button" data-theme="clair" aria-pressed="true">Clair</button>
+      <button type="button" data-theme="sombre" aria-pressed="false">Sombre</button>
+      <button type="button" data-theme="pastel" aria-pressed="false">Pastel</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<div class="wrap">
+
+  <section>
+    <h1 class="mb0">Statistiques</h1>
+    <p class="muted">Où tu en es, et surtout où tu ne vas jamais.</p>
+  </section>
+
+  <section>
+    <div class="grid grid--4">
+      <div class="card stat"><div class="stat__value" id="g-progression">—</div><div class="stat__label">items travaillés</div></div>
+      <div class="card stat"><div class="stat__value" id="g-acquis">—</div><div class="stat__label">acquis (confiance 4-5)</div></div>
+      <div class="card stat"><div class="stat__value" id="g-retard">—</div><div class="stat__label">à revoir maintenant</div></div>
+      <div class="card stat"><div class="stat__value" id="g-jamais">—</div><div class="stat__label">jamais ouverts</div></div>
+      <div class="card stat"><div class="stat__value" id="g-tours">—</div><div class="stat__label">tours enregistrés</div></div>
+      <div class="card stat"><div class="stat__value" id="g-heures">—</div><div class="stat__label">heures cumulées</div></div>
+      <div class="card stat"><div class="stat__value" id="g-confiance">—</div><div class="stat__label">confiance moyenne</div></div>
+      <div class="card stat"><div class="stat__value" id="g-objectif">—</div><div class="stat__label">items à l'objectif de tours</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="card">
+      <div class="row" style="justify-content:space-between;align-items:end;margin-bottom:6px">
+        <div>
+          <h2 class="mb0" style="font-size:1.15rem">Tours enregistrés par jour</h2>
+          <p class="small muted mb0" id="g-activite-resume">—</p>
+        </div>
+        <div class="field" style="max-width:150px">
+          <label for="g-periode">Période</label>
+          <select id="g-periode">
+            <option value="14">14 jours</option>
+            <option value="30" selected>30 jours</option>
+            <option value="90">90 jours</option>
+          </select>
+        </div>
+      </div>
+      <div id="g-activite"></div>
+      <p class="small muted mb0" style="margin-top:6px">
+        Série en cours : <strong id="g-serie">0</strong> jour(s) consécutif(s) avec au moins un tour.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="row" style="justify-content:space-between;align-items:end">
+      <h2 class="mb0">Par spécialité</h2>
+      <div class="field" style="max-width:220px">
+        <label for="g-tri">Trier par</label>
+        <select id="g-tri">
+          <option value="alpha">Ordre alphabétique</option>
+          <option value="faibles">Les plus fragiles d'abord</option>
+          <option value="volume">Nombre d'items</option>
+        </select>
+      </div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <div class="table-scroll">
+        <table class="items" style="min-width:680px">
+          <thead>
+            <tr>
+              <th>Spécialité</th>
+              <th>Couverture</th>
+              <th class="nowrap">Acquis</th>
+              <th class="nowrap">En retard</th>
+              <th class="nowrap">Confiance</th>
+              <th class="nowrap">Temps</th>
+            </tr>
+          </thead>
+          <tbody id="g-specialites"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Par unité d'enseignement</h2>
+    <div class="grid grid--3" id="g-ue"></div>
+  </section>
+
+  <section>
+    <h2>Répartition des niveaux de confiance</h2>
+    <div class="card" id="g-confiance-detail"></div>
+  </section>
+
+</div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p class="mb0">
+      Outil personnel de révision des EDN — &copy; <span id="year"></span>.
+      Tes données restent dans ton navigateur (aucun compte, aucun serveur).
+      Pense à <a href="tableur.html">exporter ta sauvegarde</a> régulièrement.
+    </p>
+    <p class="mb0 small" style="margin-top:6px">
+      Les intitulés d'items sont donnés à titre indicatif : réfère-toi toujours au
+      programme officiel publié par l'UNESS.
+    </p>
+  </div>
+</footer>
+<script src="assets/js/items.js"></script>
+<script src="assets/js/store.js"></script>
+<script src="assets/js/stats.js"></script>
+
+</body>
+</html>

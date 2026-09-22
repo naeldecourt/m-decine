@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="fr" data-theme="clair">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lecture d'ECG en 7 temps — fiche méthode | Révision EDN</title>
+<meta name="description" content="Méthode de lecture d'ECG pas à pas (FRACHID) : fréquence, rythme, axe, conduction, hypertrophies, ischémie, divers, avec valeurs seuils et pièges.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233d5afe'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='16' font-weight='bold' fill='white' text-anchor='middle'%3EE%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/css/style.css">
+<script src="assets/js/theme.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="brand" href="index.html">
+      <span class="brand__mark">E</span>
+      <span>Révision EDN</span>
+    </a>
+    <nav class="site-nav" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="tableur.html">Tableur</a>
+      <a href="planning.html">Planning</a>
+      <a href="stats.html">Statistiques</a>
+      <a href="fiches.html" aria-current="page">Fiches</a>
+    </nav>
+    <div class="theme-switch" role="group" aria-label="Thème">
+      <button type="button" data-theme="clair" aria-pressed="true">Clair</button>
+      <button type="button" data-theme="sombre" aria-pressed="false">Sombre</button>
+      <button type="button" data-theme="pastel" aria-pressed="false">Pastel</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<div class="wrap wrap--narrow prose">
+
+  <p class="small muted mb0"><a href="fiches.html">Fiches</a> › Lecture d'ECG</p>
+  <h1 class="mb0">Lecture d'ECG en 7 temps</h1>
+  <p class="muted">Item 229 — Électrocardiogramme : indications et interprétations.
+  <a href="tableur.html?item=229">Enregistrer un tour sur cet item</a></p>
+
+  <div class="mnemo">
+    <div class="mnemo__title">Le moyen mnémotechnique</div>
+    <p class="mb0"><strong>F.R.A.C.H.I.D.</strong> — <strong>F</strong>réquence,
+    <strong>R</strong>ythme, <strong>A</strong>xe, <strong>C</strong>onduction,
+    <strong>H</strong>ypertrophies, <strong>I</strong>schémie, <strong>D</strong>ivers.
+    Toujours dans cet ordre, <em>même quand le diagnostic saute aux yeux</em> : c'est
+    exactement sur ces ECG-là qu'on rate le BAV associé.</p>
+  </div>
+
+  <div class="toc">
+    <strong class="small">Sur cette page</strong>
+    <ol>
+      <li><a href="#avant">Avant de lire : les trois vérifications</a></li>
+      <li><a href="#frequence">F — Fréquence</a></li>
+      <li><a href="#rythme">R — Rythme</a></li>
+      <li><a href="#axe">A — Axe</a></li>
+      <li><a href="#conduction">C — Conduction (PR, QRS, QT)</a></li>
+      <li><a href="#hypertrophies">H — Hypertrophies</a></li>
+      <li><a href="#ischemie">I — Ischémie, lésion, nécrose</a></li>
+      <li><a href="#divers">D — Divers et conclusion</a></li>
+      <li><a href="#urgences">Les tracés à ne jamais rater</a></li>
+    </ol>
+  </div>
+
+  <h2 id="avant">Avant de lire : les trois vérifications</h2>
+  <ul class="checklist">
+    <li><strong>Identité et date</strong> — et, s'il existe, l'ECG de référence : la moitié
+    de la valeur d'un ECG vient de la comparaison.</li>
+    <li><strong>Calibrage</strong> — 25 mm/s et 10 mm/mV. En demi-amplitude (5 mm/mV), tous
+    les critères d'hypertrophie s'effondrent ; à 50 mm/s, tous les intervalles doublent.</li>
+    <li><strong>Qualité</strong> — 12 dérivations présentes, pas d'inversion des électrodes
+    (en DI, P et QRS négatifs avec R décroissant de V1 à V6 = électrodes des bras inversées,
+    pas une dextrocardie).</li>
+  </ul>
+
+  <h2 id="frequence">F — Fréquence</h2>
+  <p>Le tracé standard fait 10 secondes.</p>
+  <table>
+    <thead><tr><th>Situation</th><th>Méthode</th></tr></thead>
+    <tbody>
+      <tr><td>Rythme régulier</td><td>300 ÷ nombre de <strong>gros carreaux</strong> entre deux R
+      (300 – 150 – 100 – 75 – 60 – 50)</td></tr>
+      <tr><td>Rythme irrégulier</td><td>compter les QRS sur les 10 s du tracé, × 6</td></tr>
+      <tr><td>Bradycardie</td><td>&lt; 60/min</td></tr>
+      <tr><td>Tachycardie</td><td>&gt; 100/min</td></tr>
+    </tbody>
+  </table>
+  <p>En cas de dissociation auriculo-ventriculaire, il y a <em>deux</em> fréquences à donner :
+  celle des P et celle des QRS.</p>
+
+  <h2 id="rythme">R — Rythme</h2>
+  <p>Trois questions, dans l'ordre :</p>
+  <ol>
+    <li><strong>Y a-t-il une onde P ?</strong> Se cherche en DII et en V1, les deux meilleures
+    dérivations pour l'activité auriculaire.</li>
+    <li><strong>Est-elle sinusale ?</strong> P positive en DII, DIII, aVF et négative en aVR.</li>
+    <li><strong>Chaque P est-elle suivie d'un QRS, et chaque QRS précédé d'une P ?</strong>
+    Et le rythme est-il régulier ?</li>
+  </ol>
+  <p>Un rythme est dit <strong>sinusal régulier</strong> quand les trois réponses sont oui.
+  Sinon, on nomme l'anomalie : fibrillation atriale (pas de P, trémulation de la ligne de base,
+  QRS irréguliers), flutter (ondes F en dents de scie à ~300/min, conduction souvent 2:1),
+  extrasystoles, tachycardie jonctionnelle, tachycardie ventriculaire…</p>
+
+  <div class="mnemo">
+    <div class="mnemo__title">Le réflexe</div>
+    <p class="mb0">Tachycardie <strong>régulière à QRS larges</strong> chez un patient
+    coronarien : c'est une <strong>tachycardie ventriculaire</strong> jusqu'à preuve du
+    contraire. On ne « tente » pas un ralentisseur nodal dessus.</p>
+  </div>
+
+  <h2 id="axe">A — Axe</h2>
+  <p>On regarde la polarité des QRS en <strong>DI</strong> et en <strong>aVF</strong> :</p>
+  <table>
+    <thead><tr><th>DI</th><th>aVF</th><th>Axe</th></tr></thead>
+    <tbody>
+      <tr><td>+</td><td>+</td><td>normal (0° à +90°)</td></tr>
+      <tr><td>+</td><td>−</td><td>déviation gauche (hémibloc antérieur gauche, HVG…)</td></tr>
+      <tr><td>−</td><td>+</td><td>déviation droite (HVD, embolie pulmonaire, hémibloc postérieur…)</td></tr>
+      <tr><td>−</td><td>−</td><td>axe hyperdroit / indéterminé</td></tr>
+    </tbody>
+  </table>
+  <p>Moyen mnémotechnique : les deux pouces. Pouce droit = DI, pouce gauche = aVF ;
+  s'ils pointent tous les deux vers le haut, l'axe est normal ; s'ils se regardent, c'est
+  normal aussi ; s'ils s'écartent, l'axe est dévié du côté qui pointe en bas.</p>
+
+  <h2 id="conduction">C — Conduction : PR, QRS, QT</h2>
+
+  <h3>Intervalle PR (120–200 ms, soit 3 à 5 petits carreaux)</h3>
+  <ul>
+    <li><strong>PR court &lt; 120 ms</strong> + onde delta = pré-excitation (Wolff-Parkinson-White).</li>
+    <li><strong>PR &gt; 200 ms fixe</strong> = BAV du 1<sup>er</sup> degré.</li>
+    <li><strong>PR qui s'allonge puis une P bloquée</strong> = BAV 2 Mobitz I (Luciani-Wenckebach),
+    en général nodal et bénin.</li>
+    <li><strong>PR fixe puis une P bloquée sans prévenir</strong> = BAV 2 Mobitz II,
+    infra-hisien, à haut risque — indication de pacemaker.</li>
+    <li><strong>Dissociation complète P / QRS</strong> = BAV 3, avec un rythme d'échappement
+    d'autant plus lent et large qu'il naît bas.</li>
+  </ul>
+
+  <h3>Durée du QRS (&lt; 120 ms)</h3>
+  <table>
+    <thead><tr><th></th><th>Bloc de branche droit</th><th>Bloc de branche gauche</th></tr></thead>
+    <tbody>
+      <tr><td>V1</td><td>aspect <strong>rSR'</strong> (« oreilles de lapin »)</td><td>QS ou rS profond</td></tr>
+      <tr><td>V6 / DI</td><td>onde S large et empâtée</td><td>R large, crocheté, sans onde q</td></tr>
+      <tr><td>À retenir</td><td>souvent bénin, peut être physiologique s'il est incomplet</td>
+      <td>toujours pathologique ; <strong>BBG d'apparition récente + douleur thoracique = SCA ST+</strong></td></tr>
+    </tbody>
+  </table>
+  <p>Truc de lecture en V1 : le QRS terminal pointe vers le ventricule bloqué.
+  Vers le <strong>haut</strong> (R') = <strong>d</strong>roit ; vers le <strong>bas</strong> =
+  <strong>g</strong>auche.</p>
+
+  <h3>Intervalle QT</h3>
+  <p>Le QT varie avec la fréquence : on le corrige (formule de Bazett, QTc = QT / √RR).
+  Anormal si QTc &gt; 440 ms chez l'homme, &gt; 460 ms chez la femme.</p>
+  <ul>
+    <li><strong>QT long</strong> : hypokaliémie, hypocalcémie, hypomagnésémie, antiarythmiques,
+    macrolides, antipsychotiques, QT long congénital → risque de torsades de pointes.</li>
+    <li><strong>QT court</strong> : hypercalcémie, digitaliques.</li>
+    <li>Repère visuel rapide : un QT qui dépasse la <strong>moitié du RR</strong> mérite
+    d'être mesuré.</li>
+  </ul>
+
+  <h2 id="hypertrophies">H — Hypertrophies</h2>
+  <ul>
+    <li><strong>Oreillette droite</strong> : P ample &gt; 2,5 mm en DII (« P pulmonaire »).</li>
+    <li><strong>Oreillette gauche</strong> : P large &gt; 120 ms, bifide en DII, négativité
+    terminale en V1 (« P mitrale »).</li>
+    <li><strong>Ventricule gauche</strong> : indice de Sokolow-Lyon (S en V1 + R en V5 ou V6)
+    &gt; 35 mm, souvent avec troubles de repolarisation en « surcharge systolique » dans les
+    dérivations gauches.</li>
+    <li><strong>Ventricule droit</strong> : déviation axiale droite, R &gt; S en V1, ondes T
+    négatives de V1 à V3.</li>
+  </ul>
+
+  <h2 id="ischemie">I — Ischémie, lésion, nécrose</h2>
+  <p>Trois étages, trois anomalies, trois âges de la lésion :</p>
+  <table>
+    <thead><tr><th>Anomalie</th><th>Signification</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Onde T</strong> négative, symétrique, pointue</td><td>ischémie sous-épicardique</td></tr>
+      <tr><td><strong>T ample</strong> et positive</td><td>ischémie sous-endocardique (phase très précoce)</td></tr>
+      <tr><td><strong>Sus-décalage ST</strong> (≥ 1 mm dans 2 dérivations contiguës,
+      ≥ 2 mm en V2-V3 chez l'homme)</td><td>lésion sous-épicardique = <strong>SCA ST+</strong></td></tr>
+      <tr><td><strong>Sous-décalage ST</strong></td><td>lésion sous-endocardique</td></tr>
+      <tr><td><strong>Onde Q</strong> large (&gt; 40 ms) et profonde (&gt; 1/3 du QRS)</td><td>nécrose constituée</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Territoires</h3>
+  <table>
+    <thead><tr><th>Dérivations</th><th>Territoire</th><th>Artère</th></tr></thead>
+    <tbody>
+      <tr><td>V1-V2-V3-V4</td><td>antéro-septo-apical</td><td>IVA</td></tr>
+      <tr><td>V5-V6, DI, aVL</td><td>latéral</td><td>circonflexe / diagonale</td></tr>
+      <tr><td>DII, DIII, aVF</td><td>inférieur</td><td>coronaire droite (ou circonflexe)</td></tr>
+      <tr><td>V7-V8-V9</td><td>basal (postérieur)</td><td>circonflexe</td></tr>
+      <tr><td>V3R-V4R</td><td>ventricule droit</td><td>coronaire droite proximale</td></tr>
+    </tbody>
+  </table>
+
+  <div class="mnemo">
+    <div class="mnemo__title">Deux réflexes qui sauvent</div>
+    <p>Devant un <strong>ST+ inférieur</strong>, on fait <strong>toujours</strong> V3R-V4R et
+    V7-V8-V9 : une extension au ventricule droit contre-indique les dérivés nitrés et impose
+    le remplissage.</p>
+    <p class="mb0">Un <strong>sous-décalage V1-V3 avec grandes ondes R</strong> n'est pas une
+    ischémie antérieure : c'est l'image en miroir d'un infarctus <strong>basal</strong>.
+    Retourner la feuille suffit à le voir.</p>
+  </div>
+
+  <h2 id="divers">D — Divers et conclusion</h2>
+  <ul>
+    <li><strong>Kaliémie.</strong> Hyperkaliémie : T amples, pointues et symétriques →
+    élargissement du QRS → disparition des P → aspect sinusoïdal. Hypokaliémie :
+    aplatissement de T, sous-décalage ST, apparition d'une onde U.</li>
+    <li><strong>Péricardite aiguë.</strong> Sus-décalage ST concave vers le haut, diffus,
+    <em>sans miroir</em>, sous-décalage du PQ, microvoltage si épanchement.</li>
+    <li><strong>Embolie pulmonaire.</strong> Le plus souvent tachycardie sinusale isolée ;
+    l'aspect S1Q3, le BBD et les T négatives de V1 à V4 sont évocateurs mais inconstants.</li>
+    <li><strong>Stimulateur cardiaque</strong> : spicules précédant les P ou les QRS.</li>
+    <li><strong>Imprégnation digitalique</strong> : sous-décalage ST « en cupule ».</li>
+  </ul>
+
+  <p>La conclusion se rédige toujours dans le même ordre : <em>rythme, fréquence, conduction,
+  anomalies de repolarisation, comparaison au tracé antérieur</em>. Par exemple :
+  « Rythme sinusal régulier à 78/min, axe normal, PR et QRS normaux, sus-décalage ST de 3 mm
+  en DII-DIII-aVF avec miroir en DI-aVL : SCA ST+ inférieur. »</p>
+
+  <h2 id="urgences">Les tracés à ne jamais rater</h2>
+  <ul class="checklist">
+    <li><strong>SCA ST+</strong> — reperfusion en urgence, le délai est le pronostic.</li>
+    <li><strong>BBG d'apparition récente</strong> avec douleur thoracique — se gère comme un ST+.</li>
+    <li><strong>Tachycardie ventriculaire</strong> et <strong>torsades de pointes</strong>.</li>
+    <li><strong>BAV 2 Mobitz II et BAV 3</strong> — risque de syncope et d'asystolie.</li>
+    <li><strong>Hyperkaliémie menaçante</strong> — QRS larges, tracé sinusoïdal.</li>
+    <li><strong>Syndrome de Brugada</strong> — sus-décalage en dôme V1-V2, mort subite.</li>
+    <li><strong>Fibrillation atriale pré-excitée</strong> — QRS larges, irréguliers, très rapides :
+    ni digitaliques, ni inhibiteurs calciques bradycardisants.</li>
+  </ul>
+
+  <div class="notice" style="margin-top:28px">
+    <p class="mb0">Aide-mémoire de révision, à confronter au collège de cardiologie et aux
+    recommandations en vigueur. Les valeurs seuils citées sont les valeurs usuelles de
+    l'adulte : elles diffèrent chez l'enfant.</p>
+  </div>
+
+  <p class="no-print" style="margin-top:24px">
+    <a class="btn btn--sm" href="fiches.html">← Toutes les fiches</a>
+    <a class="btn btn--sm" href="tableur.html?item=229">Noter un tour sur l'item 229</a>
+  </p>
+
+</div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p class="mb0">
+      Outil personnel de révision des EDN — &copy; <span id="year"></span>.
+      Tes données restent dans ton navigateur (aucun compte, aucun serveur).
+      Pense à <a href="tableur.html">exporter ta sauvegarde</a> régulièrement.
+    </p>
+    <p class="mb0 small" style="margin-top:6px">
+      Les intitulés d'items sont donnés à titre indicatif : réfère-toi toujours au
+      programme officiel publié par l'UNESS.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -72,6 +72,9 @@
     $('#t-temps').textContent = S.duree(total.minutes);
   }
 
+  // données reçues d'un autre appareil : on redessine
+  document.addEventListener('edn:distant', rendre);
+
   document.addEventListener('DOMContentLoaded', function () {
     $('#f-q').addEventListener('input', function () { etat.q = this.value; rendre(); });
     $('#f-tri').addEventListener('change', function () { etat.tri = this.value; rendre(); });

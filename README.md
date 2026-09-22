@@ -17,7 +17,8 @@ navigateur.
 | `repartition.html` | Tous les items avec leur collège référent et les autres collèges qui les traitent |
 | `specialites.html` | Une carte par collège : couverture, tours, temps, confiance moyenne |
 | `stats.html` | Chiffres du jour, courbes des 7 derniers jours, priorités, classement des collèges |
-| `planning.html` | Compte à rebours, séance du jour, calendrier mensuel annotable, to-do list |
+| `planning.html` | Compte à rebours, séance du jour, calendrier (mois / semaine / jour), to-do list |
+| `sync.html` | Configuration de la synchronisation entre appareils |
 | `fiches.html` | Index des fiches pratiques |
 | `fiche-ecg.html` | Lecture d'ECG en 7 temps (F.R.A.C.H.I.D.) |
 | `fiche-examen-clinique.html` | Check-list d'examen clinique appareil par appareil |
@@ -59,6 +60,60 @@ vues, permutables depuis la liste des items :
 Les tours sont stockés sous des clés différentes selon la vue (`231` contre
 `231@cardiologie`) : changer de vue ne perd rien, mais les compteurs diffèrent.
 Mieux vaut choisir la sienne au début et s'y tenir.
+
+## Le calendrier
+
+Le planning reprend la mécanique d'un agenda classique, dans l'habillage du site :
+
+- **trois vues** — mois, semaine, jour ; la vue jour est celle par défaut sur téléphone ;
+- **créer** en cliquant une case du mois ou un créneau de la grille horaire ;
+- **déplacer** une séance en la glissant sur un autre jour (vue mois) ou un
+  autre créneau (vues semaine et jour) ;
+- **redimensionner** en tirant le bord bas d'une séance ;
+- **trait de l'heure courante**, jour du jour mis en évidence, ligne « journée
+  entière » collée sous l'en-tête ;
+- **raccourcis clavier** : `M` mois, `S` semaine, `J` jour, `T` aujourd'hui,
+  `N` nouvelle séance, `←` `→` pour naviguer.
+
+Une séance porte un intitulé, une date, une heure de début et une durée (ou la
+mention « journée entière »), un collège — qui lui donne sa couleur — et une
+note. Le bouton **Planifier** de la séance du jour crée directement la séance
+correspondante.
+
+L'ancien planning (une note et des collèges par jour) est converti
+automatiquement en séances de journée entière au premier chargement.
+
+## Synchroniser ses appareils
+
+Par défaut, la progression vit dans le `localStorage` de chaque navigateur :
+le téléphone démarre donc vide. La page `sync.html` permet de brancher un projet
+**Firebase** personnel pour que tous les appareils partagent la même
+progression.
+
+Mise en place, une seule fois :
+
+1. créer un projet gratuit sur la console Firebase ;
+2. activer le fournisseur **E-mail/Mot de passe** dans *Authentication* ;
+3. créer une base **Firestore** et y coller les règles affichées sur la page ;
+4. coller le bloc `firebaseConfig` dans la page, puis se connecter avec le même
+   couple e-mail / mot de passe sur chaque appareil.
+
+Les clés Firebase restent dans le navigateur, jamais dans le dépôt : ce sont les
+règles Firestore qui protègent les données, en n'autorisant chaque compte qu'à
+lire et écrire son propre document.
+
+**La fusion ne perd jamais un tour.** Chaque écriture relit d'abord le document
+distant et le fusionne avant d'écrire, pour ne pas effacer ce qu'un autre
+appareil vient de pousser. Les tours des deux côtés sont réunis, sans doublon —
+deux tours de même date, même confiance, même durée et même support ne comptent
+qu'une fois. Au-delà de huit tours sur une ligne, ce sont les plus récents qui
+sont conservés, puisque ce sont eux qui déterminent la date de révision
+suivante. Pour ce qui ne peut avoir qu'une valeur — réglages, notes, séances du
+calendrier — c'est la version la plus récemment modifiée qui l'emporte.
+
+Hors connexion, le travail continue normalement et repart à la reconnexion. Et
+sans configuration Firebase, le site fonctionne exactement comme avant, avec
+l'export/import JSON pour passer d'un appareil à l'autre à la main.
 
 ## Sur téléphone
 
@@ -117,6 +172,8 @@ assets/js/page-repartition.js  table item / collège référent / autres collèg
 assets/js/page-specialites.js  cartes par collège
 assets/js/page-stats.js     statistiques et courbes
 assets/js/page-planning.js  calendrier, séance du jour, to-do list
+assets/js/sync.js           fusion et synchronisation Firebase
+assets/js/page-sync.js      page de configuration de la synchronisation
 assets/icone.svg            icône source, déclinée en PNG 192/512/180
 sw.js                       cache hors connexion
 manifest.webmanifest        installation sur l'écran d'accueil

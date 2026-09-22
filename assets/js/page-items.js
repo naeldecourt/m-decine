@@ -384,6 +384,9 @@
     }).join('');
   }
 
+  // données reçues d'un autre appareil : on redessine
+  document.addEventListener('edn:distant', rendre);
+
   document.addEventListener('DOMContentLoaded', function () {
     remplirFiltres();
     brancher();

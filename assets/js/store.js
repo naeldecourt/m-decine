@@ -29,11 +29,13 @@
 
   var defauts = {
     v: 2,
+    maj: 0,      // horodatage de la dernière écriture, pour arbitrer une fusion
     tours: {},   // { cle: [ { d:'2026-09-22', c:4, m:90, s:'col' } ] }
     res:   {},   // { cle: ['qcm','col'] }
     notes: {},   // { cle: 'texte' }
     masq:  {},   // { cle: 1 }
-    plan:  {},   // { '2026-09-22': { n:'notes', s:['cardiologie'] } }
+    plan:  {},   // { '2026-09-22': { n:'notes', s:['cardiologie'] } }  (hérité, migré vers evts)
+    evts:  {},   // { id: { id, d:'2026-09-22', h:540|null, m:60, t:'titre', c:'college', n:'note' } }
     todo:  [],   // [ { id, t, f } ]
     cfg:   { vue: 'college', dateEdn: '', itemsJour: 6, objectif: 3 }
   };
@@ -43,7 +45,8 @@
   function clone(o) { return JSON.parse(JSON.stringify(o)); }
 
   function fusionne(dest, src) {
-    ['tours', 'res', 'notes', 'masq', 'plan'].forEach(function (k) {
+    if (src.maj) dest.maj = Number(src.maj) || 0;
+    ['tours', 'res', 'notes', 'masq', 'plan', 'evts'].forEach(function (k) {
       if (src[k] && typeof src[k] === 'object' && !Array.isArray(src[k])) dest[k] = src[k];
     });
     if (Array.isArray(src.todo)) dest.todo = src.todo;
@@ -88,15 +91,32 @@
     } catch (e) { /* on ignore une sauvegarde v1 illisible */ }
   }
 
-  function save() {
+  /** @param {boolean} [conserveMaj] laisse l'horodatage en place (données reçues). */
+  function save(conserveMaj) {
+    var d = load();
+    if (!conserveMaj) d.maj = Date.now();
     try {
-      localStorage.setItem(KEY, JSON.stringify(load()));
+      localStorage.setItem(KEY, JSON.stringify(d));
     } catch (e) {
       console.warn('Sauvegarde impossible : stockage indisponible ou plein.');
       return false;
     }
     document.dispatchEvent(new CustomEvent('edn:change'));
     return true;
+  }
+
+  /** Sauvegarde brute, telle qu'elle part en synchronisation. */
+  function brut() { return load(); }
+
+  /** Remplace intégralement la sauvegarde (résultat d'une fusion distante).
+      Émet « edn:distant » pour que les pages se redessinent. */
+  function remplace(donnees) {
+    if (!donnees || typeof donnees !== 'object') return false;
+    cache = fusionne(clone(defauts), donnees);
+    cache.maj = Number(donnees.maj) || Date.now();
+    var ok = save(true);
+    document.dispatchEvent(new CustomEvent('edn:distant'));
+    return ok;
   }
 
   /* ------------------------------------------------------------- dates */
@@ -295,6 +315,115 @@
     if (i === -1) j.s.push(speId); else j.s.splice(i, 1);
     if (!j.n && !j.s.length) delete d.plan[dateIso];
     return save();
+  }
+
+  /* --------------------------------------------- événements de calendrier */
+
+  var COULEURS_EVT = ['#2f6bff', '#8b5cf6', '#16a34a', '#d97706', '#ec4899', '#0891b2'];
+
+  function idEvt() {
+    return 'e' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  }
+
+  /** Normalise un événement : heure en minutes depuis minuit, null = journée entière. */
+  function normaliseEvt(e) {
+    var h = (e.h === null || e.h === undefined || e.h === '') ? null
+          : Math.max(0, Math.min(1439, Math.round(Number(e.h) || 0)));
+    return {
+      id: e.id || idEvt(),
+      d: e.d || today(),
+      h: h,
+      m: h === null ? 0 : Math.max(5, Math.min(1440 - h, Math.round(Number(e.m) || 60))),
+      t: String(e.t || '').slice(0, 200),
+      c: e.c || '',
+      n: String(e.n || '').slice(0, 2000)
+    };
+  }
+
+  function evts() {
+    var d = load().evts;
+    return Object.keys(d).map(function (k) { return d[k]; }).sort(triEvt);
+  }
+
+  function triEvt(a, b) {
+    if (a.d !== b.d) return a.d < b.d ? -1 : 1;
+    if ((a.h === null) !== (b.h === null)) return a.h === null ? -1 : 1;   // journée entière d'abord
+    if (a.h !== b.h) return a.h - b.h;
+    return a.t.localeCompare(b.t, 'fr');
+  }
+
+  function evtsDuJour(dateIso) {
+    return evts().filter(function (e) { return e.d === dateIso; });
+  }
+
+  function evtsEntre(debutIso, finIso) {
+    return evts().filter(function (e) { return e.d >= debutIso && e.d <= finIso; });
+  }
+
+  function setEvt(e) {
+    var evt = normaliseEvt(e);
+    load().evts[evt.id] = evt;
+    save();
+    return evt;
+  }
+
+  function supprimerEvt(id) {
+    delete load().evts[id];
+    return save();
+  }
+
+  /** Couleur d'un événement : celle de son collège, sinon une teinte neutre. */
+  function couleurEvt(e) {
+    if (e.c) return college(e.c).couleur;
+    var n = 0;
+    for (var i = 0; i < e.id.length; i++) n = (n * 31 + e.id.charCodeAt(i)) >>> 0;
+    return COULEURS_EVT[n % COULEURS_EVT.length];
+  }
+
+  function hhmm(minutes) {
+    if (minutes === null || minutes === undefined) return '';
+    return pad(Math.floor(minutes / 60)) + ':' + pad(minutes % 60);
+  }
+
+  function minutesDepuis(texte) {
+    var m = /^(\d{1,2}):(\d{2})$/.exec(String(texte || '').trim());
+    if (!m) return null;
+    return Math.min(1439, Number(m[1]) * 60 + Number(m[2]));
+  }
+
+  /** Décale un événement d'un nombre de jours et, éventuellement, de minutes. */
+  function deplacerEvt(id, nouvelleDate, nouvelleHeure) {
+    var e = load().evts[id];
+    if (!e) return false;
+    e.d = nouvelleDate || e.d;
+    if (nouvelleHeure !== undefined) {
+      e.h = nouvelleHeure === null ? null : Math.max(0, Math.min(1439, nouvelleHeure));
+      if (e.h === null) e.m = 0;
+      else if (!e.m) e.m = 60;
+      if (e.h !== null) e.m = Math.min(e.m, 1440 - e.h);
+    }
+    return save();
+  }
+
+  /* Reprend l'ancien planning (une note et des collèges par jour) sous forme
+     d'événements de journée entière, une seule fois. */
+  function migrePlan() {
+    var d = load();
+    var dates = Object.keys(d.plan || {});
+    if (!dates.length) return;
+    dates.forEach(function (date) {
+      var j = d.plan[date];
+      (j.s || []).forEach(function (col) {
+        var e = normaliseEvt({ d: date, h: null, t: college(col).nom, c: col });
+        d.evts[e.id] = e;
+      });
+      if (j.n && j.n.trim()) {
+        var note = normaliseEvt({ d: date, h: null, t: j.n.trim().slice(0, 120), n: j.n.trim() });
+        d.evts[note.id] = note;
+      }
+    });
+    d.plan = {};
+    save();
   }
 
   /* --------------------------------------------------------------- to-do */
@@ -552,8 +681,12 @@
     ressources: ressources, basculeRessource: basculeRessource,
     note: note, setNote: setNote, masque: masque, setMasque: setMasque,
     jour: jour, setJourNote: setJourNote, basculeJourSpe: basculeJourSpe,
+    evts: evts, evtsDuJour: evtsDuJour, evtsEntre: evtsEntre, setEvt: setEvt,
+    supprimerEvt: supprimerEvt, deplacerEvt: deplacerEvt, couleurEvt: couleurEvt,
+    hhmm: hhmm, minutesDepuis: minutesDepuis, migrePlan: migrePlan, normaliseEvt: normaliseEvt,
     todo: todo, ajouterTache: ajouterTache, basculeTache: basculeTache, supprimerTache: supprimerTache,
     cfg: cfg, setCfg: setCfg, reset: reset,
+    brut: brut, remplace: remplace,
     lignes: lignes, lignesActives: lignesActives,
     synthese: synthese, parCollege: parCollege,
     activite: activite, serie: serie, retardRattrape: retardRattrape,

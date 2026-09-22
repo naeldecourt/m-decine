@@ -4,7 +4,7 @@
    d'abord ». Les données de révision, elles, vivent dans localStorage et ne
    passent jamais par ici. */
 
-var VERSION = 'edn-v4';
+var VERSION = 'edn-v5';
 var COQUILLE = [
   './',
   './index.html',
@@ -14,6 +14,7 @@ var COQUILLE = [
   './stats.html',
   './planning.html',
   './fiches.html',
+  './sync.html',
   './fiche-ecg.html',
   './fiche-examen-clinique.html',
   './manifest.webmanifest',
@@ -21,6 +22,8 @@ var COQUILLE = [
   './assets/js/items.js',
   './assets/js/store.js',
   './assets/js/ui.js',
+  './assets/js/sync.js',
+  './assets/js/page-sync.js',
   './assets/js/page-items.js',
   './assets/js/page-repartition.js',
   './assets/js/page-specialites.js',

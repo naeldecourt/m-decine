@@ -233,8 +233,26 @@
     var y = $('#annee');
     if (y) y.textContent = String(new Date().getFullYear());
 
+    brancheIndicateurSync();
     enregistreServiceWorker();
   });
+
+  /* Pastille de synchronisation de l'en-tête, présente sur toutes les pages. */
+  function brancheIndicateurSync() {
+    var el = $('#sync-etat');
+    if (!el) return;
+    var LIB = {
+      inactif: 'Sync', connexion: 'Connexion', deconnecte: 'Hors compte',
+      synchro: 'Synchro', envoi: 'Envoi', ok: 'À jour', erreur: 'Erreur'
+    };
+    function peins(e) {
+      el.dataset.phase = e.phase;
+      el.querySelector('.sync__txt').textContent = LIB[e.phase] || 'Sync';
+      el.title = 'Synchronisation — ' + (e.message || LIB[e.phase] || '');
+    }
+    if (window.Sync) peins(window.Sync.etat());
+    document.addEventListener('edn:sync', function (ev) { peins(ev.detail); });
+  }
 
   /* Rend le site utilisable hors connexion et installable sur l'écran
      d'accueil. Sans effet en http:// (hors localhost) : c'est attendu. */
@@ -256,9 +274,14 @@
       })
       .catch(function () { /* pas de HTTPS, ou navigateur sans support */ });
 
+    // Au tout premier enregistrement, clients.claim() déclenche aussi
+    // controllerchange : recharger là n'apporte rien et coupe la navigation en
+    // cours. On ne recharge donc que si la page était déjà contrôlée, c'est-à-dire
+    // lorsqu'une nouvelle version prend réellement le relais.
+    var dejaControlee = !!navigator.serviceWorker.controller;
     var recharge = false;
     navigator.serviceWorker.addEventListener('controllerchange', function () {
-      if (recharge) return;
+      if (!dejaControlee || recharge) return;
       recharge = true;
       location.reload();
     });

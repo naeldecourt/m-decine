@@ -191,6 +191,9 @@
     rendreColleges();
   }
 
+  // données reçues d'un autre appareil : on redessine
+  document.addEventListener('edn:distant', rendre);
+
   document.addEventListener('DOMContentLoaded', rendre);
   document.addEventListener('edn:theme', function () { rendreSemaine(); });
 })();

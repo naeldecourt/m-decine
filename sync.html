@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="fr" data-theme="clair">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Synchronisation entre appareils | Révision EDN</title>
+<meta name="description" content="Synchroniser sa progression de révision EDN entre téléphone et ordinateur via un projet Firebase personnel.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%232f6bff'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='15' font-weight='bold' fill='white' text-anchor='middle'%3EDN%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="assets/css/style.css">
+<script src="assets/js/items.js"></script>
+<script src="assets/js/store.js"></script>
+<script src="assets/js/sync.js"></script>
+<script src="assets/js/ui.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar__inner">
+    <a class="brand" href="index.html">
+      <span class="brand__mark">DN</span>
+      <span>Révision EDN</span>
+    </a>
+    <nav class="tabs" aria-label="Navigation principale">
+      <a href="stats.html"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10h-10z"/><path d="M14 2.5A10 10 0 0 1 21.5 10H14z" opacity=".55"/></svg><span>Statistiques</span></a>
+      <a href="specialites.html"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="3" y="8" width="7" height="13" rx="1"/><rect x="12" y="3" width="9" height="18" rx="1" opacity=".6"/></svg><span>Spécialités</span></a>
+      <a href="items.html"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="3.5" cy="6" r="1.6"/><circle cx="3.5" cy="12" r="1.6"/><circle cx="3.5" cy="18" r="1.6"/></svg><span>Items</span></a>
+      <a href="repartition.html"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="4.5" r="2.6"/><circle cx="5" cy="19" r="2.6"/><circle cx="19" cy="19" r="2.6"/><path d="M12 7.5v4.5M12 12H5.5v4M12 12h6.5v4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Répartition</span></a>
+      <a href="planning.html"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Planning</span></a>
+      <a href="fiches.html"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 3h8l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 3v6h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span>Fiches</span></a>
+    </nav>
+      <a class="sync" href="sync.html" id="sync-etat" data-phase="inactif" title="Synchronisation">
+        <span class="sync__point"></span><span class="sync__txt">Sync</span>
+      </a>
+    <div class="themes" role="group" aria-label="Thème">
+      <button type="button" data-theme="clair" aria-pressed="true">Clair</button>
+      <button type="button" data-theme="sombre" aria-pressed="false">Sombre</button>
+      <button type="button" data-theme="pastel" aria-pressed="false">Pastel</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<div class="wrap wrap--narrow">
+
+  <section>
+    <h1 class="mb0">Synchronisation</h1>
+    <p class="muted">Pour retrouver ta progression sur ton téléphone comme sur ton ordinateur.
+    Sans configuration, le site fonctionne très bien : tes données restent simplement sur
+    l'appareil où tu les as saisies.</p>
+  </section>
+
+  <section>
+    <div class="card card--pad">
+      <div class="row" style="justify-content:space-between">
+        <strong>État</strong>
+        <span class="sync" data-phase="inactif" id="s-etat">
+          <span class="sync__point"></span><span class="sync__txt" id="s-message">—</span>
+        </span>
+      </div>
+      <p class="small muted mb0" style="margin-top:8px" id="s-detail">
+        Renseigne ci-dessous un projet Firebase pour activer la synchronisation.
+      </p>
+    </div>
+  </section>
+
+  <section id="etape-conf">
+    <div class="sec-title"><span class="sec-title__icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="3" y="8" width="7" height="13" rx="1"/><rect x="12" y="3" width="9" height="18" rx="1" opacity=".6"/></svg></span><h2>1. Le projet Firebase</h2></div>
+    <div class="card card--pad stack">
+      <ol class="small muted" style="margin:0 0 4px;padding-left:1.2em">
+        <li>Crée un projet gratuit sur <strong>console.firebase.google.com</strong>.</li>
+        <li>Dans <em>Authentication</em>, active le fournisseur <strong>E-mail/Mot de passe</strong>.</li>
+        <li>Dans <em>Firestore Database</em>, crée une base en mode production.</li>
+        <li>Dans <em>Règles</em>, colle les règles données à l'étape 3.</li>
+        <li>Dans <em>Paramètres du projet</em> → <em>Vos applications</em> → <em>Web</em>,
+            copie le bloc <code>firebaseConfig</code> et colle-le ici.</li>
+      </ol>
+      <div>
+        <label for="s-conf">Configuration Firebase</label>
+        <textarea id="s-conf" rows="8" spellcheck="false"
+          placeholder="const firebaseConfig = {&#10;  apiKey: &quot;…&quot;,&#10;  authDomain: &quot;mon-projet.firebaseapp.com&quot;,&#10;  projectId: &quot;mon-projet&quot;,&#10;  appId: &quot;1:…:web:…&quot;&#10;};"></textarea>
+      </div>
+      <div class="btn-row">
+        <button type="button" class="btn btn--primary" id="s-enregistrer">Enregistrer la configuration</button>
+        <button type="button" class="btn btn--danger" id="s-oublier">Oublier ce projet</button>
+      </div>
+      <p class="small muted mb0">Ces clés sont publiques par nature : ce sont les règles Firestore
+      de l'étape 3 qui protègent tes données. Elles ne sont stockées que dans ce navigateur, jamais
+      dans le dépôt.</p>
+    </div>
+  </section>
+
+  <section id="etape-compte">
+    <div class="sec-title"><span class="sec-title__icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="3.5" cy="6" r="1.6"/><circle cx="3.5" cy="12" r="1.6"/><circle cx="3.5" cy="18" r="1.6"/></svg></span><h2>2. Ton compte</h2></div>
+    <div class="card card--pad stack">
+      <p class="small muted mb0">Le même couple e-mail / mot de passe sur chaque appareil : c'est
+      lui qui relie ton téléphone à ton ordinateur. Le compte est créé automatiquement à la
+      première connexion.</p>
+      <div class="reglages">
+        <div style="flex:1 1 220px">
+          <label for="s-email">Adresse e-mail</label>
+          <input type="email" id="s-email" autocomplete="username" spellcheck="false">
+        </div>
+        <div style="flex:1 1 180px">
+          <label for="s-mdp">Mot de passe</label>
+          <input type="password" id="s-mdp" autocomplete="current-password">
+        </div>
+      </div>
+      <div class="btn-row">
+        <button type="button" class="btn btn--primary" id="s-connexion">Se connecter</button>
+        <button type="button" class="btn" id="s-deconnexion">Se déconnecter</button>
+      </div>
+      <p class="small mb0" id="s-compte"></p>
+    </div>
+  </section>
+
+  <section id="etape-regles">
+    <div class="sec-title"><span class="sec-title__icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 3h8l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 3v6h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span><h2>3. Les règles Firestore</h2></div>
+    <div class="card card--pad">
+      <p class="small muted">À coller dans <em>Firestore Database</em> → <em>Règles</em>. Elles
+      n'autorisent chaque compte qu'à lire et écrire son propre document.</p>
+      <pre class="regles" id="s-regles">rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /utilisateurs/{uid} {
+      allow read, write: if request.auth != null &amp;&amp; request.auth.uid == uid;
+    }
+  }
+}</pre>
+      <button type="button" class="btn btn--sm" id="s-copier">Copier les règles</button>
+    </div>
+  </section>
+
+  <section>
+    <div class="notice notice--info">
+      <p><strong>Comment la fusion se comporte.</strong> Deux appareils qui ont travaillé chacun de
+      leur côté ne s'écrasent pas : les tours de révision des deux sont réunis, sans doublon — un
+      tour n'est jamais perdu. Pour ce qui ne peut avoir qu'une valeur (réglages, notes, séances du
+      calendrier), c'est la version la plus récente qui l'emporte.</p>
+      <p class="mb0"><strong>Sans réseau</strong>, tu continues de travailler normalement : les
+      modifications partent à la prochaine connexion.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="notice">
+      <p class="mb0"><strong>Tu préfères éviter le cloud ?</strong> L'export et l'import JSON de la
+      <a href="items.html#donnees">liste des items</a> font le même travail à la main : un fichier
+      à exporter d'un côté, à importer de l'autre.</p>
+    </div>
+  </section>
+
+</div>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p class="mb0">
+      Outil personnel de révision des EDN — &copy; <span id="annee"></span>.
+      Tes données restent dans ton navigateur : aucun compte, aucun serveur.
+      Pense à <a href="items.html#donnees">exporter ta sauvegarde</a> régulièrement.
+    </p>
+    <p class="mb0 small" style="margin-top:6px">
+      Programme et intitulés d'items donnés à titre indicatif : le référentiel officiel
+      publié par l'UNESS fait seul foi.
+    </p>
+  </div>
+</footer>
+<script src="assets/js/page-sync.js"></script>
+
+</body>
+</html>

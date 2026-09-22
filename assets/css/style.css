@@ -472,44 +472,141 @@ dialog[open] { display: flex; flex-direction: column; max-height: 90vh; }
 
 /* ---------------------------------------------------------- calendrier */
 
-.cal { width: 100%; min-width: 680px; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
-.cal th {
-  padding: 12px 8px; font-size: .76rem; font-weight: 700; letter-spacing: .07em;
-  text-transform: uppercase; color: var(--ink-2); background: var(--card-2);
-  border-bottom: 1px solid var(--line); text-align: center;
+/* --- vue mois : grille de 7 colonnes, une case par jour --- */
+
+.cal-mois {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
 }
-.cal th:nth-child(6), .cal th:nth-child(7) { color: var(--ink-3); }
-.cal td {
+.cal-mois__th {
+  padding: 11px 8px; text-align: center;
+  font-size: .74rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+  color: var(--ink-2); background: var(--card-2); border-bottom: 1px solid var(--line);
+}
+.cal-mois__th:nth-child(6), .cal-mois__th:nth-child(7) { color: var(--ink-3); }
+.cal-mois__j {
+  min-height: 116px; padding: 5px 5px 7px;
   border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);
-  vertical-align: top; padding: 0; height: 122px; width: 14.28%;
+  display: flex; flex-direction: column; gap: 4px; cursor: pointer;
 }
-.cal td:last-child { border-right: 0; }
-.cal .jour { display: flex; flex-direction: column; height: 100%; padding: 8px 9px 6px; gap: 5px; }
-.cal .jour__num { font-weight: 700; font-size: .92rem; color: var(--ink); }
-.cal td.hors .jour__num { color: var(--ink-3); font-weight: 500; }
-.cal td.hors { background: var(--bg-2); }
-.cal td.auj { box-shadow: inset 0 0 0 2px var(--blue); }
-.cal td.auj .jour__num {
-  background: var(--blue); color: #fff; width: 25px; height: 25px; border-radius: 50%;
-  display: grid; place-items: center; font-size: .82rem;
+.cal-mois__j:nth-child(7n + 7) { border-right: 0; }
+.cal-mois__j:hover { background: color-mix(in srgb, var(--blue) 4%, transparent); }
+.cal-mois__j.hors { background: var(--bg-2); }
+.cal-mois__j.hors .cal-mois__num { color: var(--ink-3); font-weight: 500; }
+.cal-mois__j.depot { background: color-mix(in srgb, var(--blue) 14%, transparent); }
+.cal-mois__num {
+  align-self: flex-start; border: 0; background: none; cursor: pointer;
+  font: inherit; font-size: .84rem; font-weight: 700; color: var(--ink);
+  min-width: 26px; height: 26px; border-radius: 50%; padding: 0;
 }
-.cal .jour__notes {
-  flex: 1 1 auto; border: 0; background: none; resize: none; padding: 0; min-height: 0;
-  font-size: .78rem; line-height: 1.4; color: var(--ink-2); border-radius: 0;
+.cal-mois__num:hover { background: var(--bg-2); }
+.cal-mois__j.auj .cal-mois__num { background: var(--blue); color: #fff; }
+.cal-mois__evts { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.cal-mois__plus {
+  border: 0; background: none; cursor: pointer; font: inherit;
+  font-size: .72rem; font-weight: 600; color: var(--ink-2); text-align: left; padding: 2px 4px;
 }
-.cal .jour__notes::placeholder { color: var(--ink-3); font-style: italic; }
-.cal .jour__notes:focus-visible { outline-offset: 3px; }
-.cal .jour__spes { display: flex; flex-wrap: wrap; gap: 3px; }
-.cal .jour__spes button {
-  border: 0; cursor: pointer; font: inherit; font-size: .6rem; font-weight: 800; letter-spacing: .03em;
-  padding: 2px 5px; border-radius: 5px;
-  background: color-mix(in srgb, var(--spe) var(--tint), transparent); color: var(--spe);
+.cal-mois__plus:hover { color: var(--blue); }
+
+/* --- pastille d'événement --- */
+
+.evt {
+  display: flex; align-items: baseline; gap: 5px; min-width: 0;
+  border: 0; border-radius: 6px; padding: 3px 7px; cursor: pointer;
+  font: inherit; font-size: .74rem; font-weight: 600; text-align: left;
+  background: color-mix(in srgb, var(--evt) 16%, transparent);
+  color: var(--evt);
+  border-left: 3px solid var(--evt);
 }
-.cal .jour__add {
-  border: 0; background: none; cursor: pointer; font: inherit; font-size: .7rem;
-  color: var(--ink-3); padding: 0; text-align: left;
+.evt:hover { background: color-mix(in srgb, var(--evt) 26%, transparent); }
+.evt--jour { background: var(--evt); color: #fff; border-left-color: transparent; }
+.evt__h { flex: none; opacity: .85; font-weight: 500; font-variant-numeric: tabular-nums; }
+.evt__t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.evt--glisse { opacity: .4; }
+
+/* --- vues semaine et jour : grille horaire --- */
+
+.cal-grille {
+  display: grid;
+  grid-template-columns: 58px repeat(var(--cols), minmax(0, 1fr));
+  grid-template-rows: auto auto 1fr;
+  max-height: 620px; overflow: auto; border-top: 1px solid var(--line);
+  position: relative;
 }
-.cal .jour__add:hover { color: var(--blue); }
+.cal-grille__coin { position: sticky; top: 0; left: 0; z-index: 4; background: var(--card-2); border-bottom: 1px solid var(--line); }
+.cal-grille__jour {
+  position: sticky; top: 0; z-index: 3;
+  display: flex; flex-direction: column; align-items: center; gap: 1px;
+  padding: 8px 4px; background: var(--card-2);
+  border-left: 1px solid var(--line); border-bottom: 1px solid var(--line);
+}
+.cal-grille__nom { font-size: .68rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-2); }
+.cal-grille__num { font-size: 1.15rem; font-weight: 700; line-height: 1.5rem; min-width: 30px; text-align: center; border-radius: 50%; }
+.cal-grille__jour.auj .cal-grille__num { background: var(--blue); color: #fff; }
+.cal-grille__jour.auj .cal-grille__nom { color: var(--blue); }
+
+/* la ligne « journée entière » reste collée sous l'en-tête des jours */
+.cal-grille__etiq {
+  display: flex; align-items: center; justify-content: flex-end;
+  padding: 4px 8px; font-size: .66rem; font-weight: 700; letter-spacing: .05em;
+  text-transform: uppercase; color: var(--ink-3);
+  border-bottom: 1px solid var(--line); background: var(--card);
+  position: sticky; left: 0; top: var(--hauteur-entete, 54px); z-index: 4;
+}
+.cal-grille__toutjour {
+  position: sticky; top: var(--hauteur-entete, 54px); z-index: 3;
+  min-height: 34px; padding: 4px; display: flex; flex-direction: column; gap: 3px;
+  background: var(--card);
+  border-left: 1px solid var(--line); border-bottom: 1px solid var(--line); cursor: pointer;
+}
+.cal-grille__toutjour.depot { background: color-mix(in srgb, var(--blue) 14%, transparent); }
+
+.cal-grille__heures { position: sticky; left: 0; z-index: 2; background: var(--card); }
+.cal-grille__heure { position: relative; border-bottom: 1px solid var(--line); }
+.cal-grille__heure span {
+  position: absolute; right: 8px; top: -8px;
+  font-size: .68rem; color: var(--ink-3); font-variant-numeric: tabular-nums;
+  background: var(--card); padding: 0 2px;
+}
+.cal-grille__col { position: relative; border-left: 1px solid var(--line); cursor: pointer; }
+.cal-grille__col.depot { background: color-mix(in srgb, var(--blue) 8%, transparent); }
+.cal-grille__col.auj { background: color-mix(in srgb, var(--blue) 3%, transparent); }
+.cal-grille__ligne { border-bottom: 1px solid var(--line); pointer-events: none; }
+
+.evt--grille {
+  position: absolute; left: 3px; right: 3px; z-index: 1;
+  flex-direction: column; align-items: stretch; gap: 1px;
+  padding: 3px 7px 6px; overflow: hidden;
+  background: color-mix(in srgb, var(--evt) 20%, var(--card));
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .12);
+}
+.evt--grille .evt__t { white-space: normal; line-height: 1.25; }
+.evt--grille .evt__h { font-size: .68rem; }
+.evt__poignee {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 9px;
+  cursor: ns-resize; border-radius: 0 0 6px 6px;
+}
+.evt__poignee::after {
+  content: ""; display: block; width: 26px; height: 3px; margin: 3px auto 0;
+  border-radius: 2px; background: color-mix(in srgb, var(--evt) 60%, transparent);
+}
+body.redim { user-select: none; cursor: ns-resize; }
+
+.cal-grille__maintenant {
+  position: absolute; left: 0; right: 0; height: 2px; background: var(--red); z-index: 2;
+  pointer-events: none;
+}
+.cal-grille__maintenant::before {
+  content: ""; position: absolute; left: -4px; top: -3px;
+  width: 8px; height: 8px; border-radius: 50%; background: var(--red);
+}
+
+kbd {
+  font-family: inherit; font-size: .78em; font-weight: 700;
+  background: var(--bg-2); border: 1px solid var(--line-2); border-bottom-width: 2px;
+  border-radius: 5px; padding: 1px 5px; color: var(--ink-2);
+}
 
 /* to-do list */
 .todo__head {
@@ -759,21 +856,20 @@ dialog[open] { display: flex; flex-direction: column; max-height: 90vh; }
   .conf button { height: 54px; font-size: 1.15rem; border-radius: 12px; }
   .supports { grid-template-columns: repeat(2, 1fr); }
 
-  /* calendrier : il tient dans la largeur, sans défilement horizontal */
-  .cal-wrap { overflow-x: auto; }
-  .cal { min-width: 0; }
-  .cal td { height: 84px; }
-  .cal th { padding: 9px 4px; font-size: .68rem; }
-  .cal .jour { padding: 6px 5px 4px; gap: 3px; }
-  .cal .jour__notes { display: none; }
-  .cal .jour__num { font-size: .82rem; }
-  .cal td.auj .jour__num { width: 22px; height: 22px; font-size: .75rem; }
-  .cal .jour__add {
-    min-height: 32px; display: flex; align-items: center; justify-content: center;
-    font-size: .8rem; font-weight: 700; border-radius: 7px; background: var(--bg-2);
-  }
-  .cal .jour__add span { display: none; }   /* juste « + » : les cases sont étroites */
-  .cal .jour__spes button { min-height: 22px; }
+  /* calendrier : les cases rétrécissent, la grille horaire garde sa colonne d'heures */
+  .cal-mois__j { min-height: 74px; padding: 3px; gap: 2px; }
+  .cal-mois__th { padding: 8px 2px; font-size: .62rem; letter-spacing: .04em; }
+  .cal-mois__num { font-size: .78rem; min-width: 24px; height: 24px; }
+  .cal-mois__evts { gap: 2px; }
+  .evt { font-size: .64rem; padding: 2px 4px; border-left-width: 2px; }
+  .cal-mois .evt__h { display: none; }      /* trop étroit : le titre passe avant */
+  .cal-mois__plus { font-size: .62rem; padding: 1px 2px; }
+  .cal-grille { grid-template-columns: 44px repeat(var(--cols), minmax(0, 1fr)); max-height: 66vh; }
+  .cal-grille__num { font-size: .95rem; min-width: 26px; }
+  .cal-grille__heure span { font-size: .6rem; right: 5px; }
+  .cal-grille__etiq { font-size: .58rem; padding: 4px 5px; }
+  .evt--grille { padding: 2px 5px 7px; }
+  .evt__poignee { height: 14px; }           /* plus haute : on l'attrape au doigt */
 
   /* tableaux des fiches : défilables plutôt que débordants */
   .prose table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: normal; }
@@ -793,8 +889,8 @@ dialog[open] { display: flex; flex-direction: column; max-height: 90vh; }
   .stat-card__label { font-size: .76rem; }
   .filters select { flex: 1 1 100%; }
   .tabs a { padding: 8px 4px; }
-  .cal td { height: 72px; }
-  .cal .jour__spes button { font-size: .55rem; padding: 1px 4px; }
+  .cal-mois__j { min-height: 62px; }
+  .cal-mois__th { font-size: .56rem; }
 }
 
 /* encoches et barres système */
@@ -852,3 +948,40 @@ dialog.large { max-width: 640px; }
 
 /* libellé portant une case à cocher : cible tactile confortable */
 label.check { min-height: 40px; align-items: center; cursor: pointer; }
+
+/* ------------------------------------------------- indicateur de synchro */
+
+.sync {
+  display: inline-flex; align-items: center; gap: 7px; flex: none;
+  padding: 7px 13px; border-radius: 999px;
+  background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow);
+  font-size: .8rem; font-weight: 600; color: var(--ink-2); min-height: 36px;
+}
+a.sync:hover { text-decoration: none; color: var(--ink); background: var(--bg-2); }
+.sync__point {
+  width: 8px; height: 8px; border-radius: 50%; flex: none;
+  background: var(--ink-3);
+}
+.sync[data-phase="ok"] .sync__point        { background: var(--green); }
+.sync[data-phase="ok"]                     { color: var(--green); }
+.sync[data-phase="erreur"] .sync__point    { background: var(--red); }
+.sync[data-phase="erreur"]                 { color: var(--red); }
+.sync[data-phase="connexion"] .sync__point,
+.sync[data-phase="synchro"] .sync__point,
+.sync[data-phase="envoi"] .sync__point     { background: var(--blue); animation: pulse 1.1s infinite; }
+.sync[data-phase="deconnecte"] .sync__point { background: var(--amber); }
+
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+@media (prefers-reduced-motion: reduce) { .sync__point { animation: none !important; } }
+
+pre.regles {
+  background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--r-sm);
+  padding: 13px 15px; overflow-x: auto; margin: 0 0 12px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .78rem; line-height: 1.5; color: var(--ink);
+}
+
+@media (max-width: 760px) {
+  .sync__txt { display: none; }
+  .sync { padding: 7px 10px; min-width: 36px; justify-content: center; }
+}

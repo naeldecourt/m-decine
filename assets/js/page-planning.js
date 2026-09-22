@@ -1,4 +1,8 @@
-/* Page « Planning » : calendrier mensuel annotable + to-do list + séance du jour. */
+/* Page « Planning ».
+   Le calendrier reprend la mécanique d'un agenda classique — trois vues
+   (mois, semaine, jour), création par clic sur une case ou un créneau,
+   déplacement et redimensionnement à la souris ou au doigt, trait de l'heure
+   courante, raccourcis clavier — dans l'habillage du reste du site. */
 (function () {
   'use strict';
 
@@ -7,50 +11,351 @@
 
   var MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet',
               'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+  var JOURS = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'];
+  var JOURS_COURTS = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
 
-  var vue = { mois: new Date().getMonth(), annee: new Date().getFullYear() };
-  var jourEdite = null;
+  var DEBUT_H = 6;            // première heure affichée en vue semaine/jour
+  var FIN_H = 24;
+  var PX_PAR_MIN = 0.85;      // hauteur d'une minute dans la grille horaire
+  var PAS = 15;               // granularité des créneaux, en minutes
 
-  /* ------------------------------------------------------- calendrier */
+  var vue = 'mois';           // 'mois' | 'semaine' | 'jour'
+  var ancre = new Date();     // date de référence de la vue courante
+  var edite = null;           // événement ouvert dans la modale
+
+  /* ------------------------------------------------------------- dates */
+
+  function jourDeSemaine(d) { return (d.getDay() + 6) % 7; }   // lundi = 0
+
+  function ajoute(d, n) {
+    var c = new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
+    return c;
+  }
+
+  function debutSemaine(d) { return ajoute(d, -jourDeSemaine(d)); }
+
+  function memeJour(a, b) { return S.iso(a) === S.iso(b); }
+
+  function libelleDate(d) {
+    return JOURS[jourDeSemaine(d)] + ' ' + d.getDate() + ' ' + MOIS[d.getMonth()];
+  }
+
+  /* ---------------------------------------------------- en-tête de vue */
+
+  function titrePeriode() {
+    if (vue === 'mois') {
+      return MOIS[ancre.getMonth()].charAt(0).toUpperCase() + MOIS[ancre.getMonth()].slice(1);
+    }
+    if (vue === 'jour') {
+      return libelleDate(ancre).charAt(0).toUpperCase() + libelleDate(ancre).slice(1);
+    }
+    var a = debutSemaine(ancre), b = ajoute(a, 6);
+    if (a.getMonth() === b.getMonth()) return a.getDate() + ' – ' + b.getDate() + ' ' + MOIS[a.getMonth()];
+    return a.getDate() + ' ' + MOIS[a.getMonth()].slice(0, 4) + '. – ' + b.getDate() + ' ' + MOIS[b.getMonth()];
+  }
+
+  function anneeAffichee() {
+    return vue === 'semaine' ? debutSemaine(ancre).getFullYear() : ancre.getFullYear();
+  }
+
+  /* ----------------------------------------------------------- vue mois */
+
+  function pastilleEvt(e, compacte) {
+    var couleur = S.couleurEvt(e);
+    var heure = e.h === null ? '' : S.hhmm(e.h) + ' ';
+    return '<button type="button" class="evt' + (e.h === null ? ' evt--jour' : '') + '" ' +
+      'draggable="true" data-evt="' + esc(e.id) + '" style="--evt:' + couleur + '" ' +
+      'title="' + esc((heure ? heure + '— ' : '') + e.t) + '">' +
+      (e.h === null ? '' : '<span class="evt__h">' + esc(S.hhmm(e.h)) + '</span>') +
+      '<span class="evt__t">' + esc(e.t || '(sans titre)') + '</span></button>';
+  }
+
+  function rendreMois() {
+    var premier = new Date(ancre.getFullYear(), ancre.getMonth(), 1);
+    var debut = ajoute(premier, -jourDeSemaine(premier));
+    var auj = S.today();
+    var html = '<div class="cal-mois">';
+    JOURS_COURTS.forEach(function (j) { html += '<div class="cal-mois__th">' + j + '</div>'; });
+
+    for (var i = 0; i < 42; i++) {
+      var d = ajoute(debut, i);
+      var k = S.iso(d);
+      var hors = d.getMonth() !== ancre.getMonth();
+      var liste = S.evtsDuJour(k);
+      var visibles = liste.slice(0, 3);
+      html += '<div class="cal-mois__j' + (hors ? ' hors' : '') + (k === auj ? ' auj' : '') +
+        '" data-date="' + k + '" data-depot="1">' +
+        '<button type="button" class="cal-mois__num" data-nouveau="' + k + '" ' +
+          'aria-label="Ajouter au ' + esc(S.formatFr(k)) + '">' + d.getDate() + '</button>' +
+        '<div class="cal-mois__evts">' + visibles.map(function (e) { return pastilleEvt(e, true); }).join('') +
+        (liste.length > 3
+          ? '<button type="button" class="cal-mois__plus" data-jour="' + k + '">+ ' +
+            (liste.length - 3) + ' autre' + (liste.length - 3 > 1 ? 's' : '') + '</button>'
+          : '') +
+        '</div></div>';
+    }
+    return html + '</div>';
+  }
+
+  /* -------------------------------------------------- vues semaine/jour */
+
+  function grilleHoraire(jours) {
+    var hauteur = (FIN_H - DEBUT_H) * 60 * PX_PAR_MIN;
+    var auj = S.today();
+    var maintenant = new Date();
+    var minutesMaintenant = maintenant.getHours() * 60 + maintenant.getMinutes();
+
+    var html = '<div class="cal-grille" style="--cols:' + jours.length + ';--h:' + hauteur + 'px">';
+
+    // bandeau des jours
+    html += '<div class="cal-grille__coin"></div>';
+    jours.forEach(function (d) {
+      var k = S.iso(d);
+      html += '<div class="cal-grille__jour' + (k === auj ? ' auj' : '') + '">' +
+        '<span class="cal-grille__nom">' + JOURS_COURTS[jourDeSemaine(d)] + '</span>' +
+        '<span class="cal-grille__num">' + d.getDate() + '</span></div>';
+    });
+
+    // ligne journée entière
+    html += '<div class="cal-grille__etiq cal-grille__etiq--jour">Journée</div>';
+    jours.forEach(function (d) {
+      var k = S.iso(d);
+      var liste = S.evtsDuJour(k).filter(function (e) { return e.h === null; });
+      html += '<div class="cal-grille__toutjour" data-date="' + k + '" data-depot="1" data-heure="null">' +
+        liste.map(function (e) { return pastilleEvt(e); }).join('') + '</div>';
+    });
+
+    // colonne des heures
+    html += '<div class="cal-grille__heures">';
+    for (var h = DEBUT_H; h < FIN_H; h++) {
+      html += '<div class="cal-grille__heure" style="height:' + (60 * PX_PAR_MIN) + 'px">' +
+        '<span>' + (h < 10 ? '0' + h : h) + ':00</span></div>';
+    }
+    html += '</div>';
+
+    // colonnes des jours
+    jours.forEach(function (d) {
+      var k = S.iso(d);
+      html += '<div class="cal-grille__col' + (k === auj ? ' auj' : '') + '" data-date="' + k +
+        '" data-depot="1" data-creneau="1">';
+      for (var hh = DEBUT_H; hh < FIN_H; hh++) {
+        html += '<div class="cal-grille__ligne" style="height:' + (60 * PX_PAR_MIN) + 'px"></div>';
+      }
+      S.evtsDuJour(k).filter(function (e) { return e.h !== null; }).forEach(function (e) {
+        var haut = (e.h - DEBUT_H * 60) * PX_PAR_MIN;
+        var haute = Math.max(18, e.m * PX_PAR_MIN);
+        html += '<button type="button" class="evt evt--grille" draggable="true" data-evt="' + esc(e.id) +
+          '" style="--evt:' + S.couleurEvt(e) + ';top:' + haut.toFixed(1) + 'px;height:' + haute.toFixed(1) + 'px">' +
+          '<span class="evt__t">' + esc(e.t || '(sans titre)') + '</span>' +
+          '<span class="evt__h">' + esc(S.hhmm(e.h)) + ' – ' + esc(S.hhmm(e.h + e.m)) + '</span>' +
+          '<span class="evt__poignee" data-redim="' + esc(e.id) + '" aria-hidden="true"></span>' +
+          '</button>';
+      });
+      if (k === auj && minutesMaintenant >= DEBUT_H * 60 && minutesMaintenant <= FIN_H * 60) {
+        html += '<div class="cal-grille__maintenant" style="top:' +
+          ((minutesMaintenant - DEBUT_H * 60) * PX_PAR_MIN).toFixed(1) + 'px" aria-hidden="true"></div>';
+      }
+      html += '</div>';
+    });
+
+    return html + '</div>';
+  }
+
+  function joursDeLaVue() {
+    if (vue === 'jour') return [new Date(ancre)];
+    var a = debutSemaine(ancre);
+    return [0, 1, 2, 3, 4, 5, 6].map(function (i) { return ajoute(a, i); });
+  }
+
+  /* ------------------------------------------------------------- rendu */
 
   function rendreCalendrier() {
-    $('#cal-titre').textContent = MOIS[vue.mois];
-    $('#cal-annee').textContent = vue.annee;
-    $('#sel-mois').value = String(vue.mois);
-    $('#sel-annee').value = String(vue.annee);
-
-    var premier = new Date(vue.annee, vue.mois, 1);
-    var decalage = (premier.getDay() + 6) % 7;          // lundi = 0
-    var debut = new Date(vue.annee, vue.mois, 1 - decalage);
-    var auj = S.today();
-
-    var html = '';
-    for (var semaine = 0; semaine < 6; semaine++) {
-      html += '<tr>';
-      for (var j = 0; j < 7; j++) {
-        var d = new Date(debut.getFullYear(), debut.getMonth(), debut.getDate() + semaine * 7 + j);
-        var k = S.iso(d);
-        var hors = d.getMonth() !== vue.mois;
-        var donnees = S.jour(k);
-        html += '<td class="' + (hors ? 'hors' : '') + (k === auj ? ' auj' : '') + '" data-date="' + k + '">' +
-          '<div class="jour">' +
-            '<span class="jour__num">' + d.getDate() + '</span>' +
-            '<textarea class="jour__notes" data-note rows="2" placeholder="Notes…" ' +
-              'aria-label="Notes du ' + S.formatFr(k) + '">' + esc(donnees.n) + '</textarea>' +
-            '<div class="jour__spes">' +
-              donnees.s.map(function (id) {
-                var c = S.college(id);
-                return '<button type="button" data-retirer="' + esc(id) + '" style="--spe:' + c.couleur +
-                  '" title="Retirer ' + esc(c.nom) + '">' + esc(c.court) + '</button>';
-              }).join('') +
-            '</div>' +
-            '<button type="button" class="jour__add" data-ajouter ' +
-              'aria-label="Ajouter un collège au ' + S.formatFr(k) + '">+<span>&nbsp;Collège</span></button>' +
-          '</div></td>';
+    $('#cal-titre').textContent = titrePeriode();
+    $('#cal-annee').textContent = anneeAffichee();
+    $$('[data-vue]').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.dataset.vue === vue));
+    });
+    $('#cal-corps').innerHTML = vue === 'mois' ? rendreMois() : grilleHoraire(joursDeLaVue());
+    if (vue !== 'mois') {
+      var zone = $('#cal-corps .cal-grille');
+      if (zone) {
+        // hauteur réelle de l'en-tête : la ligne « journée entière » s'y colle
+        var entete = zone.querySelector('.cal-grille__jour');
+        if (entete) zone.style.setProperty('--hauteur-entete', entete.offsetHeight + 'px');
+        // on amène l'heure courante à l'écran
+        var m = new Date();
+        zone.scrollTop = (Math.max(DEBUT_H, m.getHours() - 1) - DEBUT_H) * 60 * PX_PAR_MIN;
       }
-      html += '</tr>';
     }
-    $('#cal-corps').innerHTML = html;
+  }
+
+  /* ------------------------------------------------------ modale d'événement */
+
+  function ouvrirEvt(evt) {
+    edite = S.normaliseEvt(evt || {});
+    var nouveau = !evt || !evt.id || !S.evtsDuJour(edite.d).some(function (e) { return e.id === edite.id; });
+    $('#ev-titre').textContent = nouveau ? 'Nouvelle séance' : 'Modifier la séance';
+    $('#ev-t').value = edite.t;
+    $('#ev-d').value = edite.d;
+    $('#ev-jour').checked = edite.h === null;
+    $('#ev-h').value = edite.h === null ? '09:00' : S.hhmm(edite.h);
+    $('#ev-m').value = edite.h === null ? 60 : edite.m;
+    $('#ev-c').value = edite.c;
+    $('#ev-n').value = edite.n;
+    $('#ev-supprimer').classList.toggle('hide', nouveau);
+    majJourEntier();
+    var dlg = $('#evenement');
+    if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
+    setTimeout(function () { $('#ev-t').focus(); }, 60);
+  }
+
+  function majJourEntier() {
+    var toutJour = $('#ev-jour').checked;
+    $('#ev-horaires').classList.toggle('hide', toutJour);
+  }
+
+  function enregistrerEvt() {
+    var toutJour = $('#ev-jour').checked;
+    S.setEvt({
+      id: edite.id,
+      d: $('#ev-d').value || S.today(),
+      h: toutJour ? null : S.minutesDepuis($('#ev-h').value),
+      m: Number($('#ev-m').value) || 60,
+      t: $('#ev-t').value.trim() || 'Séance de révision',
+      c: $('#ev-c').value,
+      n: $('#ev-n').value
+    });
+    $('#evenement').close();
+    rendreTout();
+  }
+
+  /* ------------------------------------------- déplacement et redimension */
+
+  var glisse = null;
+
+  function minutesDepuisY(col, clientY) {
+    var r = col.getBoundingClientRect();
+    var y = clientY - r.top + col.scrollTop;
+    var min = DEBUT_H * 60 + y / PX_PAR_MIN;
+    return Math.max(0, Math.min(1439, Math.round(min / PAS) * PAS));
+  }
+
+  function brancherGlisser() {
+    var corps = $('#cal-corps');
+
+    corps.addEventListener('dragstart', function (ev) {
+      var b = ev.target.closest('[data-evt]');
+      if (!b) return;
+      glisse = { id: b.dataset.evt };
+      ev.dataTransfer.effectAllowed = 'move';
+      ev.dataTransfer.setData('text/plain', b.dataset.evt);
+      b.classList.add('evt--glisse');
+    });
+
+    corps.addEventListener('dragend', function (ev) {
+      var b = ev.target.closest('[data-evt]');
+      if (b) b.classList.remove('evt--glisse');
+      $$('.depot').forEach(function (e) { e.classList.remove('depot'); });
+      glisse = null;
+    });
+
+    corps.addEventListener('dragover', function (ev) {
+      var cible = ev.target.closest('[data-depot]');
+      if (!cible || !glisse) return;
+      ev.preventDefault();
+      ev.dataTransfer.dropEffect = 'move';
+      $$('.depot').forEach(function (e) { if (e !== cible) e.classList.remove('depot'); });
+      cible.classList.add('depot');
+    });
+
+    corps.addEventListener('drop', function (ev) {
+      var cible = ev.target.closest('[data-depot]');
+      if (!cible || !glisse) return;
+      ev.preventDefault();
+      cible.classList.remove('depot');
+      var heure;
+      if (cible.dataset.heure === 'null') heure = null;
+      else if (cible.dataset.creneau) heure = minutesDepuisY(cible, ev.clientY);
+      else heure = undefined;                       // vue mois : on garde l'heure
+      S.deplacerEvt(glisse.id, cible.dataset.date, heure);
+      glisse = null;
+      rendreTout();
+    });
+
+    /* redimensionnement par la poignée basse (souris et doigt) */
+    var redim = null;
+
+    function debutRedim(ev, poignee) {
+      var id = poignee.dataset.redim;
+      var e = S.evts().filter(function (x) { return x.id === id; })[0];
+      if (!e) return;
+      redim = { id: id, y0: (ev.touches ? ev.touches[0].clientY : ev.clientY), m0: e.m, h: e.h };
+      ev.preventDefault();
+      ev.stopPropagation();
+      document.body.classList.add('redim');
+    }
+
+    corps.addEventListener('mousedown', function (ev) {
+      var p = ev.target.closest('[data-redim]');
+      if (p) debutRedim(ev, p);
+    });
+    corps.addEventListener('touchstart', function (ev) {
+      var p = ev.target.closest('[data-redim]');
+      if (p) debutRedim(ev, p);
+    }, { passive: false });
+
+    function pendantRedim(ev) {
+      if (!redim) return;
+      var y = ev.touches ? ev.touches[0].clientY : ev.clientY;
+      var delta = Math.round((y - redim.y0) / PX_PAR_MIN / PAS) * PAS;
+      var duree = Math.max(PAS, Math.min(1440 - redim.h, redim.m0 + delta));
+      var el = $('#cal-corps [data-evt="' + redim.id + '"]');
+      if (el) el.style.height = Math.max(18, duree * PX_PAR_MIN) + 'px';
+      redim.duree = duree;
+      ev.preventDefault();
+    }
+
+    function finRedim() {
+      if (!redim) return;
+      if (redim.duree) {
+        var e = S.evts().filter(function (x) { return x.id === redim.id; })[0];
+        if (e) S.setEvt({ id: e.id, d: e.d, h: e.h, m: redim.duree, t: e.t, c: e.c, n: e.n });
+      }
+      redim = null;
+      document.body.classList.remove('redim');
+      rendreTout();
+    }
+
+    document.addEventListener('mousemove', pendantRedim);
+    document.addEventListener('touchmove', pendantRedim, { passive: false });
+    document.addEventListener('mouseup', finRedim);
+    document.addEventListener('touchend', finRedim);
+
+    /* clic : ouvrir un événement, créer sur un créneau vide */
+    corps.addEventListener('click', function (ev) {
+      if (ev.target.closest('[data-redim]')) return;
+
+      var b = ev.target.closest('[data-evt]');
+      if (b) {
+        var e = S.evts().filter(function (x) { return x.id === b.dataset.evt; })[0];
+        if (e) ouvrirEvt(e);
+        return;
+      }
+      var plus = ev.target.closest('[data-jour]');
+      if (plus) { ancre = S.parse(plus.dataset.jour); vue = 'jour'; rendreTout(); return; }
+
+      var nouveau = ev.target.closest('[data-nouveau]');
+      if (nouveau) { ouvrirEvt({ d: nouveau.dataset.nouveau, h: null }); return; }
+
+      var toutJour = ev.target.closest('[data-heure="null"]');
+      if (toutJour) { ouvrirEvt({ d: toutJour.dataset.date, h: null }); return; }
+
+      var col = ev.target.closest('[data-creneau]');
+      if (col) { ouvrirEvt({ d: col.dataset.date, h: minutesDepuisY(col, ev.clientY), m: 60 }); return; }
+
+      var caseMois = ev.target.closest('.cal-mois__j');
+      if (caseMois) ouvrirEvt({ d: caseMois.dataset.date, h: null });
+    });
   }
 
   /* ------------------------------------------------------------- to-do */
@@ -69,22 +374,19 @@
           ' aria-label="Terminer : ' + esc(t.t) + '">' +
         '<span>' + esc(t.t) + '</span>' +
         '<button type="button" class="btn btn--sm btn--ghost" data-suppr="' + esc(t.id) +
-          '" aria-label="Supprimer">✕</button>' +
-        '</li>';
+          '" aria-label="Supprimer">✕</button></li>';
     }).join('');
   }
 
-  /* ------------------------------------------------- compteurs & séance */
+  /* ------------------------------------------------- compteurs et séance */
 
   function rendreCompteurs() {
     var cfg = S.cfg();
     var s = S.synthese();
     var obj = cfg.objectif || 3;
     var restants = S.lignesActives().reduce(function (a, l) { return a + Math.max(0, obj - l.nbTours); }, 0);
-
     $('#p-restants').textContent = restants;
     $('#p-objectif').textContent = obj;
-
     if (cfg.dateEdn) {
       var j = S.joursEntre(S.today(), cfg.dateEdn);
       if (j === null) j = 0;
@@ -92,9 +394,7 @@
       $('#p-jours-note').textContent = j > 0 ? 'jours avant les EDN' : 'les EDN sont passées';
       var rythme = j > 0 ? restants / j : restants;
       $('#p-rythme').textContent = rythme < 10 ? rythme.toFixed(1).replace('.', ',') : Math.ceil(rythme);
-      $('#p-rythme-note').textContent = j > 0
-        ? 'tours/jour pour tenir l\'objectif'
-        : 'tours restants au total';
+      $('#p-rythme-note').textContent = j > 0 ? 'tours/jour pour tenir l\'objectif' : 'tours restants au total';
     } else {
       $('#p-jours').textContent = '—';
       $('#p-jours-note').textContent = 'renseigne ta date d\'EDN';
@@ -104,8 +404,6 @@
     $('#p-progression').textContent = Math.round(s.progression * 100) + ' %';
   }
 
-  /** Les ex æquo (items jamais travaillés) sont répartis en tourniquet entre
-      collèges, pour éviter d'enchaîner dix lignes de la même spécialité. */
   function tourniquet(groupe) {
     if (groupe.length < 3) return groupe;
     var ordre = [], paquets = {};
@@ -116,14 +414,11 @@
     });
     var sortie = [], reste = groupe.length;
     while (reste > 0) {
-      ordre.forEach(function (c) {
-        if (paquets[c].length) { sortie.push(paquets[c].shift()); reste--; }
-      });
+      ordre.forEach(function (c) { if (paquets[c].length) { sortie.push(paquets[c].shift()); reste--; } });
     }
     return sortie;
   }
 
-  /* Les chapitres de collège hors programme (n = 0) passent après les items. */
   function rang(l) { return l.n || 1e6; }
 
   function file() {
@@ -159,101 +454,87 @@
             '<span class="spe" style="--spe:' + c.couleur + ';display:block;margin-top:2px">' +
             '<span class="spe__code">' + esc(c.court) + '</span></span></span>' +
           motif +
+          '<button type="button" class="btn btn--sm" data-planifier="' + esc(l.titre) +
+            '" data-col="' + esc(l.col || l.cols[0]) + '">Planifier</button>' +
           '<a class="btn btn--sm" href="items.html?' +
             (l.n ? 'item=' + l.n : 'q=' + encodeURIComponent(l.titre)) + '">Ouvrir</a>' +
           '</li>';
       }).join('') + '</ul>';
   }
 
-  /* --------------------------------------------------- choix de collège */
+  /* ------------------------------------------------------------- rendu */
 
-  function ouvrirChoix(dateIso) {
-    jourEdite = dateIso;
-    var choisis = S.jour(dateIso).s;
-    $('#ch-date').textContent = S.formatFr(dateIso);
-    $('#ch-liste').innerHTML = S.colleges().map(function (c) {
-      return '<button type="button" data-col="' + esc(c.id) + '" style="--spe:' + c.couleur + '" ' +
-        'class="ch-item' + (choisis.indexOf(c.id) !== -1 ? ' actif' : '') + '">' +
-        '<span class="spe__code">' + esc(c.court) + '</span>' + esc(c.nom) + '</button>';
-    }).join('');
-    var dlg = $('#choix');
-    if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
-  }
-
-  /* ---------------------------------------------------------- amorçage */
-
-  function rendre() {
+  function rendreTout() {
     rendreCompteurs();
     rendreSeance();
     rendreCalendrier();
     rendreTodo();
   }
 
+  function naviguer(sens) {
+    if (vue === 'mois') ancre = new Date(ancre.getFullYear(), ancre.getMonth() + sens, 1);
+    else if (vue === 'semaine') ancre = ajoute(ancre, 7 * sens);
+    else ancre = ajoute(ancre, sens);
+    rendreCalendrier();
+  }
+
+  // données reçues d'un autre appareil : on redessine
+  document.addEventListener('edn:distant', rendreTout);
+
   document.addEventListener('DOMContentLoaded', function () {
-    /* sélecteurs de mois et d'année */
-    $('#sel-mois').innerHTML = MOIS.map(function (m, i) {
-      return '<option value="' + i + '">' + m.charAt(0).toUpperCase() + m.slice(1) + '</option>';
-    }).join('');
-    var a0 = new Date().getFullYear();
-    var ans = '';
-    for (var a = a0 - 2; a <= a0 + 4; a++) ans += '<option value="' + a + '">' + a + '</option>';
-    $('#sel-annee').innerHTML = ans;
+    S.migrePlan();
 
     var cfg = S.cfg();
     $('#r-date').value = cfg.dateEdn || '';
     $('#r-items').value = cfg.itemsJour;
     $('#r-tours').value = cfg.objectif;
-
-    $('#r-date').addEventListener('change', function () { S.setCfg('dateEdn', this.value); rendre(); });
+    $('#r-date').addEventListener('change', function () { S.setCfg('dateEdn', this.value); rendreTout(); });
     $('#r-items').addEventListener('change', function () {
-      S.setCfg('itemsJour', Math.max(1, Number(this.value) || 6)); rendre();
+      S.setCfg('itemsJour', Math.max(1, Number(this.value) || 6)); rendreTout();
     });
     $('#r-tours').addEventListener('change', function () {
-      S.setCfg('objectif', Math.max(1, Number(this.value) || 3)); rendre();
+      S.setCfg('objectif', Math.max(1, Number(this.value) || 3)); rendreTout();
     });
 
-    /* navigation du calendrier */
-    $('#cal-prec').addEventListener('click', function () {
-      if (--vue.mois < 0) { vue.mois = 11; vue.annee--; }
-      rendreCalendrier();
-    });
-    $('#cal-suiv').addEventListener('click', function () {
-      if (++vue.mois > 11) { vue.mois = 0; vue.annee++; }
-      rendreCalendrier();
-    });
-    $('#cal-auj').addEventListener('click', function () {
-      var d = new Date();
-      vue.mois = d.getMonth(); vue.annee = d.getFullYear();
-      rendreCalendrier();
-    });
-    $('#sel-mois').addEventListener('change', function () { vue.mois = Number(this.value); rendreCalendrier(); });
-    $('#sel-annee').addEventListener('change', function () { vue.annee = Number(this.value); rendreCalendrier(); });
+    // collèges dans la modale
+    $('#ev-c').innerHTML = '<option value="">Aucun collège</option>' +
+      S.colleges().map(function (c) {
+        return '<option value="' + esc(c.id) + '">' + esc(c.nom) + '</option>';
+      }).join('');
 
-    /* interactions dans le calendrier */
-    $('#cal-corps').addEventListener('click', function (ev) {
-      var td = ev.target.closest('td[data-date]');
-      if (!td) return;
-      if (ev.target.closest('[data-ajouter]')) { ouvrirChoix(td.dataset.date); return; }
-      var retire = ev.target.closest('[data-retirer]');
-      if (retire) { S.basculeJourSpe(td.dataset.date, retire.dataset.retirer); rendreCalendrier(); }
+    $$('[data-vue]').forEach(function (b) {
+      b.addEventListener('click', function () { vue = b.dataset.vue; rendreCalendrier(); });
     });
-    $('#cal-corps').addEventListener('change', function (ev) {
-      var zone = ev.target.closest('[data-note]');
-      if (!zone) return;
-      S.setJourNote(ev.target.closest('td[data-date]').dataset.date, zone.value);
+    $('#cal-prec').addEventListener('click', function () { naviguer(-1); });
+    $('#cal-suiv').addEventListener('click', function () { naviguer(1); });
+    $('#cal-auj').addEventListener('click', function () { ancre = new Date(); rendreCalendrier(); });
+    $('#cal-nouveau').addEventListener('click', function () {
+      ouvrirEvt({ d: S.iso(memeJour(ancre, new Date()) ? new Date() : ancre), h: 9 * 60, m: 60 });
     });
 
-    /* choix de collège */
-    $('#ch-liste').addEventListener('click', function (ev) {
-      var b = ev.target.closest('[data-col]');
+    brancherGlisser();
+
+    // modale
+    $('#ev-jour').addEventListener('change', majJourEntier);
+    $('#ev-valider').addEventListener('click', enregistrerEvt);
+    $('#ev-fermer').addEventListener('click', function () { $('#evenement').close(); });
+    $('#ev-supprimer').addEventListener('click', function () {
+      S.supprimerEvt(edite.id);
+      $('#evenement').close();
+      rendreTout();
+    });
+    $('#evenement').addEventListener('keydown', function (ev) {
+      if (ev.key === 'Enter' && ev.target.id === 'ev-t') { ev.preventDefault(); enregistrerEvt(); }
+    });
+
+    // planifier une ligne de la séance du jour
+    $('#p-seance').addEventListener('click', function (ev) {
+      var b = ev.target.closest('[data-planifier]');
       if (!b) return;
-      S.basculeJourSpe(jourEdite, b.dataset.col);
-      b.classList.toggle('actif');
-      rendreCalendrier();
+      ouvrirEvt({ d: S.today(), h: 9 * 60, m: 60, t: b.dataset.planifier, c: b.dataset.col });
     });
-    $('#ch-fermer').addEventListener('click', function () { $('#choix').close(); });
 
-    /* to-do */
+    // to-do
     $('#todo-form').addEventListener('submit', function (ev) {
       ev.preventDefault();
       if (S.ajouterTache($('#todo-input').value)) $('#todo-input').value = '';
@@ -268,6 +549,27 @@
       if (b) { S.basculeTache(b.dataset.bascule); rendreTodo(); }
     });
 
-    rendre();
+    // raccourcis clavier, comme dans un agenda
+    document.addEventListener('keydown', function (ev) {
+      if (ev.metaKey || ev.ctrlKey || ev.altKey) return;
+      var dans = document.activeElement;
+      if (dans && /^(INPUT|TEXTAREA|SELECT)$/.test(dans.tagName)) return;
+      if ($('#evenement').open) return;
+      var k = ev.key.toLowerCase();
+      if (k === 'm') { vue = 'mois'; rendreCalendrier(); }
+      else if (k === 's') { vue = 'semaine'; rendreCalendrier(); }
+      else if (k === 'j') { vue = 'jour'; rendreCalendrier(); }
+      else if (k === 't') { ancre = new Date(); rendreCalendrier(); }
+      else if (k === 'n') { ev.preventDefault(); ouvrirEvt({ d: S.iso(ancre), h: 9 * 60, m: 60 }); }
+      else if (ev.key === 'ArrowLeft') naviguer(-1);
+      else if (ev.key === 'ArrowRight') naviguer(1);
+      else return;
+      ev.preventDefault();
+    });
+
+    // sur téléphone, la vue jour est la plus lisible
+    if (window.matchMedia && matchMedia('(max-width: 760px)').matches) vue = 'jour';
+
+    rendreTout();
   });
 })();

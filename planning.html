@@ -155,7 +155,10 @@
     </div>
     <p class="small muted" style="margin-top:8px">
       Clique sur une case ou un créneau pour créer une séance, sur une séance pour la modifier,
-      glisse-la pour la déplacer, tire son bord bas pour changer sa durée. Raccourcis :
+      glisse-la pour la déplacer, tire son bord bas pour changer sa durée.
+      <strong>Glisse une tâche de la to-do</strong> sur le calendrier pour la planifier, et
+      utilise le <strong>⋯</strong> d'une journée pour la copier, la coller ailleurs ou la vider.
+      Raccourcis :
       <kbd>M</kbd> mois, <kbd>S</kbd> semaine, <kbd>J</kbd> jour, <kbd>T</kbd> aujourd'hui,
       <kbd>N</kbd> nouvelle séance, <kbd>←</kbd> <kbd>→</kbd> pour naviguer.
     </p>
@@ -206,6 +209,43 @@
         <input type="number" id="ev-m" min="5" max="1440" step="5">
       </div>
     </div>
+    <div>
+      <label for="ev-freq">Répéter</label>
+      <select id="ev-freq">
+        <option value="jamais">Ne pas répéter</option>
+        <option value="jour">Tous les jours</option>
+        <option value="ouvres">Du lundi au vendredi</option>
+        <option value="semaine">Toutes les semaines, ce jour-là</option>
+        <option value="jours">Certains jours de la semaine…</option>
+      </select>
+    </div>
+
+    <div class="hide" id="ev-choixjours">
+      <label>Jours concernés</label>
+      <div class="jours-semaine">
+        <label><input type="checkbox" value="0">Lun</label>
+        <label><input type="checkbox" value="1">Mar</label>
+        <label><input type="checkbox" value="2">Mer</label>
+        <label><input type="checkbox" value="3">Jeu</label>
+        <label><input type="checkbox" value="4">Ven</label>
+        <label><input type="checkbox" value="5">Sam</label>
+        <label><input type="checkbox" value="6">Dim</label>
+      </div>
+    </div>
+
+    <div class="hide" id="ev-fin">
+      <label for="ev-jusqu">Jusqu'au</label>
+      <input type="date" id="ev-jusqu">
+    </div>
+
+    <div class="hide" id="ev-serie">
+      <div class="notice notice--info" style="padding:10px 13px">
+        <p class="mb0 small">Cette séance fait partie d'une série.
+        <button type="button" class="btn btn--sm btn--danger" id="ev-serie-suppr"
+          style="margin-left:6px">Supprimer toute la série</button></p>
+      </div>
+    </div>
+
     <div>
       <label for="ev-n">Note</label>
       <textarea id="ev-n" placeholder="Ce qu'il faut couvrir, les pièges à revoir…"></textarea>

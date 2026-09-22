@@ -150,6 +150,10 @@
       masq: fusionneDict(local.masq, distant.masq, localPlusRecent),
       plan: fusionneDict(local.plan, distant.plan, localPlusRecent),
       evts: fusionneDict(local.evts, distant.evts, localPlusRecent),
+      // le presse-papiers de journée suit l'appareil le plus récent, et n'est
+      // jamais effacé par une fusion s'il n'existe que d'un côté
+      presse: (localPlusRecent ? local.presse : distant.presse)
+              || local.presse || distant.presse || null,
       todo: fusionneTodo(
         Array.isArray(local.todo) ? local.todo : [],
         Array.isArray(distant.todo) ? distant.todo : [],

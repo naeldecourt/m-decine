@@ -1010,3 +1010,63 @@ td.todo-case { width: 132px; }
 /* numéro d'item sur une tâche venue de la page Répartition */
 .todo__list .tag { flex: none; text-decoration: none; }
 .todo__list li.fait .tag { opacity: .5; }
+
+/* ------------------------------------------------ menu et copie de journée */
+
+.cal-mois__tete { display: flex; align-items: center; justify-content: space-between; gap: 2px; }
+
+.jour-menu {
+  border: 0; background: none; cursor: pointer; padding: 0;
+  width: 24px; height: 24px; border-radius: 6px; flex: none;
+  font: inherit; font-size: .9rem; line-height: 1; color: var(--ink-3);
+  opacity: 0; transition: opacity .12s;
+}
+.cal-mois__j:hover .jour-menu,
+.cal-grille__jour:hover .jour-menu,
+.jour-menu:focus-visible { opacity: 1; }
+.jour-menu:hover { background: var(--bg-2); color: var(--ink); }
+.cal-grille__jour { position: relative; }
+.cal-grille__jour .jour-menu { position: absolute; top: 4px; right: 4px; }
+
+.jour-popover {
+  position: absolute; z-index: 60; min-width: 190px;
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--r-sm); box-shadow: var(--shadow-lg); padding: 6px;
+}
+.jour-popover__titre {
+  padding: 5px 9px 7px; font-size: .72rem; font-weight: 700;
+  letter-spacing: .05em; text-transform: uppercase; color: var(--ink-3);
+  border-bottom: 1px solid var(--line); margin-bottom: 4px;
+}
+.jour-popover button {
+  display: block; width: 100%; text-align: left;
+  border: 0; background: none; cursor: pointer; font: inherit; font-size: .86rem;
+  color: var(--ink); padding: 9px 10px; border-radius: 8px; min-height: 40px;
+}
+.jour-popover button:hover:not([disabled]) { background: var(--bg-2); }
+.jour-popover button[disabled] { color: var(--ink-3); cursor: not-allowed; }
+.jour-popover button.danger:hover:not([disabled]) { background: var(--red-soft); color: var(--red); }
+
+/* jours de la semaine dans la modale de répétition */
+.jours-semaine { display: flex; flex-wrap: wrap; gap: 6px; }
+.jours-semaine label {
+  display: inline-flex; align-items: center; gap: 5px; margin: 0; cursor: pointer;
+  border: 1px solid var(--line-2); border-radius: 9px; padding: 7px 10px;
+  font-size: .8rem; font-weight: 600; text-transform: none; letter-spacing: 0; color: var(--ink);
+  min-height: 40px;
+}
+.jours-semaine label:hover { border-color: var(--blue); }
+
+/* tâche de la to-do en cours de déplacement */
+.todo__list li[draggable] { cursor: grab; }
+.todo__list li.glisse { opacity: .4; }
+
+@media (max-width: 760px) {
+  /* Pas de survol sur téléphone : le ⋯ reste visible et devient assez grand
+     pour le doigt. En vue mois il se superpose au coin de la case plutôt que
+     d'en manger la largeur, les colonnes ne faisant qu'une cinquantaine de pixels. */
+  .jour-menu { opacity: 1; width: 32px; height: 32px; font-size: 1rem; }
+  .cal-mois__j { position: relative; }
+  .cal-mois__j .jour-menu { position: absolute; top: 1px; right: 1px; z-index: 1; }
+  .cal-mois__evts { position: relative; z-index: 2; }
+}

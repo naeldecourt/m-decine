@@ -35,7 +35,8 @@
     notes: {},   // { cle: 'texte' }
     masq:  {},   // { cle: 1 }
     plan:  {},   // { '2026-09-22': { n:'notes', s:['cardiologie'] } }  (hérité, migré vers evts)
-    evts:  {},   // { id: { id, d:'2026-09-22', h:540|null, m:60, t:'titre', c:'college', n:'note' } }
+    evts:  {},   // { id: { id, d, h:540|null, m:60, t, c:'college', n:'note', i:231, g:'serie' } }
+    presse: null, // presse-papiers de journée : [ { h, m, t, c, n, i } ]
     todo:  [],   // [ { id, t, f } ]
     cfg:   { vue: 'college', dateEdn: '', itemsJour: 6, objectif: 3 }
   };
@@ -46,6 +47,7 @@
 
   function fusionne(dest, src) {
     if (src.maj) dest.maj = Number(src.maj) || 0;
+    if (Array.isArray(src.presse)) dest.presse = src.presse;
     ['tours', 'res', 'notes', 'masq', 'plan', 'evts'].forEach(function (k) {
       if (src[k] && typeof src[k] === 'object' && !Array.isArray(src[k])) dest[k] = src[k];
     });
@@ -329,7 +331,7 @@
   function normaliseEvt(e) {
     var h = (e.h === null || e.h === undefined || e.h === '') ? null
           : Math.max(0, Math.min(1439, Math.round(Number(e.h) || 0)));
-    return {
+    var evt = {
       id: e.id || idEvt(),
       d: e.d || today(),
       h: h,
@@ -338,6 +340,9 @@
       c: e.c || '',
       n: String(e.n || '').slice(0, 2000)
     };
+    if (e.i) evt.i = Number(e.i);        // item rattaché
+    if (e.g) evt.g = String(e.g);        // série de répétition
+    return evt;
   }
 
   function evts() {
@@ -403,6 +408,111 @@
       if (e.h !== null) e.m = Math.min(e.m, 1440 - e.h);
     }
     return save();
+  }
+
+  /** Copie une séance sur une autre date (et éventuellement une autre heure). */
+  function dupliquerEvt(id, versDate, versHeure) {
+    var e = load().evts[id];
+    if (!e) return null;
+    return setEvt({
+      d: versDate || e.d,
+      h: versHeure === undefined ? e.h : versHeure,
+      m: e.m, t: e.t, c: e.c, n: e.n, i: e.i
+    });
+  }
+
+  var MAX_OCCURRENCES = 200;
+
+  /**
+   * Répète une séance jusqu'à une date donnée.
+   * @param {string} id
+   * @param {object} o  { freq:'jour'|'semaine'|'ouvres'|'jours', jours:[0-6], jusqu:'AAAA-MM-JJ' }
+   *                    « jours » est indexé lundi = 0, comme l'affichage.
+   * @returns {number} nombre d'occurrences créées
+   */
+  function repeterEvt(id, o) {
+    var e = load().evts[id];
+    if (!e || !o || !o.freq || o.freq === 'jamais') return 0;
+    var debut = parse(e.d), fin = parse(o.jusqu);
+    if (!debut || !fin || fin <= debut) return 0;
+
+    var serie = e.g || ('s' + idEvt());
+    e.g = serie;
+
+    var jours = Array.isArray(o.jours) ? o.jours : [];
+    var cur = new Date(debut.getTime());
+    var n = 0;
+    while (n < MAX_OCCURRENCES) {
+      if (o.freq === 'semaine') cur.setDate(cur.getDate() + 7);
+      else cur.setDate(cur.getDate() + 1);
+      if (cur > fin) break;
+
+      var jourSemaine = (cur.getDay() + 6) % 7;            // lundi = 0
+      if (o.freq === 'ouvres' && jourSemaine > 4) continue;
+      if (o.freq === 'jours' && jours.indexOf(jourSemaine) === -1) continue;
+
+      var copie = normaliseEvt({
+        d: iso(cur), h: e.h, m: e.m, t: e.t, c: e.c, n: e.n, i: e.i, g: serie
+      });
+      load().evts[copie.id] = copie;
+      n++;
+    }
+    save();
+    return n;
+  }
+
+  function serieDe(id) {
+    var e = load().evts[id];
+    return e && e.g ? e.g : null;
+  }
+
+  /** Supprime toutes les séances d'une même série. */
+  function supprimerSerie(g) {
+    if (!g) return 0;
+    var d = load(), n = 0;
+    Object.keys(d.evts).forEach(function (k) {
+      if (d.evts[k].g === g) { delete d.evts[k]; n++; }
+    });
+    save();
+    return n;
+  }
+
+  /* ------------------------------------------------ presse-papiers de jour */
+
+  /** Copie toutes les séances d'une journée dans le presse-papiers. */
+  function copierJour(dateIso) {
+    var liste = evtsDuJour(dateIso).map(function (e) {
+      return { h: e.h, m: e.m, t: e.t, c: e.c, n: e.n, i: e.i };
+    });
+    load().presse = liste.length ? liste : null;
+    save();
+    return liste.length;
+  }
+
+  function presse() {
+    var p = load().presse;
+    return Array.isArray(p) ? p : null;
+  }
+
+  /** Recrée les séances du presse-papiers sur une journée. */
+  function collerJour(dateIso) {
+    var p = presse();
+    if (!p || !p.length) return 0;
+    p.forEach(function (m) {
+      var e = normaliseEvt({ d: dateIso, h: m.h, m: m.m, t: m.t, c: m.c, n: m.n, i: m.i });
+      load().evts[e.id] = e;
+    });
+    save();
+    return p.length;
+  }
+
+  function viderJour(dateIso) {
+    var d = load(), n = 0;
+    Object.keys(d.evts).forEach(function (k) {
+      if (d.evts[k].d === dateIso) { delete d.evts[k]; n++; }
+    });
+    save();
+    return n;
   }
 
   /* Reprend l'ancien planning (une note et des collèges par jour) sous forme
@@ -706,6 +816,9 @@
     jour: jour, setJourNote: setJourNote, basculeJourSpe: basculeJourSpe,
     evts: evts, evtsDuJour: evtsDuJour, evtsEntre: evtsEntre, setEvt: setEvt,
     supprimerEvt: supprimerEvt, deplacerEvt: deplacerEvt, couleurEvt: couleurEvt,
+    dupliquerEvt: dupliquerEvt, repeterEvt: repeterEvt, serieDe: serieDe,
+    supprimerSerie: supprimerSerie,
+    copierJour: copierJour, collerJour: collerJour, viderJour: viderJour, presse: presse,
     hhmm: hhmm, minutesDepuis: minutesDepuis, migrePlan: migrePlan, normaliseEvt: normaliseEvt,
     todo: todo, ajouterTache: ajouterTache, basculeTache: basculeTache, supprimerTache: supprimerTache,
     tacheItem: tacheItem, basculeTacheItem: basculeTacheItem,

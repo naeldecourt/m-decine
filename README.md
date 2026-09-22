@@ -92,6 +92,32 @@ mention « journée entière »), un collège — qui lui donne sa couleur — e
 note. Le bouton **Planifier** de la séance du jour crée directement la séance
 correspondante.
 
+### Planifier depuis la to-do
+
+Une tâche de la to-do se **glisse directement sur le calendrier** pour devenir
+une séance : sur une case du mois, sur un créneau horaire, ou sur la ligne
+« journée entière ». Le bouton 📅 de chaque tâche fait la même chose sans
+souris, en ouvrant la modale pré-remplie. Une tâche venue de la page
+Répartition transmet son numéro d'item et la couleur de son collège référent,
+et **reste dans la liste** : on la coche quand c'est réellement fait.
+
+### Répéter une séance
+
+Le champ **Répéter** de la modale crée les occurrences d'un coup : tous les
+jours, du lundi au vendredi, toutes les semaines ce jour-là, ou certains jours
+choisis — jusqu'à une date de fin, pré-remplie à quatre semaines. Les
+occurrences sont de vraies séances, modifiables une par une, qui partagent un
+identifiant de série : ouvrir l'une d'elles propose **Supprimer toute la
+série**. Le nombre d'occurrences est plafonné à 200.
+
+### Copier une journée
+
+Le bouton **⋯** d'une journée ouvre un menu : *Copier la journée*, *Coller
+ici*, *Vider la journée*. De quoi rejouer une journée type ailleurs dans le
+mois sans tout resaisir. Le presse-papiers est conservé d'une session à
+l'autre et suit la synchronisation : on copie sur l'ordinateur, on colle sur
+le téléphone.
+
 L'ancien planning (une note et des collèges par jour) est converti
 automatiquement en séances de journée entière au premier chargement.
 

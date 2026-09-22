@@ -85,8 +85,12 @@
       var visibles = liste.slice(0, 3);
       html += '<div class="cal-mois__j' + (hors ? ' hors' : '') + (k === auj ? ' auj' : '') +
         '" data-date="' + k + '" data-depot="1">' +
-        '<button type="button" class="cal-mois__num" data-nouveau="' + k + '" ' +
-          'aria-label="Ajouter au ' + esc(S.formatFr(k)) + '">' + d.getDate() + '</button>' +
+        '<div class="cal-mois__tete">' +
+          '<button type="button" class="cal-mois__num" data-nouveau="' + k + '" ' +
+            'aria-label="Ajouter au ' + esc(S.formatFr(k)) + '">' + d.getDate() + '</button>' +
+          '<button type="button" class="jour-menu" data-menu="' + k + '" ' +
+            'aria-label="Actions du ' + esc(S.formatFr(k)) + '">⋯</button>' +
+        '</div>' +
         '<div class="cal-mois__evts">' + visibles.map(function (e) { return pastilleEvt(e, true); }).join('') +
         (liste.length > 3
           ? '<button type="button" class="cal-mois__plus" data-jour="' + k + '">+ ' +
@@ -113,7 +117,10 @@
       var k = S.iso(d);
       html += '<div class="cal-grille__jour' + (k === auj ? ' auj' : '') + '">' +
         '<span class="cal-grille__nom">' + JOURS_COURTS[jourDeSemaine(d)] + '</span>' +
-        '<span class="cal-grille__num">' + d.getDate() + '</span></div>';
+        '<span class="cal-grille__num">' + d.getDate() + '</span>' +
+        '<button type="button" class="jour-menu" data-menu="' + k + '" ' +
+          'aria-label="Actions du ' + esc(S.formatFr(k)) + '">⋯</button>' +
+        '</div>';
     });
 
     // ligne journée entière
@@ -195,6 +202,11 @@
     edite = S.normaliseEvt(evt || {});
     var nouveau = !evt || !evt.id || !S.evtsDuJour(edite.d).some(function (e) { return e.id === edite.id; });
     $('#ev-titre').textContent = nouveau ? 'Nouvelle séance' : 'Modifier la séance';
+    var serie = evt && evt.id ? S.serieDe(evt.id) : null;
+    $('#ev-serie').classList.toggle('hide', !serie);
+    $('#ev-freq').value = 'jamais';
+    $('#ev-jusqu').value = '';
+    majRepetition();
     $('#ev-t').value = edite.t;
     $('#ev-d').value = edite.d;
     $('#ev-jour').checked = edite.h === null;
@@ -214,24 +226,45 @@
     $('#ev-horaires').classList.toggle('hide', toutJour);
   }
 
+  function majRepetition() {
+    var freq = $('#ev-freq').value;
+    $('#ev-fin').classList.toggle('hide', freq === 'jamais');
+    $('#ev-choixjours').classList.toggle('hide', freq !== 'jours');
+    if (freq !== 'jamais' && !$('#ev-jusqu').value) {
+      // par défaut, on répète sur les quatre semaines à venir
+      var d = S.parse($('#ev-d').value || S.today());
+      if (d) { d.setDate(d.getDate() + 28); $('#ev-jusqu').value = S.iso(d); }
+    }
+  }
+
   function enregistrerEvt() {
     var toutJour = $('#ev-jour').checked;
-    S.setEvt({
+    var e = S.setEvt({
       id: edite.id,
       d: $('#ev-d').value || S.today(),
       h: toutJour ? null : S.minutesDepuis($('#ev-h').value),
       m: Number($('#ev-m').value) || 60,
       t: $('#ev-t').value.trim() || 'Séance de révision',
       c: $('#ev-c').value,
-      n: $('#ev-n').value
+      n: $('#ev-n').value,
+      i: edite.i,
+      g: edite.g
     });
+
+    var freq = $('#ev-freq').value;
+    if (freq !== 'jamais') {
+      var jours = $$('#ev-choixjours input:checked').map(function (b) { return Number(b.value); });
+      var n = S.repeterEvt(e.id, { freq: freq, jours: jours, jusqu: $('#ev-jusqu').value });
+      if (!n) alert('Aucune répétition créée : vérifie la date de fin, et les jours choisis.');
+    }
+
     $('#evenement').close();
     rendreTout();
   }
 
   /* ------------------------------------------- déplacement et redimension */
 
-  var glisse = null;
+  var glisse = null;    // { id } pour une séance, { tache } pour une tâche de la to-do
 
   function minutesDepuisY(col, clientY) {
     var r = col.getBoundingClientRect();
@@ -263,7 +296,10 @@
       var cible = ev.target.closest('[data-depot]');
       if (!cible || !glisse) return;
       ev.preventDefault();
-      ev.dataTransfer.dropEffect = 'move';
+      // l'effet doit correspondre à effectAllowed posé au dragstart, sinon le
+      // navigateur refuse l'opération et « drop » ne se déclenche jamais :
+      // une tâche est copiée dans le calendrier, une séance est déplacée.
+      ev.dataTransfer.dropEffect = glisse.tache ? 'copy' : 'move';
       $$('.depot').forEach(function (e) { if (e !== cible) e.classList.remove('depot'); });
       cible.classList.add('depot');
     });
@@ -273,11 +309,25 @@
       if (!cible || !glisse) return;
       ev.preventDefault();
       cible.classList.remove('depot');
+
       var heure;
       if (cible.dataset.heure === 'null') heure = null;
       else if (cible.dataset.creneau) heure = minutesDepuisY(cible, ev.clientY);
       else heure = undefined;                       // vue mois : on garde l'heure
-      S.deplacerEvt(glisse.id, cible.dataset.date, heure);
+
+      if (glisse.tache) {
+        // une tâche de la to-do devient une séance ; la tâche reste dans la liste
+        var t = S.todo().filter(function (x) { return x.id === glisse.tache; })[0];
+        if (t) {
+          S.setEvt({
+            d: cible.dataset.date,
+            h: heure === undefined ? 9 * 60 : heure,
+            m: 60, t: t.t, c: collegeDeLItem(t.n), i: t.n || 0
+          });
+        }
+      } else {
+        S.deplacerEvt(glisse.id, cible.dataset.date, heure);
+      }
       glisse = null;
       rendreTout();
     });
@@ -335,6 +385,9 @@
     corps.addEventListener('click', function (ev) {
       if (ev.target.closest('[data-redim]')) return;
 
+      var menu = ev.target.closest('[data-menu]');
+      if (menu) { ev.stopPropagation(); ouvrirMenuJour(menu, menu.dataset.menu); return; }
+
       var b = ev.target.closest('[data-evt]');
       if (b) {
         var e = S.evts().filter(function (x) { return x.id === b.dataset.evt; })[0];
@@ -358,6 +411,68 @@
     });
   }
 
+  /** Collège de référence d'un item, pour colorer la séance créée. */
+  function collegeDeLItem(n) {
+    if (!n) return '';
+    var it = (window.EDN_ITEMS || []).filter(function (x) { return x.n === Number(n); })[0];
+    return it ? it.ref : '';
+  }
+
+  /* -------------------------------------------- menu d'une journée */
+
+  var popover = null;
+
+  function fermerMenuJour() {
+    if (popover) { popover.remove(); popover = null; }
+  }
+
+  function ouvrirMenuJour(bouton, dateIso) {
+    fermerMenuJour();
+    var p = S.presse();
+    var nb = S.evtsDuJour(dateIso).length;
+
+    popover = document.createElement('div');
+    popover.className = 'jour-popover';
+    popover.setAttribute('role', 'menu');
+    popover.innerHTML =
+      '<div class="jour-popover__titre">' + esc(S.formatFr(dateIso)) + '</div>' +
+      '<button type="button" data-act="copier"' + (nb ? '' : ' disabled') + '>' +
+        'Copier la journée' + (nb ? ' (' + nb + ')' : '') + '</button>' +
+      '<button type="button" data-act="coller"' + (p ? '' : ' disabled') + '>' +
+        'Coller ici' + (p ? ' (' + p.length + ')' : '') + '</button>' +
+      '<button type="button" data-act="vider"' + (nb ? '' : ' disabled') + ' class="danger">' +
+        'Vider la journée</button>';
+    document.body.appendChild(popover);
+
+    var r = bouton.getBoundingClientRect();
+    var largeur = popover.offsetWidth;
+    popover.style.top = (r.bottom + window.scrollY + 6) + 'px';
+    popover.style.left = Math.max(8, Math.min(
+      r.left + window.scrollX, window.innerWidth - largeur - 8)) + 'px';
+
+    popover.addEventListener('click', function (ev) {
+      var b = ev.target.closest('[data-act]');
+      if (!b || b.disabled) return;
+      if (b.dataset.act === 'copier') S.copierJour(dateIso);
+      else if (b.dataset.act === 'coller') S.collerJour(dateIso);
+      else if (b.dataset.act === 'vider') {
+        if (!confirm('Supprimer les ' + nb + ' séance(s) du ' + S.formatFr(dateIso) + ' ?')) return;
+        S.viderJour(dateIso);
+      }
+      fermerMenuJour();
+      rendreTout();
+    });
+  }
+
+  document.addEventListener('click', function (ev) {
+    if (popover && !ev.target.closest('.jour-popover') && !ev.target.closest('[data-menu]')) {
+      fermerMenuJour();
+    }
+  });
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape') fermerMenuJour();
+  });
+
   /* ------------------------------------------------------------- to-do */
 
   function rendreTodo() {
@@ -374,11 +489,14 @@
         ? '<a class="tag tag--blue" href="items.html?item=' + Number(t.n) +
           '" title="Ouvrir l\'item ' + Number(t.n) + '">' + Number(t.n) + '</a>'
         : '';
-      return '<li class="' + (t.f ? 'fait' : '') + '">' +
+      return '<li class="' + (t.f ? 'fait' : '') + '" draggable="true" data-tache="' + esc(t.id) + '"' +
+          ' title="Glisse-moi sur le calendrier pour me planifier">' +
         '<input type="checkbox" data-bascule="' + esc(t.id) + '"' + (t.f ? ' checked' : '') +
           ' aria-label="Terminer : ' + esc(t.t) + '">' +
         lien +
         '<span>' + esc(t.t) + '</span>' +
+        '<button type="button" class="btn btn--sm btn--ghost" data-planifier-tache="' + esc(t.id) +
+          '" aria-label="Planifier : ' + esc(t.t) + '" title="Planifier">📅</button>' +
         '<button type="button" class="btn btn--sm btn--ghost" data-suppr="' + esc(t.id) +
           '" aria-label="Supprimer">✕</button></li>';
     }).join('');
@@ -522,6 +640,15 @@
 
     // modale
     $('#ev-jour').addEventListener('change', majJourEntier);
+    $('#ev-freq').addEventListener('change', majRepetition);
+    $('#ev-serie-suppr').addEventListener('click', function () {
+      var g = S.serieDe(edite.id);
+      if (!g) return;
+      if (!confirm('Supprimer toutes les séances de cette série ?')) return;
+      S.supprimerSerie(g);
+      $('#evenement').close();
+      rendreTout();
+    });
     $('#ev-valider').addEventListener('click', enregistrerEvt);
     $('#ev-fermer').addEventListener('click', function () { $('#evenement').close(); });
     $('#ev-supprimer').addEventListener('click', function () {
@@ -548,7 +675,29 @@
     });
     $('#todo-liste').addEventListener('click', function (ev) {
       var s = ev.target.closest('[data-suppr]');
-      if (s) { S.supprimerTache(s.dataset.suppr); rendreTodo(); }
+      if (s) { S.supprimerTache(s.dataset.suppr); rendreTodo(); return; }
+      var p = ev.target.closest('[data-planifier-tache]');
+      if (p) {
+        var t = S.todo().filter(function (x) { return x.id === p.dataset.planifierTache; })[0];
+        if (t) ouvrirEvt({ d: S.iso(ancre), h: 9 * 60, m: 60, t: t.t,
+                           c: collegeDeLItem(t.n), i: t.n || 0 });
+      }
+    });
+
+    // glisser une tâche depuis la to-do vers le calendrier
+    $('#todo-liste').addEventListener('dragstart', function (ev) {
+      var li = ev.target.closest('[data-tache]');
+      if (!li) return;
+      glisse = { tache: li.dataset.tache };
+      ev.dataTransfer.effectAllowed = 'copy';
+      ev.dataTransfer.setData('text/plain', li.dataset.tache);
+      li.classList.add('glisse');
+    });
+    $('#todo-liste').addEventListener('dragend', function (ev) {
+      var li = ev.target.closest('[data-tache]');
+      if (li) li.classList.remove('glisse');
+      $$('.depot').forEach(function (e) { e.classList.remove('depot'); });
+      glisse = null;
     });
     $('#todo-liste').addEventListener('change', function (ev) {
       var b = ev.target.closest('[data-bascule]');

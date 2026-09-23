@@ -274,17 +274,11 @@
       })
       .catch(function () { /* pas de HTTPS, ou navigateur sans support */ });
 
-    // Au tout premier enregistrement, clients.claim() déclenche aussi
-    // controllerchange : recharger là n'apporte rien et coupe la navigation en
-    // cours. On ne recharge donc que si la page était déjà contrôlée, c'est-à-dire
-    // lorsqu'une nouvelle version prend réellement le relais.
-    var dejaControlee = !!navigator.serviceWorker.controller;
-    var recharge = false;
-    navigator.serviceWorker.addEventListener('controllerchange', function () {
-      if (!dejaControlee || recharge) return;
-      recharge = true;
-      location.reload();
-    });
+    // Pas de rechargement forcé quand un nouveau worker prend la main : les
+    // pages sont servies réseau d'abord et leurs scripts portent le numéro de
+    // version dans l'adresse, donc le code affiché est déjà le bon. Recharger
+    // sous les doigts, une dizaine de secondes après l'ouverture, ne ferait
+    // qu'interrompre ce qu'on est en train de faire.
   }
 
   window.UI = {

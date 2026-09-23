@@ -205,11 +205,22 @@ Le site est pensé pour être utilisé au doigt autant qu'au clavier.
   Dans le métro, on continue d'enregistrer ses tours — tout est en local de
   toute façon.
 
-Le nom du cache est **tamponné à chaque déploiement** : le workflow GitHub
-Pages remplace `__BUILD__` dans `sw.js` par l'empreinte du commit, ce qui force
-la purge de l'ancien cache. Sans cela, un nom de cache figé garderait
-indéfiniment les scripts servis « cache d'abord », et une correction livrée
-n'arriverait jamais sur un appareil ayant déjà visité le site.
+**La version est inscrite dans l'adresse des scripts.** Le workflow remplace
+`__BUILD__` par l'empreinte du commit, dans `sw.js` et dans les pages, qui
+référencent alors `store.js?v=<empreinte>`.
+
+C'est ce détail qui fait arriver les corrections. Renommer le cache ne suffit
+pas : le service worker en place continue de servir l'ancien fichier jusqu'à ce
+qu'il soit lui-même remplacé, et ce remplacement prend une dizaine de secondes
+— bien après que la page est utilisable. Mesuré : avec le seul renommage du
+cache, une page ouverte puis refermée au bout de deux secondes ne recevait
+jamais la nouvelle version. Avec le numéro dans l'adresse, la ressource
+demandée est absente de l'ancien cache : elle part au réseau, dès le premier
+chargement.
+
+Corollaire : plus de rechargement forcé quand un nouveau worker prend la main.
+Le code affiché est déjà le bon, et recharger sous les doigts dix secondes
+après l'ouverture ne ferait qu'interrompre ce qu'on est en train de faire.
 
 ## Supprimer, et que ça reste supprimé
 

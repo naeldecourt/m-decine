@@ -27,12 +27,17 @@ jobs:
       - name: Récupérer le dépôt
         uses: actions/checkout@v4
 
-      - name: Tamponner le cache du service worker
-        # Sans empreinte unique, le cache garderait l'ancien JavaScript
-        # indéfiniment chez les visiteurs déjà venus.
+      - name: Tamponner la version dans les pages et le service worker
+        # Les pages référencent « store.js?v=<empreinte> » : c'est ce numéro
+        # dans l'adresse qui fait arriver le nouveau code dès le premier
+        # chargement, sans attendre le remplacement du service worker.
+        # Le drapeau g est indispensable : __BUILD__ apparaît plusieurs fois
+        # sur une même ligne dans certaines pages.
         run: |
-          sed -i "s/__BUILD__/${GITHUB_SHA::8}/" sw.js
-          grep -n "var VERSION" sw.js
+          sed -i "s/__BUILD__/${GITHUB_SHA::8}/g" sw.js *.html
+          grep -n "var BUILD" sw.js
+          grep -c "?v=${GITHUB_SHA::8}" index.html
+          ! grep -rn "__BUILD__" sw.js *.html
 
       - name: Préparer Pages
         uses: actions/configure-pages@v5

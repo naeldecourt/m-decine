@@ -4,13 +4,19 @@
    d'abord ». Les données de révision, elles, vivent dans localStorage et ne
    passent jamais par ici. */
 
-/* Le nom du cache est tamponné à chaque déploiement par le workflow GitHub
-   Pages, qui remplace __BUILD__ par l'empreinte du commit. Sans ça, un cache au
-   nom fixe servirait indéfiniment l'ancien JavaScript : les ressources sont
-   servies « cache d'abord » pour la vitesse et le hors connexion. En local, le
-   marqueur reste tel quel, ce qui donne un cache stable pendant le développement. */
-var VERSION = 'edn-__BUILD__';
-var COQUILLE = [
+/* __BUILD__ est remplacé à chaque déploiement par l'empreinte du commit — ici
+   et dans les pages, qui référencent « store.js?v=<empreinte> ». C'est ce
+   numéro dans l'adresse qui fait arriver le nouveau code : les ressources sont
+   servies « cache d'abord », donc sans lui l'ancien fichier serait rendu tant
+   que ce worker-ci n'a pas été remplacé — et son remplacement prend une dizaine
+   de secondes, bien après que la page est utilisable. Avec le numéro, l'adresse
+   demandée est absente de l'ancien cache : elle part au réseau, dès le premier
+   chargement. En local le marqueur reste tel quel, ce qui donne un cache stable
+   pendant le développement. */
+var BUILD = '__BUILD__';
+var VERSION = 'edn-' + BUILD;
+// Pages et fichiers sans version dans l'adresse : on les met en cache tels quels.
+var PAGES = [
   './',
   './index.html',
   './items.html',
@@ -23,6 +29,15 @@ var COQUILLE = [
   './fiche-ecg.html',
   './fiche-examen-clinique.html',
   './manifest.webmanifest',
+  './assets/icone.svg',
+  './assets/icone-192.png',
+  './assets/icone-512.png',
+  './assets/apple-touch-icon.png'
+];
+
+// Scripts et styles : mis en cache sous l'adresse versionnée, celle-là même que
+// les pages demandent. Les deux doivent coïncider, sinon le cache sert à rien.
+var VERSIONNES = [
   './assets/css/style.css',
   './assets/js/items.js',
   './assets/js/store.js',
@@ -33,12 +48,10 @@ var COQUILLE = [
   './assets/js/page-repartition.js',
   './assets/js/page-specialites.js',
   './assets/js/page-stats.js',
-  './assets/js/page-planning.js',
-  './assets/icone.svg',
-  './assets/icone-192.png',
-  './assets/icone-512.png',
-  './assets/apple-touch-icon.png'
+  './assets/js/page-planning.js'
 ];
+
+var COQUILLE = PAGES.concat(VERSIONNES.map(function (u) { return u + '?v=' + BUILD; }));
 
 self.addEventListener('install', function (ev) {
   ev.waitUntil(

@@ -1280,3 +1280,50 @@ html.focus-ouvert, body.focus-ouvert { overflow: hidden; height: 100%; }
   .flash--focus .flash__btn { flex-direction: column; margin-top: 26px; }
   .flash--focus .flash__btn .btn { width: 100%; }
 }
+
+/* ------------------------------------- les trois réponses d'une carte */
+
+/* Rouge, orange, vert : on lit son niveau à la couleur avant même le mot, et
+   chaque bouton annonce dans combien de temps la carte reviendra. */
+.flash__btn--3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.flash__aide { margin: 26px 0 0; color: var(--ink-2); font-size: .92rem; }
+
+.rep {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 13px 10px; min-height: 60px;
+  font: inherit; font-weight: 700; cursor: pointer;
+  border-radius: 12px; border: 1.5px solid color-mix(in srgb, var(--r) 45%, transparent);
+  background: color-mix(in srgb, var(--r) 12%, transparent); color: var(--r);
+  transition: background .12s ease, transform .06s ease;
+}
+.rep:hover { background: color-mix(in srgb, var(--r) 22%, transparent); }
+.rep:active { transform: translateY(1px); }
+.rep:focus-visible { outline: 2px solid var(--r); outline-offset: 2px; }
+.rep--rouge  { --r: var(--red); }
+.rep--orange { --r: var(--amber); }
+.rep--vert   { --r: var(--green); }
+.rep__t { font-size: 1rem; }
+.rep__d { font-size: .74rem; font-weight: 600; opacity: .75; }
+
+.focus__bilan { display: flex; justify-content: center; gap: 10px; margin-bottom: 26px; }
+.bilan {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 10px 16px; border-radius: 12px;
+  font-size: .78rem; font-weight: 600;
+  background: color-mix(in srgb, var(--r) 14%, transparent); color: var(--r);
+}
+.bilan strong { font-size: 1.35rem; font-weight: 800; }
+.bilan--rouge  { --r: var(--red); }
+.bilan--orange { --r: var(--amber); }
+.bilan--vert   { --r: var(--green); }
+
+@media (max-width: 760px) {
+  /* Les trois restent côte à côte : c'est leur alignement qui fait lire
+     l'échelle rouge → vert d'un coup d'œil. */
+  .flash--focus .flash__btn--3 { flex-direction: row; gap: 8px; }
+  .rep { padding: 12px 4px; min-height: 64px; }
+  .rep__t { font-size: .92rem; }
+  .rep__d { font-size: .68rem; }
+  .focus__bilan { gap: 8px; }
+  .bilan { padding: 9px 12px; }
+}

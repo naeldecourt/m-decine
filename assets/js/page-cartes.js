@@ -17,7 +17,7 @@
     courante: null,
     revele: false,
     total: 0,          // taille de la session, pour la jauge d'avancement
-    su: 0, rate: 0,
+    bilan: { rouge: 0, orange: 0, vert: 0 },
     scroll: 0          // position de la page, restituée en sortant du plein écran
   };
 
@@ -235,7 +235,7 @@
     etat.courante = etat.file.shift() || null;
     etat.revele = false;
     etat.total = file.length;
-    etat.su = 0; etat.rate = 0;
+    etat.bilan = { rouge: 0, orange: 0, vert: 0 };
     if (etat.courante) ouvrirFocus(); else rendreRevision();
   }
 
@@ -289,9 +289,13 @@
         '<div class="focus__fin">' +
           '<p class="focus__fin-titre">Session terminée</p>' +
           '<p class="focus__fin-detail">' + etat.total + ' carte' +
-            (etat.total > 1 ? 's' : '') + ' passée' + (etat.total > 1 ? 's' : '') +
-            ' — <strong>' + etat.su + '</strong> sue' + (etat.su > 1 ? 's' : '') +
-            ', <strong>' + etat.rate + '</strong> à revoir.</p>' +
+            (etat.total > 1 ? 's' : '') + ' passée' + (etat.total > 1 ? 's' : '') + '.</p>' +
+          '<div class="focus__bilan">' +
+            [['vert', 'sues'], ['orange', 'hésitées'], ['rouge', 'à revoir']].map(function (x) {
+              return '<span class="bilan bilan--' + x[0] + '">' +
+                '<strong>' + etat.bilan[x[0]] + '</strong>' + x[1] + '</span>';
+            }).join('') +
+          '</div>' +
           '<button type="button" class="btn btn--primary" data-focus="fermer">Terminer</button>' +
         '</div>';
       return;
@@ -308,14 +312,28 @@
         '<p class="flash__r">' + esc(c.r) + '</p>' +
         (etat.revele
           ? '<p class="flash__v">' + esc(c.v || '(pas de réponse notée)') + '</p>' +
-            '<div class="flash__btn">' +
-              '<button type="button" class="btn btn--danger" data-rep="non">Pas su</button>' +
-              '<button type="button" class="btn btn--primary" data-rep="oui">Su</button>' +
+            '<div class="flash__btn flash__btn--3">' +
+              '<button type="button" class="rep rep--rouge" data-rep="rouge">' +
+                '<span class="rep__t">Pas su</span>' +
+                '<span class="rep__d">demain</span></button>' +
+              '<button type="button" class="rep rep--orange" data-rep="orange">' +
+                '<span class="rep__t">Hésité</span>' +
+                '<span class="rep__d">' + delai(c, 'orange') + '</span></button>' +
+              '<button type="button" class="rep rep--vert" data-rep="vert">' +
+                '<span class="rep__t">Su</span>' +
+                '<span class="rep__d">' + delai(c, 'vert') + '</span></button>' +
             '</div>'
-          : '<div class="flash__btn">' +
-              '<button type="button" class="btn btn--primary" data-focus="voir">Voir la réponse</button>' +
-            '</div>') +
+          : '<p class="flash__aide">Clique n’importe où pour voir la réponse</p>') +
       '</div>';
+  }
+
+  /* Le délai avant revoyure si on répond ainsi, annoncé sur le bouton : on
+     choisit mieux quand on voit ce que ça engage. */
+  function delai(c, niveau) {
+    var b = Math.min(S.MAX_BOITE, Math.max(1, Number(c.b) || 1));
+    if (niveau === 'vert') b = Math.min(S.MAX_BOITE, b + 1);
+    var j = S.BOITES[b] || 1;
+    return j === 1 ? 'demain' : 'dans ' + j + ' j';
   }
 
   /** Réviser les cartes d'un item depuis les résultats de recherche. */
@@ -339,13 +357,18 @@
     return l;
   }
 
-  function repondre(su) {
+  /**
+   * @param {string} niveau 'rouge' (pas su), 'orange' (hésité), 'vert' (su)
+   */
+  function repondre(niveau) {
     if (!etat.courante) return;
-    S.repondCarte(etat.courante.id, su);
-    if (su) etat.su++; else etat.rate++;
-    // Une carte ratée revient en fin de file : on ne quitte pas la session
-    // en la laissant de côté. La jauge en tient compte.
-    if (!su) { etat.file.push(etat.courante); etat.total++; }
+    if (['rouge', 'orange', 'vert'].indexOf(niveau) === -1) return;
+    S.repondCarte(etat.courante.id, niveau);
+    etat.bilan[niveau]++;
+    // Une carte qu'on ne savait pas revient en fin de file : on ne quitte pas
+    // la session en la laissant de côté. La jauge en tient compte. Une carte
+    // hésitée, elle, on la savait : elle reviendra plus tard, pas maintenant.
+    if (niveau === 'rouge') { etat.file.push(etat.courante); etat.total++; }
     etat.courante = etat.file.shift() || null;
     etat.revele = false;
     if (focusOuvert()) rendreFocus(); else rendreRevision();
@@ -457,14 +480,16 @@
     var focus = $('#focus');
     if (focus) {
       focus.addEventListener('click', function (ev) {
-        var f = ev.target.closest('[data-focus]');
-        if (f) {
-          if (f.dataset.focus === 'voir') { etat.revele = true; rendreFocus(); }
-          else fermerFocus();
-          return;
-        }
         var r = ev.target.closest('[data-rep]');
-        if (r) repondre(r.dataset.rep === 'oui');
+        if (r) { repondre(r.dataset.rep); return; }
+        var f = ev.target.closest('[data-focus]');
+        if (f) { fermerFocus(); return; }
+        if (ev.target.closest('#focus-quitter')) return;
+        // Ailleurs dans la zone de la carte : un clic retourne la carte.
+        if (!etat.revele && etat.courante && ev.target.closest('#focus-corps')) {
+          etat.revele = true;
+          rendreFocus();
+        }
       });
       $('#focus-quitter').addEventListener('click', fermerFocus);
     }
@@ -482,8 +507,9 @@
         if (enCours) rendreFocus(); else rendreRevision();
         return;
       }
-      if (etat.revele && (ev.key === '1' || ev.key === '2')) {
-        ev.preventDefault(); repondre(ev.key === '2');
+      if (etat.revele && ['1', '2', '3'].indexOf(ev.key) !== -1) {
+        ev.preventDefault();
+        repondre({ '1': 'rouge', '2': 'orange', '3': 'vert' }[ev.key]);
       }
     });
 

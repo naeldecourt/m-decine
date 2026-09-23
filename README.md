@@ -94,14 +94,27 @@ que l'étoile désigne partout le même collège.
 ## Cartes de révision et notes de cours
 
 Des cartes écrites à la main, rattachées à un item : une question au recto, la
-réponse au verso. Elles se révisent en **boîtes de Leitner** — le principe
-d'Anki en plus simple. Une carte sue monte d'une boîte et revient plus tard,
-une carte ratée retombe en boîte 1 et revient tout de suite ; les délais sont
-de 1, 3, 7, 16 puis 35 jours.
+réponse au verso. Un clic n'importe où sur la carte la retourne.
+
+Elles se révisent en **boîtes de Leitner** — le principe d'Anki en plus simple.
+Les délais sont de 1, 3, 7, 16 puis 35 jours, et la réponse se donne sur trois
+niveaux plutôt que deux : entre « je ne savais pas » et « je savais », il y a
+« j'ai hésité », et les traiter pareil fait remonter trop vite des cartes mal
+assurées.
+
+| Réponse | Boîte | La carte revient |
+|---|---|---|
+| 🔴 Pas su | retour à la boîte 1 | demain, **et encore dans la session en cours** |
+| 🟠 Hésité | inchangée | au même délai qu'avant |
+| 🟢 Su | une boîte de plus | plus tard qu'avant |
+
+Chaque bouton annonce dans combien de temps la carte reviendra : on choisit
+mieux quand on voit ce que ça engage.
 
 - **Réviser** : à revoir aujourd'hui, toutes les cartes, ou seulement l'item
   sélectionné. L'ordre est mélangé à chaque session, pour apprendre les cartes
-  et non leur ordre. Au clavier : espace révèle, `1` « pas su », `2` « su ».
+  et non leur ordre. Au clavier : espace retourne la carte, puis `1` pas su,
+  `2` hésité, `3` su.
 - **Un bouton « Réviser » sur chaque résultat de recherche** lance directement
   la révision de cet item, sans repasser par le menu de portée. Il ne s'affiche
   que si l'item porte au moins une carte, et présente alors toutes ses cartes —
@@ -113,7 +126,7 @@ de 1, 3, 7, 16 puis 35 jours.
   d'autre. Le défilement de la page est bloqué derrière, et la position est
   restituée en sortant. Échap ferme ; les réponses déjà données sont
   enregistrées au fil de l'eau, quitter n'abandonne que les cartes non encore
-  vues. En fin de session, un bilan : cartes passées, sues, à revoir.
+  vues. En fin de session, un bilan par niveau : sues, hésitées, à revoir.
 - **Corriger une carte ne remet pas son avancement à zéro** : la boîte et la
   date de revoyure sont conservées. Le bouton ↺ sert à repartir de zéro quand
   c'est vraiment voulu.

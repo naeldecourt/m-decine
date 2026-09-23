@@ -720,16 +720,32 @@
     return save();
   }
 
+  /* Trois niveaux de réponse plutôt que deux : entre « je ne savais pas » et
+     « je savais », il y a « j'ai hésité », et les traiter pareil fait remonter
+     trop vite des cartes mal assurées. */
+  var NIVEAUX = ['rouge', 'orange', 'vert'];
+
   /**
    * Enregistre une réponse.
    * @param {string} id
-   * @param {boolean} su vrai si la carte a été sue
+   * @param {string} niveau 'rouge' (pas su), 'orange' (hésité) ou 'vert' (su).
+   *                 Un booléen est accepté pour compatibilité.
    */
-  function repondCarte(id, su) {
+  function repondCarte(id, niveau) {
     var d = load();
     var c = d.cartes[id];
     if (!c) return false;
-    c.b = su ? Math.min(MAX_BOITE, (Number(c.b) || 1) + 1) : 1;
+    if (niveau === true) niveau = 'vert';
+    else if (niveau === false) niveau = 'rouge';
+    if (NIVEAUX.indexOf(niveau) === -1) niveau = 'orange';
+
+    var boite = Math.min(MAX_BOITE, Math.max(1, Number(c.b) || 1));
+    // rouge : on repart de la première boîte. orange : on reste dans la même,
+    // la carte revient donc au même délai qu'avant. vert : on monte d'une.
+    if (niveau === 'rouge') boite = 1;
+    else if (niveau === 'vert') boite = Math.min(MAX_BOITE, boite + 1);
+    c.b = boite;
+
     var dans = BOITES[c.b] || 1;
     var prochaine = parse(today());
     prochaine.setDate(prochaine.getDate() + dans);
@@ -1026,7 +1042,7 @@
     cartes: cartes, cartesDe: cartesDe, cartesDues: cartesDues, setCarte: setCarte,
     supprimerCarte: supprimerCarte, repondCarte: repondCarte,
     reinitialiserCarte: reinitialiserCarte, syntheseCartes: syntheseCartes,
-    BOITES: BOITES, MAX_BOITE: MAX_BOITE,
+    BOITES: BOITES, MAX_BOITE: MAX_BOITE, NIVEAUX: NIVEAUX,
     cours: cours, setCours: setCours, itemsAvecCours: itemsAvecCours,
     cfg: cfg, setCfg: setCfg, reset: reset,
     brut: brut, remplace: remplace,

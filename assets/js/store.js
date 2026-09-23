@@ -207,26 +207,30 @@
 
   /* ------------------------------------------------------ item référent */
 
-  /* Le collège référent d'un item : celui que la donnée d'origine marque, à
-     défaut le premier rencontré — même règle que la page Répartition, pour
-     que l'étoile désigne partout le même collège. La table est construite une
-     fois : les filtres la consultent à chaque frappe. */
+  /* Les collèges en écriture d'un item — ceux qui font foi pour les EDN, et
+     qui portent l'étoile. Un item peut en avoir plusieurs ; vingt-cinq n'en
+     ont aucun parmi les 24 collèges du site, et n'ont alors pas d'étoile du
+     tout : mieux vaut pas d'étoile qu'une étoile fausse. La table est
+     construite une fois, les filtres la consultent à chaque frappe. */
   var REFS = null;
 
   function refs() {
     if (REFS) return REFS;
     REFS = {};
-    var declare = {};
     (window.EDN_LIGNES || []).forEach(function (l) {
-      if (!l.n) return;
-      if (l.ref && !declare[l.n]) { declare[l.n] = 1; REFS[l.n] = l.c; return; }
-      if (REFS[l.n] === undefined) REFS[l.n] = l.c;  // à défaut, le premier tient lieu
+      if (!l.n || !l.ref) return;
+      var liste = REFS[l.n] || (REFS[l.n] = []);
+      if (liste.indexOf(l.c) === -1) liste.push(l.c);
     });
     return REFS;
   }
 
-  /** Identifiant du collège référent d'un item, ou '' si l'item est inconnu. */
-  function refItem(n) { return refs()[Number(n)] || ''; }
+  /** Les collèges référents d'un item, du plus au moins probable. Liste vide
+      si aucun des collèges en écriture ne figure parmi les 24 du site. */
+  function refsItem(n) { return refs()[Number(n)] || []; }
+
+  /** Vrai si ce collège est référent de cet item. */
+  function estRef(n, college) { return refsItem(n).indexOf(college) !== -1; }
 
   /* ------------------------------------------------------- lecture tour */
 
@@ -1023,7 +1027,7 @@
   window.Store = {
     MAX_TOURS: MAX_TOURS, SUPPORTS: SUPPORTS, INTERVALLES: INTERVALLES,
     iso: iso, today: today, parse: parse, formatFr: formatFr, joursEntre: joursEntre, duree: duree,
-    vue: vue, setVue: setVue, cle: cle, refItem: refItem,
+    vue: vue, setVue: setVue, cle: cle, refsItem: refsItem, estRef: estRef,
     colleges: colleges, college: college,
     tours: tours, dernier: dernier, confiance: confiance, minutes: minutes,
     prochaine: prochaine, retard: retard, priorite: priorite, statut: statut,

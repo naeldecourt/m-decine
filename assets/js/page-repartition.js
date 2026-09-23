@@ -32,25 +32,27 @@
       e.cols.push({ id: l.c, ref: l.ref ? 1 : 0, titres: [l.t] });
     });
 
+    var alpha = function (x, y) {
+      return S.college(x.id).nom.localeCompare(S.college(y.id).nom, 'fr');
+    };
+
     TABLE = Object.keys(parNum).map(function (k) {
       var e = parNum[k];
-      var ref = null;
-      for (var i = 0; i < e.cols.length; i++) if (e.cols[i].ref) { ref = e.cols[i]; break; }
-      var refDeclare = !!ref;
-      if (!ref) ref = e.cols[0];                // aucun référent déclaré
-      // Le référent d'abord, les autres collèges ensuite par ordre alphabétique.
-      var autres = e.cols.filter(function (c) { return c !== ref; })
-        .sort(function (x, y) { return S.college(x.id).nom.localeCompare(S.college(y.id).nom, 'fr'); });
-      var cols = [ref].concat(autres);
+      // Un item peut avoir plusieurs collèges en écriture ; vingt-cinq n'en ont
+      // aucun ici, leur collège d'écriture n'existant pas parmi les 24.
+      var refs = e.cols.filter(function (c) { return c.ref; }).sort(alpha);
+      var autres = e.cols.filter(function (c) { return !c.ref; }).sort(alpha);
+      var cols = refs.concat(autres);
+      var titre = (refs[0] || cols[0]).titres[0];
       return {
         n: e.n,
-        titre: ref.titres[0],                   // l'intitulé du collège référent fait foi
-        ref: ref,
-        refDeclare: refDeclare,
+        titre: titre,                           // l'intitulé d'un collège en écriture fait foi
+        refs: refs,
+        sansRef: !refs.length,
         cols: cols,
         nbCols: cols.length,
-        // collèges dont l'intitulé s'écarte de celui du référent
-        variantes: autres.filter(function (c) { return c.titres[0] !== ref.titres[0]; }).length
+        // collèges dont l'intitulé s'écarte de celui qui est affiché
+        variantes: cols.filter(function (c) { return c.titres[0] !== titre; }).length
       };
     }).sort(function (a, b) { return a.n - b.n; });
     return TABLE;
@@ -68,7 +70,7 @@
   function filtre() {
     var q = U.sansAccent(etat.q.trim());
     return construire().filter(function (r) {
-      if (etat.ref && r.ref.id !== etat.ref) return false;
+      if (etat.ref && !r.refs.some(function (c) { return c.id === etat.ref; })) return false;
       if (etat.present && !r.cols.some(function (c) { return c.id === etat.present; })) return false;
       if (etat.transversal === 'mono' && r.nbCols !== 1) return false;
       if (etat.transversal === 'multi' && r.nbCols < 2) return false;
@@ -83,8 +85,9 @@
     var k = etat.tri;
     if (k === 'titre') return a.titre.localeCompare(b.titre, 'fr') * etat.sens || a.n - b.n;
     if (k === 'cols') {
-      return S.college(a.ref.id).nom.localeCompare(S.college(b.ref.id).nom, 'fr') * etat.sens
-        || a.n - b.n;
+      var na = a.refs.length ? S.college(a.refs[0].id).nom : '\uffff';
+      var nb = b.refs.length ? S.college(b.refs[0].id).nom : '\uffff';
+      return na.localeCompare(nb, 'fr') * etat.sens || a.n - b.n;
     }
     if (k === 'nbCols') return (a.nbCols - b.nbCols) * etat.sens || a.n - b.n;
     return (a.n - b.n) * etat.sens;
@@ -103,13 +106,14 @@
   function colonneColleges(r) {
     var html = '<div class="row" style="gap:6px">' +
       r.cols.map(function (c) {
-        var ref = c === r.ref;
+        var ref = !!c.ref;
         var titre = S.college(c.id).nom + ' — « ' + c.titres[0] + ' »' +
-          (ref ? ' · collège référent' + (r.refDeclare ? '' : ' (déduit)') : '');
+          (ref ? ' · collège en écriture (référent)' : ' · relecture');
         return '<span title="' + esc(titre) + '">' + pastille(c.id, ref) + '</span>';
       }).join('') + '</div>';
-    if (!r.refDeclare) {
-      html += '<div class="small muted" style="margin-top:3px">référent déduit</div>';
+    if (r.sansRef) {
+      html += '<div class="small muted" style="margin-top:3px">' +
+        'collège en écriture hors des 24 du site</div>';
     }
     if (etat.intitules && r.variantes) {
       html += '<ul class="small muted" style="margin:7px 0 0;padding-left:1.1em">' +
@@ -179,12 +183,13 @@
   }
 
   function exporter() {
-    var lignes = [['Item', 'Intitule', 'College referent', 'Autres colleges',
+    var lignes = [['Item', 'Intitule', 'Colleges en ecriture', 'Colleges en relecture',
                    'Nombre de colleges', 'Intitules differents'].join(';')];
     filtre().forEach(function (r) {
       lignes.push([
-        r.n, r.titre, S.college(r.ref.id).nom,
-        r.cols.filter(function (c) { return c !== r.ref; })
+        r.n, r.titre,
+        r.refs.map(function (c) { return S.college(c.id).nom; }).join(' / '),
+        r.cols.filter(function (c) { return !c.ref; })
           .map(function (c) { return S.college(c.id).nom; }).join(' / '),
         r.nbCols,
         r.cols.filter(function (c) { return c.titres[0] !== r.titre; })

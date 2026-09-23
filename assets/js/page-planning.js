@@ -708,7 +708,7 @@
         // « référent » : le collège qui porte l'item. « présents » : tous ceux
         // qui le traitent, référent compris.
         var ok = recherche.portee === 'ref'
-          ? S.refItem(it.n) === recherche.col
+          ? S.estRef(it.n, recherche.col)
           : it.cols.indexOf(recherche.col) !== -1;
         if (!ok) return false;
       }
@@ -720,7 +720,7 @@
     }).map(function (it) {
       var a = avancement[it.n] || { tours: 0, retard: -9999 };
       return {
-        n: it.n, titre: it.t, cols: it.cols, ref: S.refItem(it.n),
+        n: it.n, titre: it.t, cols: it.cols, refs: S.refsItem(it.n),
         nbTours: a.tours,
         retard: a.retard === -9999 ? 0 : a.retard
       };
@@ -748,17 +748,18 @@
         '<span class="trouve__t">' + esc(l.titre) +
           '<span class="row" style="gap:5px;margin-top:3px">' +
           l.cols.slice().sort(function (a, b) {
-            return (a === l.ref ? -1 : 0) - (b === l.ref ? -1 : 0);
+            return (l.refs.indexOf(b) !== -1) - (l.refs.indexOf(a) !== -1);
           }).map(function (id) {
             var x = S.college(id);
-            return '<span class="spe' + (id === l.ref ? ' spe--ref' : '') +
+            var ref = l.refs.indexOf(id) !== -1;
+            return '<span class="spe' + (ref ? ' spe--ref' : '') +
               '" style="--spe:' + x.couleur + '">' +
               '<span class="spe__code">' + esc(x.court) + '</span>' +
-              (id === l.ref ? '★ ' : '') + esc(x.nom) + '</span>';
+              (ref ? '★ ' : '') + esc(x.nom) + '</span>';
           }).join('') + '</span></span>' +
         '<span class="trouve__etat">' + etat + '</span>' +
         '<button type="button" class="btn btn--sm btn--primary" data-planifier="' + esc(l.titre) +
-          '" data-col="' + esc(l.ref || l.cols[0]) + '" data-num="' + l.n + '">Planifier</button>' +
+          '" data-col="' + esc(l.refs[0] || l.cols[0]) + '" data-num="' + l.n + '">Planifier</button>' +
         '<a class="btn btn--sm" href="items.html?item=' + l.n + '">Ouvrir</a>' +
         '</li>';
     }).join('') + '</ul>' +

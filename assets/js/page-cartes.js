@@ -41,7 +41,7 @@
         // « référent » : le collège qui porte l'item. « présents » : tous ceux
         // qui le traitent, référent compris.
         var ok = etat.portee === 'ref'
-          ? S.refItem(it.n) === etat.col
+          ? S.estRef(it.n, etat.col)
           : it.cols.indexOf(etat.col) !== -1;
         if (!ok) return false;
       }
@@ -65,14 +65,19 @@
       : '<ul class="trouve">' + liste.slice(0, MAX_RESULTATS).map(function (it) {
           var cartes = S.cartesDe(it.n);
           var dues = cartes.filter(function (c) { return c.d <= jour; }).length;
-          var ref = S.refItem(it.n);
-          var col = ref ? S.college(ref) : null;
+          // Le premier collège en écriture représente l'item ; à défaut, aucun
+          // badge plutôt qu'un collège pris au hasard.
+          var refs = S.refsItem(it.n);
+          var col = refs.length ? S.college(refs[0]) : null;
           return '<li>' +
             '<strong class="trouve__n">' + it.n + '</strong>' +
             '<span class="trouve__t">' + esc(it.t) +
               (col ? ' <span class="spe spe--ref" style="--spe:' + col.couleur + '" ' +
-                'title="Collège référent : ' + esc(col.nom) + '">' +
-                '<span class="spe__code">' + esc(col.court) + '</span>★</span>' : '') +
+                'title="Collège en écriture : ' + esc(refs.map(function (c) {
+                  return S.college(c).nom; }).join(', ')) + '">' +
+                '<span class="spe__code">' + esc(col.court) + '</span>★' +
+                (refs.length > 1 ? '<span class="spe__plus">+' + (refs.length - 1) + '</span>' : '') +
+                '</span>' : '') +
             '</span>' +
             '<span class="trouve__etat">' +
               (cartes.length ? '<span class="tag">' + cartes.length + ' carte' +

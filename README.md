@@ -64,14 +64,34 @@ Mieux vaut choisir la sienne au début et s'y tenir.
 ## La page Répartition
 
 Chaque item y est présenté avec **tous les collèges où il figure**, sur une
-seule colonne : le **collège référent**, marqué d'une étoile ★, ouvre la liste,
-les autres suivent par ordre alphabétique. L'intitulé affiché est celui du
-référent ; quand un autre collège lui en donne un différent, la ligne se déplie
-pour montrer chaque variante.
+seule colonne : les **collèges en écriture**, marqués d'une étoile ★, ouvrent la
+liste, les collèges en relecture suivent. L'intitulé affiché est celui d'un
+collège en écriture ; quand un autre lui en donne un différent, la ligne se
+déplie pour montrer chaque variante.
 
-Trois items (35, 96 et 119) ne portent aucun référent dans la donnée source :
-le premier collège rencontré en tient lieu, et la mention « référent déduit »
-le signale plutôt que de laisser croire à une donnée établie.
+### D'où vient l'étoile
+
+Du tableau officiel **écriture / relecture** des 367 items : le collège en
+écriture est celui dont le référentiel fait foi pour les EDN, celui en relecture
+traite l'item mais s'efface devant lui.
+
+Ce tableau nomme **59 collèges** ; le site en affiche **24**, qui sont des
+regroupements (« Cardiologie - Chir Vasc. » fond à elle seule quatre collèges
+officiels). Chaque collège officiel est donc ramené à son groupe, et deux
+conséquences en découlent :
+
+- **37 items ont plusieurs étoiles**, soit parce que le tableau leur donne
+  plusieurs collèges en écriture, soit parce que ces collèges tombent dans des
+  groupes différents. Elles sont toutes affichées, sur le même plan.
+- **25 items n'en ont aucune.** Leur collège en écriture — Médecine générale,
+  Humanités, Génétique médicale, Radiologie, Biochimie, Médecines intégratives —
+  n'a pas d'équivalent parmi les 24. Plutôt qu'une étoile fausse, ils n'en
+  portent pas, et la page le dit.
+
+Les collèges où figure un item, eux, restent ceux de la donnée d'origine : seule
+l'étoile vient du tableau. Trente-trois couples item-collège ont été ajoutés,
+uniquement là où un collège en écriture n'était pas rattaché à son item — sans
+quoi l'étoile n'aurait eu nulle part où s'afficher.
 
 ## Trouver un item à planifier
 

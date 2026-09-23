@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Répartition des items par collège | Révision EDN</title>
-<meta name="description" content="Tableau de tous les items du programme EDN avec leur collège référent et tous les autres collèges où chacun figure.">
+<meta name="description" content="Tableau de tous les items du programme EDN avec leur collège en écriture (référent) et les autres collèges où chacun figure.">
 <meta name="theme-color" content="#f1f5fb">
 <meta name="color-scheme" content="light dark">
 <meta name="mobile-web-app-capable" content="yes">
@@ -60,8 +60,9 @@
     <h1 class="mb0">Répartition des items</h1>
     <p class="muted" style="max-width:68ch">Un item du programme est rarement l'affaire d'un seul
     collège. Ce tableau donne, pour chacun, <strong>tous les collèges où il figure</strong> : le
-    <strong>collège référent ★</strong> en tête, puis les autres, qui le traitent souvent sous un
-    angle et un intitulé différents.</p>
+    <strong>collège en écriture ★</strong> en tête — celui qui fait foi pour les EDN, parfois
+    plusieurs — puis les autres, qui le traitent souvent sous un angle et un intitulé
+    différents.</p>
   </section>
 
   <section>
@@ -98,8 +99,8 @@
         <input type="search" id="f-q" placeholder="Rechercher un item, un numéro, un collège…" autocomplete="off">
       </div>
       <div class="filters">
-        <label class="vh" for="f-ref">Collège référent</label>
-        <select id="f-ref"><option value="">Tous les référents ★</option></select>
+        <label class="vh" for="f-ref">Collège en écriture</label>
+        <select id="f-ref"><option value="">Tous les collèges en écriture ★</option></select>
         <label class="vh" for="f-present">Collège</label>
         <select id="f-present"><option value="">Présent dans n'importe quel collège</option></select>
         <label class="vh" for="f-transversal">Transversalité</label>
@@ -140,7 +141,7 @@
               <th class="nowrap" title="Cocher pour ajouter l'item à la to-do list du planning">À faire</th>
               <th class="sortable" data-tri="n" aria-sort="ascending">N° <span class="arrow">▲</span></th>
               <th class="sortable" data-tri="titre">Intitulé <span class="arrow">↕</span></th>
-              <th class="sortable" data-tri="cols">Collèges <span class="small muted">(★ référent)</span> <span class="arrow">↕</span></th>
+              <th class="sortable" data-tri="cols">Collèges <span class="small muted">(★ en écriture)</span> <span class="arrow">↕</span></th>
               <th class="sortable nowrap center" data-tri="nbCols">Collèges <span class="arrow">↕</span></th>
             </tr>
           </thead>
@@ -156,11 +157,15 @@
       d'œil dans quels collèges il revient — donc où tu risques de le recroiser, et quels chapitres
       tu peux enchaîner pendant que le sujet est frais. Un numéro te renvoie directement à sa ligne
       dans la liste des items.</p>
-      <p><strong>L'étoile ★</strong> marque le <strong>collège référent</strong> : celui qui porte
-      l'item au programme. Il apparaît en premier, suivi des autres collèges qui le traitent aussi.
-      Quand la donnée source ne déclare aucun référent, le premier collège rencontré en tient lieu
-      et la mention « référent déduit » l'indique.</p>
-      <p><strong>L'intitulé affiché</strong> est celui du collège référent. Coche
+      <p><strong>L'étoile ★</strong> marque un <strong>collège en écriture</strong> : celui dont
+      le référentiel fait foi pour les EDN. Un item peut en avoir plusieurs — ils apparaissent
+      alors tous en tête, sur le même plan — suivis des collèges en relecture, qui le traitent
+      aussi mais s'effacent devant eux.</p>
+      <p><strong>Vingt-cinq items n'ont aucune étoile.</strong> Leur collège en écriture
+      (Médecine générale, Humanités, Génétique médicale, Radiologie…) ne fait pas partie des
+      24 collèges du site. Plutôt qu'une étoile fausse, ils n'en portent pas, et la mention
+      « collège en écriture hors des 24 du site » l'indique.</p>
+      <p><strong>L'intitulé affiché</strong> est celui d'un collège en écriture. Coche
       « Afficher les intitulés divergents » pour voir, collège par collège, ceux qui s'en écartent.</p>
       <p><strong>La case « à faire ».</strong> Elle place l'item dans la to-do list du
       <a href="planning.html">planning</a>, et l'en retire si tu la décoches. Pratique pour se

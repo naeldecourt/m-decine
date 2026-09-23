@@ -1213,3 +1213,70 @@ ul.cartes > li.en-edition { background: color-mix(in srgb, var(--blue) 7%, trans
   .flash__btn { flex-direction: column; }
   .flash__btn .btn { width: 100%; }
 }
+
+/* -------------------------------------------- révision en plein écran */
+
+/* Pendant une session, la carte prend tout l'écran : plus de navigation, plus
+   de formulaire, plus de compteurs — rien d'autre à regarder que la question. */
+.focus {
+  position: fixed; inset: 0; z-index: 200;
+  display: flex; flex-direction: column;
+  background: var(--bg);
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+           env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+/* Le défilement est bloqué sur les deux éléments : selon le navigateur, c'est
+   l'un ou l'autre qui défile, et une page qui bouge derrière ruinerait le
+   propos du plein écran. */
+html.focus-ouvert, body.focus-ouvert { overflow: hidden; height: 100%; }
+
+.focus__barre {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 18px; border-bottom: 1px solid var(--line);
+}
+.focus__avance {
+  flex: none; font-variant-numeric: tabular-nums;
+  font-size: .85rem; font-weight: 700; color: var(--ink-2);
+}
+.focus__jauge {
+  flex: 1 1 auto; height: 6px; border-radius: 999px; background: var(--bg-2); overflow: hidden;
+}
+.focus__jauge > span {
+  display: block; height: 100%; width: 0; border-radius: 999px;
+  background: var(--blue); transition: width .25s ease;
+}
+.focus__quitter {
+  flex: none; width: 40px; height: 40px; border-radius: 12px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 1.05rem; color: var(--ink-2);
+  background: transparent; border: 1px solid var(--line); cursor: pointer;
+}
+.focus__quitter:hover { background: var(--bg-2); color: var(--ink); }
+
+.focus__corps {
+  flex: 1 1 auto; overflow-y: auto;
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px 18px;
+}
+/* La carte en plein écran : plus grande, sans cadre qui la referme. */
+.flash--focus {
+  width: 100%; max-width: 720px; border: 0; background: transparent; padding: 0;
+}
+.flash--focus .flash__r { font-size: 1.6rem; line-height: 1.35; }
+.flash--focus .flash__v { font-size: 1.18rem; margin-top: 22px; padding-top: 22px; }
+.flash--focus .flash__btn { margin-top: 30px; }
+.flash--focus .flash__btn .btn { min-width: 160px; min-height: 52px; font-size: 1rem; }
+
+.focus__fin { text-align: center; }
+.focus__fin-titre { margin: 0; font-size: 1.5rem; font-weight: 700; }
+.focus__fin-detail { margin: 12px 0 26px; color: var(--ink-2); }
+.focus__fin .btn { min-width: 180px; min-height: 48px; }
+
+@media (max-width: 760px) {
+  .focus__barre { padding: 12px 14px; }
+  .focus__corps { padding: 18px 16px; align-items: flex-start; padding-top: 32px; }
+  .flash--focus .flash__r { font-size: 1.3rem; }
+  .flash--focus .flash__v { font-size: 1.05rem; }
+  .flash--focus .flash__btn { flex-direction: column; margin-top: 26px; }
+  .flash--focus .flash__btn .btn { width: 100%; }
+}

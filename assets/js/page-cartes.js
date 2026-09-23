@@ -15,7 +15,10 @@
     edition: null,     // identifiant de la carte en cours de modification
     file: [],          // cartes restant à revoir dans la session
     courante: null,
-    revele: false
+    revele: false,
+    total: 0,          // taille de la session, pour la jauge d'avancement
+    su: 0, rate: 0,
+    scroll: 0          // position de la page, restituée en sortant du plein écran
   };
 
   /* ------------------------------------------------------- choix d'item */
@@ -231,7 +234,88 @@
     etat.file = melange(file.slice());
     etat.courante = etat.file.shift() || null;
     etat.revele = false;
-    rendreRevision();
+    etat.total = file.length;
+    etat.su = 0; etat.rate = 0;
+    if (etat.courante) ouvrirFocus(); else rendreRevision();
+  }
+
+  /* ---------------------------------------------------- mode révision */
+
+  /* Pendant une session, la carte occupe tout l'écran : plus de navigation,
+     plus de formulaire, plus de compteurs. Le reste de la page continue
+     d'exister derrière, on l'empêche seulement de défiler. */
+  function focusOuvert() {
+    var f = $('#focus');
+    return !!f && !f.hidden;
+  }
+
+  function ouvrirFocus() {
+    var f = $('#focus');
+    if (!f) { rendreRevision(); return; }      // page ancienne : on reste en ligne
+    f.hidden = false;
+    etat.scroll = window.scrollY || 0;     // pour revenir où on en était
+    document.body.classList.add('focus-ouvert');
+    document.documentElement.classList.add('focus-ouvert');
+    rendreFocus();
+    var b = $('#focus-corps button');
+    if (b) b.focus();
+  }
+
+  function fermerFocus() {
+    var f = $('#focus');
+    if (f) f.hidden = true;
+    document.body.classList.remove('focus-ouvert');
+    document.documentElement.classList.remove('focus-ouvert');
+    if (etat.scroll) window.scrollTo(0, etat.scroll);
+    // Les réponses sont enregistrées au fil de l'eau : quitter n'abandonne
+    // que les cartes non encore vues de cette session.
+    etat.file = []; etat.courante = null; etat.revele = false;
+    rendreTout();
+  }
+
+  function rendreFocus() {
+    var corps = $('#focus-corps');
+    if (!corps) return;
+    var faites = etat.total - etat.file.length - (etat.courante ? 1 : 0);
+
+    $('#focus-avance').textContent = etat.courante
+      ? (faites + 1) + ' / ' + etat.total
+      : etat.total + ' / ' + etat.total;
+    $('#focus-jauge').style.width =
+      (etat.total ? Math.round((faites / etat.total) * 100) : 0) + '%';
+
+    if (!etat.courante) {
+      corps.innerHTML =
+        '<div class="focus__fin">' +
+          '<p class="focus__fin-titre">Session terminée</p>' +
+          '<p class="focus__fin-detail">' + etat.total + ' carte' +
+            (etat.total > 1 ? 's' : '') + ' passée' + (etat.total > 1 ? 's' : '') +
+            ' — <strong>' + etat.su + '</strong> sue' + (etat.su > 1 ? 's' : '') +
+            ', <strong>' + etat.rate + '</strong> à revoir.</p>' +
+          '<button type="button" class="btn btn--primary" data-focus="fermer">Terminer</button>' +
+        '</div>';
+      return;
+    }
+
+    var c = etat.courante;
+    corps.innerHTML =
+      '<div class="flash flash--focus' + (etat.revele ? ' flash--revele' : '') + '">' +
+        '<div class="flash__meta">' +
+          '<span class="tag tag--blue">Item ' + c.n + '</span>' +
+          '<span class="small muted">' + esc(titreItem(c.n)) + '</span>' +
+          boite(c) +
+        '</div>' +
+        '<p class="flash__r">' + esc(c.r) + '</p>' +
+        (etat.revele
+          ? '<p class="flash__v">' + esc(c.v || '(pas de réponse notée)') + '</p>' +
+            '<div class="flash__btn">' +
+              '<button type="button" class="btn btn--danger" data-rep="non">Pas su</button>' +
+              '<button type="button" class="btn btn--primary" data-rep="oui">Su</button>' +
+            '</div>'
+          : '<div class="flash__btn">' +
+              '<button type="button" class="btn btn--primary" data-focus="voir">Voir la réponse</button>' +
+            '</div>') +
+      '</div>';
   }
 
   /** Réviser les cartes d'un item depuis les résultats de recherche. */
@@ -242,9 +326,7 @@
     etat.item = num;                 // l'item devient aussi l'item courant
     $('#rev-portee').value = 'item'; // le menu reflète ce qu'on est en train de faire
     rendreTout();
-    lanceFile(cartes);
-    var zone = $('#rev-zone');
-    if (zone && zone.scrollIntoView) zone.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    lanceFile(cartes);          // ouvre directement la révision en plein écran
   }
 
   /* Mélange de Fisher-Yates : réviser toujours dans le même ordre finit par
@@ -260,12 +342,13 @@
   function repondre(su) {
     if (!etat.courante) return;
     S.repondCarte(etat.courante.id, su);
+    if (su) etat.su++; else etat.rate++;
     // Une carte ratée revient en fin de file : on ne quitte pas la session
-    // en la laissant de côté.
-    if (!su) etat.file.push(etat.courante);
+    // en la laissant de côté. La jauge en tient compte.
+    if (!su) { etat.file.push(etat.courante); etat.total++; }
     etat.courante = etat.file.shift() || null;
     etat.revele = false;
-    rendreTout();
+    if (focusOuvert()) rendreFocus(); else rendreRevision();
   }
 
   function rendreRevision() {
@@ -275,33 +358,17 @@
       ? (restant + ' carte' + (restant > 1 ? 's' : ''))
       : (S.cartesDues().length + ' à revoir');
 
-    if (!etat.courante) {
-      zone.innerHTML = '<p class="muted mb0" id="rev-vide">' +
-        (S.cartes().length
-          ? 'Rien en attente. Choisis une portée et clique sur « Commencer ».'
-          : 'Aucune carte pour l’instant. Choisis un item plus bas et écris ta première question.') +
-        '</p>';
-      return;
-    }
-    var c = etat.courante;
-    zone.innerHTML =
-      '<div class="flash' + (etat.revele ? ' flash--revele' : '') + '">' +
-        '<div class="flash__meta">' +
-          '<a class="tag tag--blue" href="items.html?item=' + c.n + '">Item ' + c.n + '</a>' +
-          '<span class="small muted">' + esc(titreItem(c.n)) + '</span>' +
-          boite(c) +
-        '</div>' +
-        '<p class="flash__r">' + esc(c.r) + '</p>' +
-        (etat.revele
-          ? '<p class="flash__v">' + esc(c.v || '(pas de réponse notée)') + '</p>' +
-            '<div class="flash__btn">' +
-              '<button type="button" class="btn btn--danger" data-rep="non">Pas su</button>' +
-              '<button type="button" class="btn btn--primary" data-rep="oui">Su</button>' +
-            '</div>'
-          : '<div class="flash__btn">' +
-              '<button type="button" class="btn btn--primary" id="rev-voir">Voir la réponse</button>' +
-            '</div>') +
-      '</div>';
+    // La carte elle-même s'affiche en plein écran : ici on n'annonce que ce
+    // qu'il y a à réviser.
+    var dues = S.cartesDues().length;
+    zone.innerHTML = '<p class="muted mb0" id="rev-vide">' +
+      (!S.cartes().length
+        ? 'Aucune carte pour l’instant. Choisis un item plus bas et écris ta première question.'
+        : dues
+          ? dues + ' carte' + (dues > 1 ? 's' : '') + ' à revoir aujourd’hui. ' +
+            '« Commencer » ouvre la révision en plein écran.'
+          : 'Rien à revoir aujourd’hui. Choisis « Toutes les cartes » pour t’entraîner quand même.') +
+      '</p>';
   }
 
   /* ------------------------------------------------------------- rendu */
@@ -386,19 +453,34 @@
     });
 
     $('#rev-demarrer').addEventListener('click', demarrerRevision);
-    $('#rev-zone').addEventListener('click', function (ev) {
-      if (ev.target.closest('#rev-voir')) { etat.revele = true; rendreRevision(); return; }
-      var r = ev.target.closest('[data-rep]');
-      if (r) repondre(r.dataset.rep === 'oui');
-    });
 
-    // Espace pour révéler, 1 / 2 pour répondre : on révise sans quitter le clavier.
+    var focus = $('#focus');
+    if (focus) {
+      focus.addEventListener('click', function (ev) {
+        var f = ev.target.closest('[data-focus]');
+        if (f) {
+          if (f.dataset.focus === 'voir') { etat.revele = true; rendreFocus(); }
+          else fermerFocus();
+          return;
+        }
+        var r = ev.target.closest('[data-rep]');
+        if (r) repondre(r.dataset.rep === 'oui');
+      });
+      $('#focus-quitter').addEventListener('click', fermerFocus);
+    }
+
+    // Espace pour révéler, 1 / 2 pour répondre, Échap pour sortir : on révise
+    // sans quitter le clavier.
     document.addEventListener('keydown', function (ev) {
+      var enCours = focusOuvert();
+      if (ev.key === 'Escape' && enCours) { ev.preventDefault(); fermerFocus(); return; }
       if (!etat.courante || ev.metaKey || ev.ctrlKey || ev.altKey) return;
       var t = ev.target.tagName;
       if (t === 'INPUT' || t === 'TEXTAREA' || t === 'SELECT') return;
       if (!etat.revele && (ev.key === ' ' || ev.key === 'Enter')) {
-        ev.preventDefault(); etat.revele = true; rendreRevision(); return;
+        ev.preventDefault(); etat.revele = true;
+        if (enCours) rendreFocus(); else rendreRevision();
+        return;
       }
       if (etat.revele && (ev.key === '1' || ev.key === '2')) {
         ev.preventDefault(); repondre(ev.key === '2');

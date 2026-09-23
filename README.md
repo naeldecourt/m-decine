@@ -107,6 +107,13 @@ de 1, 3, 7, 16 puis 35 jours.
   que si l'item porte au moins une carte, et présente alors toutes ses cartes —
   y compris celles qui ne sont pas encore dues, puisqu'on les demande
   explicitement.
+- **La révision se fait en plein écran.** Quel que soit le point de départ, la
+  carte occupe tout l'écran : plus de navigation, plus de formulaire, plus de
+  compteurs. Une barre d'avancement en haut, une croix pour sortir, et rien
+  d'autre. Le défilement de la page est bloqué derrière, et la position est
+  restituée en sortant. Échap ferme ; les réponses déjà données sont
+  enregistrées au fil de l'eau, quitter n'abandonne que les cartes non encore
+  vues. En fin de session, un bilan : cartes passées, sues, à revoir.
 - **Corriger une carte ne remet pas son avancement à zéro** : la boîte et la
   date de revoyure sont conservées. Le bouton ↺ sert à repartir de zéro quand
   c'est vraiment voulu.

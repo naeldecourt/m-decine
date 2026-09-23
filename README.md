@@ -211,6 +211,23 @@ la purge de l'ancien cache. Sans cela, un nom de cache figé garderait
 indéfiniment les scripts servis « cache d'abord », et une correction livrée
 n'arriverait jamais sur un appareil ayant déjà visité le site.
 
+## Supprimer, et que ça reste supprimé
+
+Une fusion qui se contente de réunir les deux côtés ne sait pas distinguer
+« cette donnée n'a jamais existé ici » de « je viens de l'effacer » : elle
+ressuscite systématiquement ce qu'un appareil vient de supprimer.
+
+La sauvegarde porte donc un registre de suppressions (`sup`), qui note
+`{ 'espace:clé': horodatage }` à chaque effacement et oublie l'entrée dès que
+la clé est réécrite. À la fusion, une suppression l'emporte tant que le côté
+qui détient encore la donnée ne l'a pas retouchée depuis. Les tâches et les
+séances portent pour cela leur propre date de modification (`u`) ; pour le
+reste, on se rabat sur l'horodatage de l'appareil, plus grossier mais qui
+penche du bon côté — garder une donnée en trop plutôt qu'en perdre une.
+
+Les suppressions de plus de 90 jours sont purgées : tous les appareils les ont
+forcément vues passer, et le registre n'a pas à grossir sans fin.
+
 Le service worker exige HTTPS (GitHub Pages convient) ou `localhost`. En
 `http://` il ne s'enregistre pas et le site fonctionne normalement, simplement
 sans cache hors ligne. La police Outfit vient de Google Fonts et n'est pas mise

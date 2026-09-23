@@ -57,6 +57,10 @@
 
   /* ------------------------------------------------------------- fusion */
 
+  // Doit rester alignée sur celle du magasin : une suppression plus vieille
+  // que ça a forcément été vue par tous les appareils.
+  var PEREMPTION_SUP = 90 * 24 * 3600 * 1000;
+
   function estObjet(v) { return v && typeof v === 'object' && !Array.isArray(v); }
 
   /** Signature d'un tour : deux tours identiques ne doivent pas se dupliquer. */
@@ -113,16 +117,78 @@
     return sortie;
   }
 
+  /* ------------------------------------------------------- suppressions */
+
+  /* Réunion des registres de suppression : on garde la plus récente pour
+     chaque clé, et on laisse tomber celles qui ont dépassé leur péremption. */
+  function fusionneSup(a, b) {
+    var sortie = {};
+    var limite = Date.now() - PEREMPTION_SUP;
+    [a || {}, b || {}].forEach(function (src) {
+      Object.keys(src).forEach(function (k) {
+        var t = Number(src[k]) || 0;
+        if (t > limite && t > (sortie[k] || 0)) sortie[k] = t;
+      });
+    });
+    return sortie;
+  }
+
+  /**
+   * Retire d'un dictionnaire les clés supprimées ailleurs.
+   * Une suppression l'emporte tant que le côté qui détient encore la donnée
+   * n'a rien écrit depuis : s'il a écrit après, c'est qu'il l'a peut-être
+   * recréée, et on préfère garder une donnée en trop qu'en perdre une.
+   * @param {object} dict   le dictionnaire fusionné
+   * @param {string} espace le préfixe de clé dans le registre ('evts', 'notes'…)
+   * @param {object} sup    le registre de suppressions fusionné
+   * @param {object} porteurs { cle: majDuCôtéQuiLaDétientEncore }
+   */
+  function appliqueSup(dict, espace, sup, porteurs) {
+    Object.keys(dict).forEach(function (k) {
+      var efface = sup[espace + ':' + k];
+      if (efface && efface > (porteurs[k] || 0)) delete dict[k];
+    });
+    return dict;
+  }
+
+  /* Pour chaque clé d'un dictionnaire, la date de dernière écriture du côté
+     qui la détient encore — le plus récent si les deux la détiennent.
+     Les séances portent leur propre date de modification (`u`), qui est exacte ;
+     pour le reste on se rabat sur l'horodatage de l'appareil, plus grossier
+     mais qui penche du bon côté : garder une donnée en trop plutôt qu'en perdre. */
+  function dateDe(valeur, defaut) {
+    return (valeur && Number(valeur.u)) || defaut;
+  }
+
+  function porteursDict(a, b, majA, majB) {
+    var p = {};
+    Object.keys(a || {}).forEach(function (k) { p[k] = dateDe(a[k], majA); });
+    Object.keys(b || {}).forEach(function (k) {
+      var t = dateDe(b[k], majB);
+      if (t > (p[k] || 0)) p[k] = t;
+    });
+    return p;
+  }
+
   /** Fusion de deux listes de tâches, par identifiant. */
-  function fusionneTodo(a, b, aPlusRecent) {
+  function fusionneTodo(a, b, aPlusRecent, sup, majA, majB) {
     var parId = {};
+    var porteur = {};
     var ordre = [];
+    (a || []).forEach(function (t) { if (t && t.id) porteur[t.id] = dateDe(t, majA); });
+    (b || []).forEach(function (t) {
+      if (!t || !t.id) return;
+      var q = dateDe(t, majB);
+      if (q > (porteur[t.id] || 0)) porteur[t.id] = q;
+    });
     (aPlusRecent ? b : a).concat(aPlusRecent ? a : b).forEach(function (t) {
       if (!t || !t.id) return;
       if (!parId[t.id]) ordre.push(t.id);
       parId[t.id] = t;
     });
-    return ordre.map(function (id) { return parId[id]; });
+    appliqueSup(parId, 'todo', sup || {}, porteur);
+    return ordre.filter(function (id) { return parId[id]; })
+      .map(function (id) { return parId[id]; });
   }
 
   /**
@@ -137,19 +203,33 @@
     if (!distant || !Object.keys(distant).length) return local;
     if (!local || !Object.keys(local).length) return distant;
 
-    var localPlusRecent = (Number(local.maj) || 0) >= (Number(distant.maj) || 0);
+    var majL = Number(local.maj) || 0;
+    var majD = Number(distant.maj) || 0;
+    var localPlusRecent = majL >= majD;
+    // Le registre des suppressions sert d'arbitre : sans lui, la réunion des
+    // deux côtés ressusciterait tout ce que l'un vient d'effacer.
+    var sup = fusionneSup(local.sup, distant.sup);
+
+    var porte = function (a, b) { return porteursDict(a, b, majL, majD); };
 
     return {
       v: 2,
-      maj: Math.max(Number(local.maj) || 0, Number(distant.maj) || 0),
+      maj: Math.max(majL, majD),
+      sup: sup,
       // on ne perd jamais un tour : réunion des deux côtés
-      tours: fusionneTours(local.tours, distant.tours),
-      res: fusionneListes(local.res, distant.res),
+      tours: appliqueSup(fusionneTours(local.tours, distant.tours), 'tours', sup,
+                         porte(local.tours, distant.tours)),
+      res: appliqueSup(fusionneListes(local.res, distant.res), 'res', sup,
+                       porte(local.res, distant.res)),
       // dictionnaires : réunion, le plus récent tranche les conflits
-      notes: fusionneDict(local.notes, distant.notes, localPlusRecent),
-      masq: fusionneDict(local.masq, distant.masq, localPlusRecent),
-      plan: fusionneDict(local.plan, distant.plan, localPlusRecent),
-      evts: fusionneDict(local.evts, distant.evts, localPlusRecent),
+      notes: appliqueSup(fusionneDict(local.notes, distant.notes, localPlusRecent),
+                         'notes', sup, porte(local.notes, distant.notes)),
+      masq: appliqueSup(fusionneDict(local.masq, distant.masq, localPlusRecent),
+                        'masq', sup, porte(local.masq, distant.masq)),
+      plan: appliqueSup(fusionneDict(local.plan, distant.plan, localPlusRecent),
+                        'plan', sup, porte(local.plan, distant.plan)),
+      evts: appliqueSup(fusionneDict(local.evts, distant.evts, localPlusRecent),
+                        'evts', sup, porte(local.evts, distant.evts)),
       // le presse-papiers de journée suit l'appareil le plus récent, et n'est
       // jamais effacé par une fusion s'il n'existe que d'un côté
       presse: (localPlusRecent ? local.presse : distant.presse)
@@ -157,7 +237,7 @@
       todo: fusionneTodo(
         Array.isArray(local.todo) ? local.todo : [],
         Array.isArray(distant.todo) ? distant.todo : [],
-        localPlusRecent),
+        localPlusRecent, sup, majL, majD),
       cfg: fusionneDict(local.cfg, distant.cfg, localPlusRecent)
     };
   }

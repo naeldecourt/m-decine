@@ -38,8 +38,16 @@
     evts:  {},   // { id: { id, d, h:540|null, m:60, t, c:'college', n:'note', i:231, g:'serie' } }
     presse: null, // presse-papiers de journée : [ { h, m, t, c, n, i } ]
     todo:  [],   // [ { id, t, f } ]
+    // Registre des suppressions (« pierres tombales ») : { 'espace:cle': horodatage }.
+    // Sans lui, une fusion ne réunit que ce qui existe des deux côtés et
+    // ressuscite ce qu'un appareil vient d'effacer.
+    sup:   {},
     cfg:   { vue: 'college', dateEdn: '', itemsJour: 6, objectif: 3 }
   };
+
+  // Au-delà de ce délai, une suppression est oubliée : tous les appareils
+  // l'ont forcément vue passer, et le registre n'a pas à grossir sans fin.
+  var PEREMPTION_SUP = 90 * 24 * 3600 * 1000;
 
   var cache = null;
 
@@ -48,7 +56,7 @@
   function fusionne(dest, src) {
     if (src.maj) dest.maj = Number(src.maj) || 0;
     if (Array.isArray(src.presse)) dest.presse = src.presse;
-    ['tours', 'res', 'notes', 'masq', 'plan', 'evts'].forEach(function (k) {
+    ['tours', 'res', 'notes', 'masq', 'plan', 'evts', 'sup'].forEach(function (k) {
       if (src[k] && typeof src[k] === 'object' && !Array.isArray(src[k])) dest[k] = src[k];
     });
     if (Array.isArray(src.todo)) dest.todo = src.todo;
@@ -93,9 +101,30 @@
     } catch (e) { /* on ignore une sauvegarde v1 illisible */ }
   }
 
+  /* ------------------------------------------------------- suppressions */
+
+  /** Note qu'une donnée a été supprimée, pour que la synchro ne la rende pas. */
+  function marqueSuppr(espace, cle) {
+    load().sup[espace + ':' + cle] = Date.now();
+  }
+
+  /** Oublie la suppression d'une clé qu'on vient de réécrire. */
+  function oublieSuppr(espace, cle) {
+    delete load().sup[espace + ':' + cle];
+  }
+
+  /** Retire du registre les suppressions trop anciennes pour encore servir. */
+  function purgeSuppr(d) {
+    var limite = Date.now() - PEREMPTION_SUP;
+    Object.keys(d.sup).forEach(function (k) {
+      if (!(Number(d.sup[k]) > limite)) delete d.sup[k];
+    });
+  }
+
   /** @param {boolean} [conserveMaj] laisse l'horodatage en place (données reçues). */
   function save(conserveMaj) {
     var d = load();
+    purgeSuppr(d);
     if (!conserveMaj) d.maj = Date.now();
     try {
       localStorage.setItem(KEY, JSON.stringify(d));
@@ -247,6 +276,7 @@
     else if (liste.length < MAX_TOURS) liste.push(t);
     else return false;
     d.tours[k] = trie(liste);
+    oublieSuppr('tours', k);
     return save();
   }
 
@@ -256,7 +286,7 @@
     if (index < 0 || index >= liste.length) return false;
     liste.splice(index, 1);
     if (liste.length) d.tours[k] = liste;
-    else delete d.tours[k];
+    else { delete d.tours[k]; marqueSuppr('tours', k); }
     return save();
   }
 
@@ -272,7 +302,8 @@
     var r = ressources(k).slice();
     var i = r.indexOf(id);
     if (i === -1) r.push(id); else r.splice(i, 1);
-    if (r.length) d.res[k] = r; else delete d.res[k];
+    if (r.length) { d.res[k] = r; oublieSuppr('res', k); }
+    else { delete d.res[k]; marqueSuppr('res', k); }
     return save();
   }
 
@@ -282,7 +313,8 @@
 
   function setNote(k, v) {
     var d = load();
-    if (v && v.trim()) d.notes[k] = v.trim(); else delete d.notes[k];
+    if (v && v.trim()) { d.notes[k] = v.trim(); oublieSuppr('notes', k); }
+    else { delete d.notes[k]; marqueSuppr('notes', k); }
     return save();
   }
 
@@ -290,7 +322,8 @@
 
   function setMasque(k, v) {
     var d = load();
-    if (v) d.masq[k] = 1; else delete d.masq[k];
+    if (v) { d.masq[k] = 1; oublieSuppr('masq', k); }
+    else { delete d.masq[k]; marqueSuppr('masq', k); }
     return save();
   }
 
@@ -305,7 +338,8 @@
     var d = load();
     var j = d.plan[dateIso] || (d.plan[dateIso] = { n: '', s: [] });
     j.n = texte || '';
-    if (!j.n && !j.s.length) delete d.plan[dateIso];
+    if (!j.n && !j.s.length) { delete d.plan[dateIso]; marqueSuppr('plan', dateIso); }
+    else oublieSuppr('plan', dateIso);
     return save();
   }
 
@@ -315,7 +349,8 @@
     if (!Array.isArray(j.s)) j.s = [];
     var i = j.s.indexOf(speId);
     if (i === -1) j.s.push(speId); else j.s.splice(i, 1);
-    if (!j.n && !j.s.length) delete d.plan[dateIso];
+    if (!j.n && !j.s.length) { delete d.plan[dateIso]; marqueSuppr('plan', dateIso); }
+    else oublieSuppr('plan', dateIso);
     return save();
   }
 
@@ -338,7 +373,10 @@
       m: h === null ? 0 : Math.max(5, Math.min(1440 - h, Math.round(Number(e.m) || 60))),
       t: String(e.t || '').slice(0, 200),
       c: e.c || '',
-      n: String(e.n || '').slice(0, 2000)
+      n: String(e.n || '').slice(0, 2000),
+      // Date de modification : permet à une fusion de savoir si cette séance
+      // a été retouchée avant ou après la suppression reçue d'un autre appareil.
+      u: Date.now()
     };
     if (e.i) evt.i = Number(e.i);        // item rattaché
     if (e.g) evt.g = String(e.g);        // série de répétition
@@ -368,12 +406,16 @@
   function setEvt(e) {
     var evt = normaliseEvt(e);
     load().evts[evt.id] = evt;
+    oublieSuppr('evts', evt.id);
     save();
     return evt;
   }
 
   function supprimerEvt(id) {
-    delete load().evts[id];
+    var d = load();
+    if (!d.evts[id]) return false;      // rien à supprimer : pas de pierre tombale à vide
+    delete d.evts[id];
+    marqueSuppr('evts', id);
     return save();
   }
 
@@ -471,7 +513,7 @@
     if (!g) return 0;
     var d = load(), n = 0;
     Object.keys(d.evts).forEach(function (k) {
-      if (d.evts[k].g === g) { delete d.evts[k]; n++; }
+      if (d.evts[k].g === g) { delete d.evts[k]; marqueSuppr('evts', k); n++; }
     });
     save();
     return n;
@@ -509,7 +551,7 @@
   function viderJour(dateIso) {
     var d = load(), n = 0;
     Object.keys(d.evts).forEach(function (k) {
-      if (d.evts[k].d === dateIso) { delete d.evts[k]; n++; }
+      if (d.evts[k].d === dateIso) { delete d.evts[k]; marqueSuppr('evts', k); n++; }
     });
     save();
     return n;
@@ -548,7 +590,10 @@
    */
   function ajouterTache(texte, n) {
     if (!texte || !texte.trim()) return false;
-    var t = { id: String(Date.now()) + Math.random().toString(36).slice(2, 6), t: texte.trim(), f: 0 };
+    var t = {
+      id: String(Date.now()) + Math.random().toString(36).slice(2, 6),
+      t: texte.trim(), f: 0, u: Date.now()
+    };
     if (n) t.n = Number(n);
     load().todo.push(t);
     return save();
@@ -571,13 +616,18 @@
 
   function basculeTache(id) {
     var l = load().todo;
-    for (var i = 0; i < l.length; i++) if (l[i].id === id) { l[i].f = l[i].f ? 0 : 1; break; }
+    for (var i = 0; i < l.length; i++) {
+      if (l[i].id === id) { l[i].f = l[i].f ? 0 : 1; l[i].u = Date.now(); break; }
+    }
     return save();
   }
 
   function supprimerTache(id) {
     var d = load();
+    var avant = d.todo.length;
     d.todo = d.todo.filter(function (t) { return t.id !== id; });
+    if (d.todo.length === avant) return false;
+    marqueSuppr('todo', id);
     return save();
   }
 

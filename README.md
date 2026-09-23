@@ -83,8 +83,21 @@ imposé.
 Le filtre par collège se lit de deux façons, au choix : **dont c'est le
 collège référent ★** (celui qui porte l'item) ou **présents dans ce collège**
 (tous ceux qui le traitent). Le référent est le critère par défaut ; la
-cardiologie donne 19 items dans un cas et 25 dans l'autre. La même paire de
-filtres équipe la recherche de l'onglet Cartes.
+cardiologie donne 19 items dans un cas et 25 dans l'autre.
+
+**Les quatre pages qui filtrent par collège** — Items, Répartition, Planning
+et Cartes — offrent la même paire : un menu de collèges, un menu de critère.
+La Répartition a longtemps eu deux menus de collèges côte à côte (« Tous les
+référents ★ » et « Présent dans… ») : deux listes identiques, faciles à
+confondre. Il n'y en a plus qu'une par page.
+
+Sur la page Items, l'unité dépend de la vue. En vue « par item » une ligne est
+un item ; en vue « par collège » une ligne est un couple item-collège, et le
+critère « référent » ne garde que la ligne du collège référent — sinon on
+ferait apparaître la ligne « psychiatrie » d'un item que porte la cardiologie.
+Trente couples collège-item figurent d'ailleurs sur deux lignes dans les
+données source, un item traité par deux chapitres du même collège : les
+comptes en lignes et en items diffèrent alors légitimement.
 
 Dans les deux recherches, le collège référent ouvre la liste des badges avec
 son étoile, et c'est lui qui donne sa couleur à la séance créée. Sa

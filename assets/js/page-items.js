@@ -6,7 +6,7 @@
   var $ = U.$, $$ = U.$$, esc = U.esc;
   var PAR_PAGE = 100;
 
-  var etat = { q: '', col: '', statut: '', tours: '', tri: 'n', sens: 1, page: 1, masques: false };
+  var etat = { q: '', col: '', portee: 'ref', statut: '', tours: '', tri: 'n', sens: 1, page: 1, masques: false };
   var detail = null;
 
   /* Abréviations que l'on tape naturellement mais qui n'apparaissent pas dans
@@ -64,7 +64,7 @@
     var q = U.sansAccent(etat.q.trim());
     var liste = S.lignes().filter(function (l) {
       if (etat.masques !== l.masque) return false;
-      if (etat.col && (l.cols || []).indexOf(etat.col) === -1) return false;
+      if (etat.col && !gardeCollege(l)) return false;
       if (etat.statut && l.statut !== etat.statut) return false;
       if (etat.tours === '0' && l.nbTours !== 0) return false;
       if (etat.tours === '1-2' && (l.nbTours < 1 || l.nbTours > 2)) return false;
@@ -74,6 +74,19 @@
       return true;
     });
     return liste.sort(compare);
+  }
+
+  /* Le filtre par collège se lit de deux façons : « référent » ne garde que les
+     lignes dont ce collège porte l'item, « présents » toutes celles où il
+     figure. En vue « par collège » une ligne est un couple item-collège : le
+     critère « référent » y impose aussi que la ligne soit celle de ce collège,
+     sinon on ferait apparaître la ligne « psychiatrie » d'un item dont la
+     cardiologie est référente. */
+  function gardeCollege(l) {
+    var cols = l.cols || [];
+    if (etat.portee !== 'ref') return cols.indexOf(etat.col) !== -1;
+    if (!l.n || S.refItem(l.n) !== etat.col) return false;
+    return S.vue() === 'item' || l.col === etat.col;
   }
 
   /* Les chapitres hors programme (n = 0) sont rejetés en fin de liste. */
@@ -242,12 +255,14 @@
   function brancher() {
     $('#f-q').addEventListener('input', function () { etat.q = this.value; etat.page = 1; rendreTable(); });
     $('#f-col').addEventListener('change', function () { etat.col = this.value; etat.page = 1; rendreTable(); });
+    $('#f-portee').addEventListener('change', function () { etat.portee = this.value; etat.page = 1; rendreTable(); });
     $('#f-statut').addEventListener('change', function () { etat.statut = this.value; etat.page = 1; rendreTable(); });
     $('#f-tours').addEventListener('change', function () { etat.tours = this.value; etat.page = 1; rendreTable(); });
 
     $('#f-reset').addEventListener('click', function () {
       etat.q = ''; etat.col = ''; etat.statut = ''; etat.tours = ''; etat.page = 1; etat.masques = false;
       $('#f-q').value = ''; $('#f-col').value = ''; $('#f-statut').value = ''; $('#f-tours').value = '';
+      etat.portee = 'ref'; $('#f-portee').value = 'ref';
       $('#f-masques').setAttribute('aria-pressed', 'false');
       rendreTable();
     });

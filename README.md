@@ -102,6 +102,11 @@ de 1, 3, 7, 16 puis 35 jours.
 - **Réviser** : à revoir aujourd'hui, toutes les cartes, ou seulement l'item
   sélectionné. L'ordre est mélangé à chaque session, pour apprendre les cartes
   et non leur ordre. Au clavier : espace révèle, `1` « pas su », `2` « su ».
+- **Un bouton « Réviser » sur chaque résultat de recherche** lance directement
+  la révision de cet item, sans repasser par le menu de portée. Il ne s'affiche
+  que si l'item porte au moins une carte, et présente alors toutes ses cartes —
+  y compris celles qui ne sont pas encore dues, puisqu'on les demande
+  explicitement.
 - **Corriger une carte ne remet pas son avancement à zéro** : la boîte et la
   date de revoyure sont conservées. Le bouton ↺ sert à repartir de zéro quand
   c'est vraiment voulu.

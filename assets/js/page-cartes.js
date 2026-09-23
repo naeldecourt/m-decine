@@ -80,6 +80,13 @@
             '<button type="button" class="btn btn--sm ' +
               (etat.item === it.n ? 'btn--primary' : '') + '" data-item="' + it.n + '">' +
               (etat.item === it.n ? 'Sélectionné' : 'Choisir') + '</button>' +
+            // Réviser cet item sans repasser par le menu de portée en haut de
+            // page. Sans carte, le bouton n'aurait rien à présenter.
+            (cartes.length
+              ? '<button type="button" class="btn btn--sm btn--primary" data-reviser="' + it.n +
+                '" title="Réviser les ' + cartes.length + ' carte' +
+                (cartes.length > 1 ? 's' : '') + ' de cet item">Réviser</button>'
+              : '') +
             '</li>';
         }).join('') + '</ul>' +
         (liste.length > MAX_RESULTATS
@@ -217,10 +224,27 @@
     if (portee === 'item') file = etat.item ? S.cartesDe(etat.item) : [];
     else if (portee === 'toutes') file = S.cartes();
     else file = S.cartesDues();
+    lanceFile(file);
+  }
+
+  function lanceFile(file) {
     etat.file = melange(file.slice());
     etat.courante = etat.file.shift() || null;
     etat.revele = false;
     rendreRevision();
+  }
+
+  /** Réviser les cartes d'un item depuis les résultats de recherche. */
+  function reviserItem(n) {
+    var num = Number(n);
+    var cartes = S.cartesDe(num);
+    if (!cartes.length) return;
+    etat.item = num;                 // l'item devient aussi l'item courant
+    $('#rev-portee').value = 'item'; // le menu reflète ce qu'on est en train de faire
+    rendreTout();
+    lanceFile(cartes);
+    var zone = $('#rev-zone');
+    if (zone && zone.scrollIntoView) zone.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
   /* Mélange de Fisher-Yates : réviser toujours dans le même ordre finit par
@@ -319,6 +343,8 @@
     $('#c-avec').addEventListener('change', function () { etat.avec = this.value; rendreRecherche(); });
 
     $('#c-resultats').addEventListener('click', function (ev) {
+      var r = ev.target.closest('button[data-reviser]');
+      if (r) { reviserItem(r.dataset.reviser); return; }
       var b = ev.target.closest('button[data-item]');
       if (b) choisirItem(b.dataset.item);
     });

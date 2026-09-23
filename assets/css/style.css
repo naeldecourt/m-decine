@@ -1187,6 +1187,12 @@ ul.cartes > li.en-edition { background: color-mix(in srgb, var(--blue) 7%, trans
 .flash__btn { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
 .flash__btn .btn { min-width: 132px; min-height: 44px; }
 
+/* Le libellé de l'item choisi porte un intitulé entier : sur un écran étroit
+   il dépassait, les pastilles ne sachant pas se couper. On le laisse rétrécir
+   et se terminer par des points de suspension, le titre complet restant lisible
+   dans la liste des résultats juste en dessous. */
+#item-tag { max-width: 100%; min-width: 0; overflow: hidden; text-overflow: ellipsis; display: inline-block; }
+
 /* Le choix de portée et le bouton « Commencer », à côté du titre « Réviser ».
    Sur un écran étroit ils passent sur leur propre ligne, pleine largeur :
    côte à côte, ils débordaient de l'écran sur les plus petits téléphones. */

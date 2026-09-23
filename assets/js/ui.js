@@ -213,6 +213,92 @@
     else dlg.setAttribute('open', '');
   }
 
+  /* ------------------------------------------- proposer de compter un tour */
+
+  /** Le titre d'un item, tel que le donne son collège référent. */
+  function titreItem(n) {
+    var it = (window.EDN_ITEMS || []).filter(function (x) { return x.n === Number(n); })[0];
+    return it ? it.t : '';
+  }
+
+  /* Les clés de tour possibles pour un item. En vue « par item » il n'y en a
+     qu'une ; en vue « par collège » il y en a une par collège qui le traite,
+     et c'est à l'utilisateur de dire sur lequel il vient de travailler.
+     Le collège référent est proposé en premier, comme sur la Répartition. */
+  function clesPourItem(n) {
+    var S = window.Store;
+    if (S.vue() === 'item') return [{ cle: String(n), nom: '' }];
+    var vus = {}, sortie = [];
+    (window.EDN_LIGNES || []).forEach(function (l) {
+      if (Number(l.n) !== Number(n) || vus[l.c]) return;
+      vus[l.c] = 1;
+      sortie.push({ cle: n + '@' + l.c, nom: S.college(l.c).nom, ref: l.ref ? 1 : 0 });
+    });
+    sortie.sort(function (a, b) {
+      return (b.ref - a.ref) || a.nom.localeCompare(b.nom, 'fr');
+    });
+    return sortie;
+  }
+
+  function construitPropose() {
+    if ($('#modal-tour-prop')) return;
+    document.body.insertAdjacentHTML('beforeend',
+      '<dialog id="modal-tour-prop" aria-labelledby="tp-titre">' +
+      '<form method="dialog" class="vh"><button value="annuler" aria-label="Fermer"></button></form>' +
+      '<div class="modal__head">' +
+        '<button type="button" class="modal__close" id="tp-close" aria-label="Fermer">✕</button>' +
+        '<h3 id="tp-titre">Compter un tour ?</h3>' +
+        '<p id="tp-sous"></p>' +
+      '</div>' +
+      '<div class="modal__body"><div id="tp-choix"></div></div>' +
+      '<div class="modal__foot">' +
+        '<button type="button" class="btn" id="tp-non">Non merci</button>' +
+      '</div>' +
+      '</dialog>');
+    $('#modal-tour-prop').addEventListener('click', function (ev) {
+      var b = ev.target.closest('button[data-cle]');
+      if (!b) return;
+      var cle = b.dataset.cle;
+      var etat = $('#modal-tour-prop').__etat || {};
+      $('#modal-tour-prop').close();
+      ouvrirTour(cle, -1, etat.titre || '', etat.apres);
+    });
+    $('#tp-non').addEventListener('click', function () { $('#modal-tour-prop').close(); });
+    $('#tp-close').addEventListener('click', function () { $('#modal-tour-prop').close(); });
+  }
+
+  /**
+   * Propose d'enregistrer un tour sur un item qu'on vient de marquer fait.
+   * Si la vue « par collège » est active et que l'item figure dans plusieurs
+   * collèges, on demande d'abord lequel.
+   * @param {number} n numéro d'item
+   * @param {string} [titre] intitulé affiché
+   * @param {Function} [apres] rappel après enregistrement
+   */
+  function proposerTour(n, titre, apres) {
+    var num = Number(n);
+    if (!num) return;
+    var choix = clesPourItem(num);
+    if (!choix.length) return;
+    var libelle = titre || ('Item ' + num + (titreItem(num) ? ' — ' + titreItem(num) : ''));
+
+    // Un seul choix possible : la question « sur quel collège ? » ne se pose
+    // pas, on ouvre directement la modale de tour, qui fait office de proposition.
+    if (choix.length === 1) { ouvrirTour(choix[0].cle, -1, libelle, apres); return; }
+
+    construitPropose();
+    var dlg = $('#modal-tour-prop');
+    dlg.__etat = { titre: libelle, apres: apres };
+    $('#tp-sous').textContent = libelle + ' — sur quel collège ?';
+    $('#tp-choix').innerHTML = '<div class="supports" role="group">' +
+      choix.map(function (c) {
+        return '<button type="button" data-cle="' + esc(c.cle) + '">' +
+          (c.ref ? '★ ' : '') + esc(c.nom) + '</button>';
+      }).join('') + '</div>';
+    if (typeof dlg.showModal === 'function') dlg.showModal();
+    else dlg.setAttribute('open', '');
+  }
+
   /* --------------------------------------------------------- amorçage */
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -283,6 +369,6 @@
 
   window.UI = {
     icone: icone, esc: esc, sansAccent: sansAccent, $: $, $$: $$,
-    ouvrirTour: ouvrirTour, appliqueTheme: appliqueTheme
+    ouvrirTour: ouvrirTour, proposerTour: proposerTour, appliqueTheme: appliqueTheme
   };
 })();

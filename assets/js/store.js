@@ -38,6 +38,10 @@
     evts:  {},   // { id: { id, d, h:540|null, m:60, t, c:'college', n:'note', i:231, g:'serie' } }
     presse: null, // presse-papiers de journée : [ { h, m, t, c, n, i } ]
     todo:  [],   // [ { id, t, f } ]
+    // Cartes de révision, saisies à la main : { id, n:item, r:recto, v:verso,
+    // b:boîte 1-5, d:prochaine révision, u:modification }
+    cartes: {},
+    cours:  {},  // notes de cours longues, par numéro d'item : { '231': 'texte' }
     // Registre des suppressions (« pierres tombales ») : { 'espace:cle': horodatage }.
     // Sans lui, une fusion ne réunit que ce qui existe des deux côtés et
     // ressuscite ce qu'un appareil vient d'effacer.
@@ -56,7 +60,7 @@
   function fusionne(dest, src) {
     if (src.maj) dest.maj = Number(src.maj) || 0;
     if (Array.isArray(src.presse)) dest.presse = src.presse;
-    ['tours', 'res', 'notes', 'masq', 'plan', 'evts', 'sup'].forEach(function (k) {
+    ['tours', 'res', 'notes', 'masq', 'plan', 'evts', 'cartes', 'cours', 'sup'].forEach(function (k) {
       if (src[k] && typeof src[k] === 'object' && !Array.isArray(src[k])) dest[k] = src[k];
     });
     if (Array.isArray(src.todo)) dest.todo = src.todo;
@@ -631,6 +635,130 @@
     return save();
   }
 
+  /* ------------------------------------------------------------- cartes */
+
+  /* Répétition espacée à la Leitner : une carte sue monte d'une boîte, une
+     carte ratée retombe à la première. La boîte donne le délai avant revoyure. */
+  var BOITES = { 1: 1, 2: 3, 3: 7, 4: 16, 5: 35 };
+  var MAX_BOITE = 5;
+
+  function idCarte() {
+    return 'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  }
+
+  function normaliseCarte(c) {
+    var b = Math.min(MAX_BOITE, Math.max(1, Math.round(Number(c.b) || 1)));
+    return {
+      id: c.id || idCarte(),
+      n: Number(c.n) || 0,
+      r: String(c.r || '').slice(0, 2000),
+      v: String(c.v || '').slice(0, 4000),
+      b: b,
+      d: c.d || today(),
+      u: Date.now()
+    };
+  }
+
+  function cartes() {
+    var d = load().cartes;
+    return Object.keys(d).map(function (k) { return d[k]; }).sort(triCarte);
+  }
+
+  function triCarte(a, b) {
+    if (a.n !== b.n) return a.n - b.n;
+    return a.d < b.d ? -1 : (a.d > b.d ? 1 : (a.id < b.id ? -1 : 1));
+  }
+
+  function cartesDe(n) {
+    var num = Number(n);
+    return cartes().filter(function (c) { return c.n === num; });
+  }
+
+  /** Les cartes à revoir aujourd'hui (ou avant), éventuellement d'un seul item. */
+  function cartesDues(n) {
+    var j = today();
+    return (n ? cartesDe(n) : cartes()).filter(function (c) { return c.d <= j; });
+  }
+
+  function setCarte(c) {
+    var carte = normaliseCarte(c);
+    if (!carte.r.trim()) return null;         // une carte sans question n'a pas de sens
+    load().cartes[carte.id] = carte;
+    oublieSuppr('cartes', carte.id);
+    save();
+    return carte;
+  }
+
+  function supprimerCarte(id) {
+    var d = load();
+    if (!d.cartes[id]) return false;
+    delete d.cartes[id];
+    marqueSuppr('cartes', id);
+    return save();
+  }
+
+  /**
+   * Enregistre une réponse.
+   * @param {string} id
+   * @param {boolean} su vrai si la carte a été sue
+   */
+  function repondCarte(id, su) {
+    var d = load();
+    var c = d.cartes[id];
+    if (!c) return false;
+    c.b = su ? Math.min(MAX_BOITE, (Number(c.b) || 1) + 1) : 1;
+    var dans = BOITES[c.b] || 1;
+    var prochaine = parse(today());
+    prochaine.setDate(prochaine.getDate() + dans);
+    c.d = iso(prochaine);
+    c.u = Date.now();
+    return save();
+  }
+
+  /** Remet une carte à la première boîte, pour la retravailler de zéro. */
+  function reinitialiserCarte(id) {
+    var d = load();
+    var c = d.cartes[id];
+    if (!c) return false;
+    c.b = 1; c.d = today(); c.u = Date.now();
+    return save();
+  }
+
+  function syntheseCartes() {
+    var l = cartes();
+    var s = { total: l.length, dues: 0, items: 0, acquises: 0, boites: [0, 0, 0, 0, 0] };
+    var vus = {};
+    var j = today();
+    l.forEach(function (c) {
+      if (c.d <= j) s.dues++;
+      if (c.b >= MAX_BOITE) s.acquises++;
+      s.boites[Math.min(MAX_BOITE, Math.max(1, c.b)) - 1]++;
+      if (c.n && !vus[c.n]) { vus[c.n] = 1; s.items++; }
+    });
+    return s;
+  }
+
+  /* --------------------------------------------------- notes de cours */
+
+  /* Distinctes des notes de la liste des items : celles-ci sont rattachées au
+     numéro d'item quelle que soit la vue, et prévues pour du texte long. */
+  function cours(n) { return load().cours[String(Number(n) || 0)] || ''; }
+
+  function setCours(n, texte) {
+    var d = load();
+    var k = String(Number(n) || 0);
+    var t = String(texte || '').slice(0, 20000);
+    if (t.trim()) { d.cours[k] = t; oublieSuppr('cours', k); }
+    else { delete d.cours[k]; marqueSuppr('cours', k); }
+    return save();
+  }
+
+  /** Les items qui portent une note de cours, du plus récemment touché au reste. */
+  function itemsAvecCours() {
+    var d = load().cours;
+    return Object.keys(d).map(Number).filter(Boolean).sort(function (a, b) { return a - b; });
+  }
+
   /* ------------------------------------------------------------ réglages */
 
   function cfg() { return load().cfg; }
@@ -872,6 +1000,11 @@
     hhmm: hhmm, minutesDepuis: minutesDepuis, migrePlan: migrePlan, normaliseEvt: normaliseEvt,
     todo: todo, ajouterTache: ajouterTache, basculeTache: basculeTache, supprimerTache: supprimerTache,
     tacheItem: tacheItem, basculeTacheItem: basculeTacheItem,
+    cartes: cartes, cartesDe: cartesDe, cartesDues: cartesDues, setCarte: setCarte,
+    supprimerCarte: supprimerCarte, repondCarte: repondCarte,
+    reinitialiserCarte: reinitialiserCarte, syntheseCartes: syntheseCartes,
+    BOITES: BOITES, MAX_BOITE: MAX_BOITE,
+    cours: cours, setCours: setCours, itemsAvecCours: itemsAvecCours,
     cfg: cfg, setCfg: setCfg, reset: reset,
     brut: brut, remplace: remplace,
     lignes: lignes, lignesActives: lignesActives,

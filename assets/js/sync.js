@@ -230,6 +230,12 @@
                         'plan', sup, porte(local.plan, distant.plan)),
       evts: appliqueSup(fusionneDict(local.evts, distant.evts, localPlusRecent),
                         'evts', sup, porte(local.evts, distant.evts)),
+      // Les cartes portent leur propre date de modification (`u`), donc une
+      // carte revue sur un appareil l'emporte sur sa version restée en arrière.
+      cartes: appliqueSup(fusionneDict(local.cartes, distant.cartes, localPlusRecent),
+                          'cartes', sup, porte(local.cartes, distant.cartes)),
+      cours: appliqueSup(fusionneDict(local.cours, distant.cours, localPlusRecent),
+                         'cours', sup, porte(local.cours, distant.cours)),
       // le presse-papiers de journée suit l'appareil le plus récent, et n'est
       // jamais effacé par une fusion s'il n'existe que d'un côté
       presse: (localPlusRecent ? local.presse : distant.presse)

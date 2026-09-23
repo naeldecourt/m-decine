@@ -888,7 +888,13 @@
     });
     $('#todo-liste').addEventListener('change', function (ev) {
       var b = ev.target.closest('[data-bascule]');
-      if (b) { S.basculeTache(b.dataset.bascule); rendreTodo(); }
+      if (!b) return;
+      S.basculeTache(b.dataset.bascule);
+      rendreTodo();
+      // Une tâche rattachée à un item qui passe à « fait » : on propose de
+      // compter le tour dans la foulée, tant qu'on a la séance en tête.
+      var t = S.todo().filter(function (x) { return x.id === b.dataset.bascule; })[0];
+      if (t && t.f && t.n) U.proposerTour(t.n, t.t, rendreTout);
     });
 
     // raccourcis clavier, comme dans un agenda

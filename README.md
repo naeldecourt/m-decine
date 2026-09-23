@@ -18,6 +18,7 @@ navigateur.
 | `specialites.html` | Une carte par collège : couverture, tours, temps, confiance moyenne |
 | `stats.html` | Chiffres du jour, courbes des 7 derniers jours, priorités, classement des collèges |
 | `planning.html` | Compte à rebours, recherche d'items à planifier, calendrier (mois / semaine / jour), to-do list |
+| `cartes.html` | Cartes de révision par item, révision espacée, notes de cours |
 | `sync.html` | Configuration de la synchronisation entre appareils |
 | `fiches.html` | Index des fiches pratiques |
 | `fiche-ecg.html` | Lecture d'ECG en 7 temps (F.R.A.C.H.I.D.) |
@@ -79,6 +80,28 @@ avec un filtre par collège. C'est une version réduite de la page Items —
 juste ce qu'il faut pour retrouver un item et le pousser dans le calendrier,
 sans ordre de passage imposé.
 
+## Cartes de révision et notes de cours
+
+Des cartes écrites à la main, rattachées à un item : une question au recto, la
+réponse au verso. Elles se révisent en **boîtes de Leitner** — le principe
+d'Anki en plus simple. Une carte sue monte d'une boîte et revient plus tard,
+une carte ratée retombe en boîte 1 et revient tout de suite ; les délais sont
+de 1, 3, 7, 16 puis 35 jours.
+
+- **Réviser** : à revoir aujourd'hui, toutes les cartes, ou seulement l'item
+  sélectionné. L'ordre est mélangé à chaque session, pour apprendre les cartes
+  et non leur ordre. Au clavier : espace révèle, `1` « pas su », `2` « su ».
+- **Corriger une carte ne remet pas son avancement à zéro** : la boîte et la
+  date de revoyure sont conservées. Le bouton ↺ sert à repartir de zéro quand
+  c'est vraiment voulu.
+- **Les notes de cours** sont rattachées au numéro d'item, quelle que soit la
+  vue active, et prévues pour du texte long. Elles sont distinctes des notes
+  courtes de la liste des items. Enregistrées après une pause dans la frappe,
+  pour ne pas déclencher une synchronisation par lettre tapée.
+
+Cartes et notes suivent la synchronisation et partent dans la sauvegarde
+exportée, comme le reste.
+
 ## La to-do list
 
 La page Répartition porte une case **« à faire »** en tête de chaque ligne :
@@ -90,6 +113,12 @@ s'affiche avec un badge cliquable qui renvoie à la ligne correspondante, et la
 page Répartition sait afficher « Dans la liste » ou « Fait » selon son état.
 Les tâches saisies à la main dans le planning n'ont pas de numéro et
 fonctionnent comme avant.
+
+**Cocher « fait » propose de compter le tour.** Quand une tâche rattachée à un
+item passe à « fait », la modale d'enregistrement d'un tour s'ouvre, pré-remplie
+— tant qu'on a la séance en tête. En vue « par collège », un item traité par
+plusieurs collèges demande d'abord lequel, le référent en premier. Une tâche
+sans numéro d'item ne propose rien, et décocher non plus.
 
 ## Le calendrier
 
@@ -199,7 +228,7 @@ Le site est pensé pour être utilisé au doigt autant qu'au clavier.
 - **Installable sur l'écran d'accueil** : `manifest.webmanifest`, icônes 192 et
   512 px dont une maskable, `apple-touch-icon`, trois raccourcis (items, séance
   du jour, statistiques). La barre système prend la couleur du thème actif.
-- **Utilisable hors connexion** : `sw.js` met en cache les neuf pages et leurs
+- **Utilisable hors connexion** : `sw.js` met en cache les onze pages et leurs
   ressources. Les pages sont servies réseau d'abord (pour recevoir les mises à
   jour) avec repli sur le cache ; les scripts, styles et icônes cache d'abord.
   Dans le métro, on continue d'enregistrer ses tours — tout est en local de
@@ -276,6 +305,7 @@ assets/js/page-repartition.js  table item / collège référent / autres collèg
 assets/js/page-specialites.js  cartes par collège
 assets/js/page-stats.js     statistiques et courbes
 assets/js/page-planning.js  calendrier, recherche d'items, to-do list
+assets/js/page-cartes.js    cartes de révision et notes de cours
 assets/js/sync.js           fusion et synchronisation Firebase
 assets/js/page-sync.js      page de configuration de la synchronisation
 assets/icone.svg            icône source, déclinée en PNG 192/512/180

@@ -24,6 +24,7 @@ var PAGES = [
   './specialites.html',
   './stats.html',
   './planning.html',
+  './cartes.html',
   './fiches.html',
   './sync.html',
   './fiche-ecg.html',
@@ -48,7 +49,8 @@ var VERSIONNES = [
   './assets/js/page-repartition.js',
   './assets/js/page-specialites.js',
   './assets/js/page-stats.js',
-  './assets/js/page-planning.js'
+  './assets/js/page-planning.js',
+  './assets/js/page-cartes.js'
 ];
 
 var COQUILLE = PAGES.concat(VERSIONNES.map(function (u) { return u + '?v=' + BUILD; }));

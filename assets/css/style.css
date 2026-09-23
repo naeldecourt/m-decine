@@ -1125,3 +1125,85 @@ ul.trouve li:last-child { border-bottom: 0; }
   .trouve__n { min-width: 30px; }
   .trouve__t { flex-basis: 100%; }
 }
+
+/* ------------------------------------------------- cartes de révision */
+
+/* Sans cette règle, « hidden » ne masque rien sur un élément à qui une autre
+   règle donne un display (les boutons sont en inline-flex). */
+[hidden] { display: none !important; }
+
+.carte-form { display: grid; gap: 12px; margin-bottom: 18px; }
+.carte-form label { display: block; margin-bottom: 5px; font-weight: 600; font-size: .9rem; }
+.carte-form textarea,
+#cours-texte {
+  width: 100%; padding: 10px 12px; font: inherit; line-height: 1.5;
+  color: var(--ink); background: var(--bg); resize: vertical;
+  border: 1px solid var(--line); border-radius: 10px;
+}
+.carte-form textarea:focus, #cours-texte:focus {
+  outline: 2px solid color-mix(in srgb, var(--blue) 45%, transparent); outline-offset: 1px;
+}
+#cours-texte:disabled { opacity: .6; cursor: not-allowed; }
+
+/* La boîte de Leitner : du rouge « à retravailler » au vert « acquis ». */
+.boite {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px; flex: none; border-radius: 7px;
+  font-size: .78rem; font-weight: 800;
+  background: color-mix(in srgb, var(--b) 18%, transparent); color: var(--b);
+}
+.boite--1 { --b: var(--red); }
+.boite--2 { --b: var(--amber); }
+.boite--3 { --b: var(--blue); }
+.boite--4 { --b: var(--violet); }
+.boite--5 { --b: var(--green); }
+
+ul.cartes { list-style: none; margin: 0; padding: 0; }
+ul.cartes > li {
+  display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap;
+  padding: 12px 0; border-top: 1px solid var(--line);
+}
+ul.cartes > li.en-edition { background: color-mix(in srgb, var(--blue) 7%, transparent); }
+.carte-item__txt { flex: 1 1 240px; min-width: 0; }
+.carte-item__r { margin: 0; font-weight: 600; }
+.carte-item__v { margin: 3px 0 0; color: var(--ink-2); font-size: .92rem; white-space: pre-wrap; }
+.carte-item__etat { display: flex; align-items: center; gap: 8px; flex: none; }
+.carte-item__btn { display: flex; gap: 4px; flex: none; margin-left: auto; }
+
+/* La carte en cours de révision. */
+.flash {
+  border: 1px solid var(--line); border-radius: var(--r);
+  background: var(--bg); padding: 22px; text-align: center;
+}
+.flash__meta {
+  display: flex; align-items: center; justify-content: center;
+  gap: 9px; flex-wrap: wrap; margin-bottom: 16px;
+}
+.flash__r { margin: 0; font-size: 1.22rem; font-weight: 600; line-height: 1.45; white-space: pre-wrap; }
+.flash__v {
+  margin: 16px 0 0; padding-top: 16px; border-top: 1px dashed var(--line);
+  font-size: 1.05rem; color: var(--ink); line-height: 1.55; white-space: pre-wrap;
+}
+.flash__btn { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
+.flash__btn .btn { min-width: 132px; min-height: 44px; }
+
+/* Le choix de portée et le bouton « Commencer », à côté du titre « Réviser ».
+   Sur un écran étroit ils passent sur leur propre ligne, pleine largeur :
+   côte à côte, ils débordaient de l'écran sur les plus petits téléphones. */
+.rev-ctl { gap: 8px; }
+.rev-ctl select { min-width: 0; }
+
+@media (max-width: 620px) {
+  .sec-title--rev { flex-wrap: wrap; }
+  .rev-ctl { flex: 1 0 100%; }
+  .rev-ctl select { flex: 1 1 auto; }
+  .rev-ctl .btn { flex: none; }
+}
+
+@media (max-width: 760px) {
+  .carte-item__btn { margin-left: 0; }
+  .flash { padding: 18px 14px; }
+  .flash__r { font-size: 1.1rem; }
+  .flash__btn { flex-direction: column; }
+  .flash__btn .btn { width: 100%; }
+}

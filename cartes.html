@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="fr" data-theme="clair">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cartes de révision et notes de cours | Révision EDN</title>
+<meta name="description" content="Crée tes propres cartes de révision par item, revois-les en répétition espacée, et garde tes notes de cours au même endroit.">
+<meta name="theme-color" content="#f1f5fb">
+<meta name="color-scheme" content="light dark">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="EDN">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%232f6bff'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='15' font-weight='bold' fill='white' text-anchor='middle'%3EDN%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="assets/css/style.css?v=__BUILD__">
+<script src="assets/js/items.js?v=__BUILD__"></script>
+<script src="assets/js/store.js?v=__BUILD__"></script>
+<script src="assets/js/sync.js?v=__BUILD__"></script>
+<script src="assets/js/ui.js?v=__BUILD__"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar__inner">
+    <a class="brand" href="index.html">
+      <span class="brand__mark">DN</span>
+      <span>Révision EDN</span>
+    </a>
+    <nav class="tabs" aria-label="Navigation principale">
+      <a href="stats.html"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10h-10z"/><path d="M14 2.5A10 10 0 0 1 21.5 10H14z" opacity=".55"/></svg><span>Statistiques</span></a>
+      <a href="specialites.html"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="3" y="8" width="7" height="13" rx="1"/><rect x="12" y="3" width="9" height="18" rx="1" opacity=".6"/></svg><span>Spécialités</span></a>
+      <a href="items.html"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="3.5" cy="6" r="1.6"/><circle cx="3.5" cy="12" r="1.6"/><circle cx="3.5" cy="18" r="1.6"/></svg><span>Items</span></a>
+      <a href="repartition.html"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="4.5" r="2.6"/><circle cx="5" cy="19" r="2.6"/><circle cx="19" cy="19" r="2.6"/><path d="M12 7.5v4.5M12 12H5.5v4M12 12h6.5v4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Répartition</span></a>
+      <a href="planning.html"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Planning</span></a>
+      <a href="cartes.html"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="2.5" y="6" width="14" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 10.5h5M7 13h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M19 8.5a2 2 0 0 1 2 2v6.5a2 2 0 0 1-2 2H9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".55"/></svg><span>Cartes</span></a>
+      <a href="fiches.html"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 3h8l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 3v6h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span>Fiches</span></a>
+    </nav>
+      <a class="sync" href="sync.html" id="sync-etat" data-phase="inactif" title="Synchronisation">
+        <span class="sync__point"></span><span class="sync__txt">Sync</span>
+      </a>
+    <div class="themes" role="group" aria-label="Thème">
+      <button type="button" data-theme="clair" aria-pressed="true">Clair</button>
+      <button type="button" data-theme="sombre" aria-pressed="false">Sombre</button>
+      <button type="button" data-theme="pastel" aria-pressed="false">Pastel</button>
+    </div>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <section>
+    <h1 class="mb0">Cartes &amp; notes</h1>
+    <p class="muted" style="max-width:68ch">Tes propres cartes de révision, item par item :
+    une question d'un côté, la réponse de l'autre. Le site te les represente à intervalles
+    croissants tant que tu les sais, et te les remet tout de suite quand tu sèches. Les notes
+    de cours que tu veux garder tiennent dans le même onglet.</p>
+  </section>
+
+  <section>
+    <div class="grid grid--4">
+      <div class="stat-card" style="--accent-color:var(--blue)">
+        <div class="stat-card__head"><span class="stat-card__icon" id="i-total"></span>
+          <span class="stat-card__label">cartes créées</span></div>
+        <div class="stat-card__value" id="k-total">—</div>
+      </div>
+      <div class="stat-card" style="--accent-color:var(--amber)">
+        <div class="stat-card__head"><span class="stat-card__icon" id="i-dues"></span>
+          <span class="stat-card__label">à revoir aujourd'hui</span></div>
+        <div class="stat-card__value" id="k-dues">—</div>
+      </div>
+      <div class="stat-card" style="--accent-color:var(--violet)">
+        <div class="stat-card__head"><span class="stat-card__icon" id="i-items"></span>
+          <span class="stat-card__label">items couverts</span></div>
+        <div class="stat-card__value" id="k-items">—</div>
+      </div>
+      <div class="stat-card" style="--accent-color:var(--green)">
+        <div class="stat-card__head"><span class="stat-card__icon" id="i-acquises"></span>
+          <span class="stat-card__label">cartes acquises</span></div>
+        <div class="stat-card__value" id="k-acquises">—</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------------------------------------------------------- réviser -->
+  <section>
+    <div class="card card--pad">
+      <div class="sec-title sec-title--rev">
+        <span class="sec-title__icon" id="i-sec-rev"></span>
+        <h2>Réviser</h2>
+        <span class="tag tag--blue" id="rev-compte">—</span>
+        <div class="spacer"></div>
+        <div class="row rev-ctl">
+          <label class="vh" for="rev-portee">Quoi réviser</label>
+          <select id="rev-portee">
+            <option value="dues">À revoir aujourd'hui</option>
+            <option value="toutes">Toutes les cartes</option>
+            <option value="item">L'item sélectionné</option>
+          </select>
+          <button type="button" class="btn btn--primary" id="rev-demarrer">Commencer</button>
+        </div>
+      </div>
+      <div id="rev-zone">
+        <p class="muted mb0" id="rev-vide">Rien à revoir pour l'instant. Crée une carte ci-dessous,
+        ou choisis « Toutes les cartes » pour t'entraîner quand même.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------ item courant -->
+  <section>
+    <div class="card card--pad">
+      <div class="sec-title">
+        <span class="sec-title__icon" id="i-sec-item"></span>
+        <h2>Choisir un item</h2>
+        <span class="tag" id="item-tag">aucun</span>
+      </div>
+      <div class="row" style="gap:10px">
+        <div class="search">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <label class="vh" for="c-q">Rechercher un item</label>
+          <input type="search" id="c-q" placeholder="Numéro, intitulé, collège…" autocomplete="off">
+        </div>
+        <div class="filters">
+          <label class="vh" for="c-col">Collège</label>
+          <select id="c-col"><option value="">Tous les collèges</option></select>
+          <label class="vh" for="c-avec">Filtrer</label>
+          <select id="c-avec">
+            <option value="">Tous les items</option>
+            <option value="cartes">Avec des cartes</option>
+            <option value="notes">Avec une note de cours</option>
+            <option value="dues">Avec des cartes à revoir</option>
+          </select>
+        </div>
+      </div>
+      <div id="c-resultats" style="margin-top:12px"></div>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------- les cartes -->
+  <section>
+    <div class="card card--pad">
+      <div class="sec-title">
+        <span class="sec-title__icon" id="i-sec-cartes"></span>
+        <h2>Cartes de l'item</h2>
+        <span class="tag" id="cartes-compte">—</span>
+      </div>
+      <form id="carte-form" class="carte-form">
+        <div>
+          <label for="f-recto">Question (recto)</label>
+          <textarea id="f-recto" rows="2" placeholder="Quels sont les critères de Duke ?"></textarea>
+        </div>
+        <div>
+          <label for="f-verso">Réponse (verso)</label>
+          <textarea id="f-verso" rows="3" placeholder="2 majeurs, ou 1 majeur + 3 mineurs, ou 5 mineurs…"></textarea>
+        </div>
+        <div class="row" style="gap:8px">
+          <button type="submit" class="btn btn--primary" id="f-valider">Ajouter la carte</button>
+          <button type="button" class="btn" id="f-annuler" hidden>Annuler la modification</button>
+          <span class="small muted" id="f-aide">Choisis d'abord un item ci-dessus.</span>
+        </div>
+      </form>
+      <ul class="cartes" id="cartes-liste"></ul>
+    </div>
+  </section>
+
+  <!-- --------------------------------------------------- notes de cours -->
+  <section>
+    <div class="card card--pad">
+      <div class="sec-title">
+        <span class="sec-title__icon" id="i-sec-cours"></span>
+        <h2>Notes de cours</h2>
+        <span class="tag" id="cours-etat">—</span>
+      </div>
+      <p class="small muted">Ce que tu veux garder sur cet item : un plan, une astuce, un piège
+      d'annale. Enregistré au fil de la frappe, et synchronisé comme le reste.</p>
+      <label class="vh" for="cours-texte">Notes de cours</label>
+      <textarea id="cours-texte" rows="10" placeholder="Choisis un item pour prendre des notes." disabled></textarea>
+    </div>
+  </section>
+
+  <section>
+    <div class="notice notice--info">
+      <p><strong>Comment les révisions sont espacées.</strong> Chaque carte vit dans une boîte,
+      de 1 à 5. Tu la sais : elle monte d'une boîte et revient plus tard. Tu sèches : elle
+      retombe en boîte 1 et revient demain. Les délais sont de 1, 3, 7, 16 puis 35 jours —
+      c'est le principe des boîtes de Leitner, celui d'Anki en plus simple.</p>
+      <p class="mb0"><strong>Tes cartes restent à toi.</strong> Elles vivent dans ton navigateur
+      comme le reste, partent dans ta sauvegarde exportée, et suivent la synchronisation si tu
+      l'as activée.</p>
+    </div>
+  </section>
+
+</div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p class="mb0">
+      Outil personnel de révision des EDN — &copy; <span id="annee"></span>.
+      Tes données restent dans ton navigateur : aucun compte, aucun serveur.
+      Pense à <a href="items.html#donnees">exporter ta sauvegarde</a> régulièrement.
+    </p>
+    <p class="mb0 small" style="margin-top:6px">
+      Programme et intitulés d'items donnés à titre indicatif : le référentiel officiel
+      publié par l'UNESS fait seul foi.
+    </p>
+  </div>
+</footer>
+<script src="assets/js/page-cartes.js?v=__BUILD__"></script>
+
+</body>
+</html>

@@ -205,6 +205,29 @@
     return (ligne.n ? String(ligne.n) : ligne.fc) + '@' + ligne.c;
   }
 
+  /* ------------------------------------------------------ item référent */
+
+  /* Le collège référent d'un item : celui que la donnée d'origine marque, à
+     défaut le premier rencontré — même règle que la page Répartition, pour
+     que l'étoile désigne partout le même collège. La table est construite une
+     fois : les filtres la consultent à chaque frappe. */
+  var REFS = null;
+
+  function refs() {
+    if (REFS) return REFS;
+    REFS = {};
+    var declare = {};
+    (window.EDN_LIGNES || []).forEach(function (l) {
+      if (!l.n) return;
+      if (l.ref && !declare[l.n]) { declare[l.n] = 1; REFS[l.n] = l.c; return; }
+      if (REFS[l.n] === undefined) REFS[l.n] = l.c;  // à défaut, le premier tient lieu
+    });
+    return REFS;
+  }
+
+  /** Identifiant du collège référent d'un item, ou '' si l'item est inconnu. */
+  function refItem(n) { return refs()[Number(n)] || ''; }
+
   /* ------------------------------------------------------- lecture tour */
 
   function tours(k) {
@@ -984,7 +1007,7 @@
   window.Store = {
     MAX_TOURS: MAX_TOURS, SUPPORTS: SUPPORTS, INTERVALLES: INTERVALLES,
     iso: iso, today: today, parse: parse, formatFr: formatFr, joursEntre: joursEntre, duree: duree,
-    vue: vue, setVue: setVue, cle: cle,
+    vue: vue, setVue: setVue, cle: cle, refItem: refItem,
     colleges: colleges, college: college,
     tours: tours, dernier: dernier, confiance: confiance, minutes: minutes,
     prochaine: prochaine, retard: retard, priorite: priorite, statut: statut,

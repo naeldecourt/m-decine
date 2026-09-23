@@ -75,10 +75,21 @@ le signale plutôt que de laisser croire à une donnée établie.
 
 ## Trouver un item à planifier
 
-Le planning porte une **recherche d'items** : numéro, intitulé ou collège,
-avec un filtre par collège. C'est une version réduite de la page Items —
-juste ce qu'il faut pour retrouver un item et le pousser dans le calendrier,
-sans ordre de passage imposé.
+Le planning porte une **recherche d'items** : numéro, intitulé ou collège.
+C'est une version réduite de la page Items — juste ce qu'il faut pour
+retrouver un item et le pousser dans le calendrier, sans ordre de passage
+imposé.
+
+Le filtre par collège se lit de deux façons, au choix : **dont c'est le
+collège référent ★** (celui qui porte l'item) ou **présents dans ce collège**
+(tous ceux qui le traitent). Le référent est le critère par défaut ; la
+cardiologie donne 19 items dans un cas et 25 dans l'autre. La même paire de
+filtres équipe la recherche de l'onglet Cartes.
+
+Dans les deux recherches, le collège référent ouvre la liste des badges avec
+son étoile, et c'est lui qui donne sa couleur à la séance créée. Sa
+détermination est mutualisée (`Store.refItem`) avec la page Répartition, pour
+que l'étoile désigne partout le même collège.
 
 ## Cartes de révision et notes de cours
 

@@ -11,7 +11,7 @@
 
   var etat = {
     item: null,        // numéro d'item sélectionné
-    q: '', col: '', avec: '',
+    q: '', col: '', portee: 'ref', avec: '',
     edition: null,     // identifiant de la carte en cours de modification
     file: [],          // cartes restant à revoir dans la session
     courante: null,
@@ -34,7 +34,14 @@
     var q = U.sansAccent(etat.q.trim());
     var jour = S.today();
     return (window.EDN_ITEMS || []).filter(function (it) {
-      if (etat.col && it.cols.indexOf(etat.col) === -1) return false;
+      if (etat.col) {
+        // « référent » : le collège qui porte l'item. « présents » : tous ceux
+        // qui le traitent, référent compris.
+        var ok = etat.portee === 'ref'
+          ? S.refItem(it.n) === etat.col
+          : it.cols.indexOf(etat.col) !== -1;
+        if (!ok) return false;
+      }
       var cartes = S.cartesDe(it.n);
       if (etat.avec === 'cartes' && !cartes.length) return false;
       if (etat.avec === 'notes' && !S.cours(it.n)) return false;
@@ -55,12 +62,14 @@
       : '<ul class="trouve">' + liste.slice(0, MAX_RESULTATS).map(function (it) {
           var cartes = S.cartesDe(it.n);
           var dues = cartes.filter(function (c) { return c.d <= jour; }).length;
-          var col = it.cols[0] ? S.college(it.cols[0]) : null;
+          var ref = S.refItem(it.n);
+          var col = ref ? S.college(ref) : null;
           return '<li>' +
             '<strong class="trouve__n">' + it.n + '</strong>' +
             '<span class="trouve__t">' + esc(it.t) +
-              (col ? ' <span class="spe" style="--spe:' + col.couleur + '">' +
-                '<span class="spe__code">' + esc(col.court) + '</span></span>' : '') +
+              (col ? ' <span class="spe spe--ref" style="--spe:' + col.couleur + '" ' +
+                'title="Collège référent : ' + esc(col.nom) + '">' +
+                '<span class="spe__code">' + esc(col.court) + '</span>★</span>' : '') +
             '</span>' +
             '<span class="trouve__etat">' +
               (cartes.length ? '<span class="tag">' + cartes.length + ' carte' +
@@ -306,6 +315,7 @@
 
     $('#c-q').addEventListener('input', function () { etat.q = this.value; rendreRecherche(); });
     $('#c-col').addEventListener('change', function () { etat.col = this.value; rendreRecherche(); });
+    $('#c-portee').addEventListener('change', function () { etat.portee = this.value; rendreRecherche(); });
     $('#c-avec').addEventListener('change', function () { etat.avec = this.value; rendreRecherche(); });
 
     $('#c-resultats').addEventListener('click', function (ev) {

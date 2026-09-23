@@ -5,6 +5,39 @@
   var THEMES = ['clair', 'sombre', 'pastel'];
   var KEY_THEME = 'edn:theme';
 
+  /* ------------------------------------------- page et scripts assortis */
+
+  /* Remplacé au déploiement, ici comme dans la balise « edn-build » des pages.
+     Le numéro dans l'adresse des scripts vide le cache du navigateur, mais
+     l'hébergement statique ignore la chaîne de requête : une page gardée en
+     cache peut donc charger le script d'une version plus récente. Si les deux
+     ne sont pas de la même livraison, le HTML attendu par le script n'est pas
+     celui qui est affiché — un identifiant renommé suffit alors à tout casser.
+     On recharge une fois, ce qui va rechercher la page (servie réseau d'abord).
+     Une seule fois : hors connexion, mieux vaut une page dépareillée qu'une
+     boucle de rechargements. */
+  var BUILD = '__BUILD__';
+  var CLE_DESYNC = 'edn:desync';
+
+  function verifieVersion() {
+    var meta = document.querySelector('meta[name="edn-build"]');
+    var page = meta && meta.getAttribute('content');
+    if (!page || page === BUILD) {
+      try { sessionStorage.removeItem(CLE_DESYNC); } catch (e) { /* mode privé */ }
+      return;
+    }
+    var dejaTente = false;
+    try { dejaTente = sessionStorage.getItem(CLE_DESYNC) === page; } catch (e) { /* mode privé */ }
+    if (dejaTente) {
+      console.warn('Page (' + page + ') et scripts (' + BUILD + ') de versions différentes.');
+      return;
+    }
+    try { sessionStorage.setItem(CLE_DESYNC, page); } catch (e) { /* mode privé */ }
+    location.reload();
+  }
+
+  verifieVersion();
+
   /* ------------------------------------------------------------- thème */
 
   function themeEnregistre() {

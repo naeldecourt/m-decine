@@ -83,21 +83,8 @@ imposé.
 Le filtre par collège se lit de deux façons, au choix : **dont c'est le
 collège référent ★** (celui qui porte l'item) ou **présents dans ce collège**
 (tous ceux qui le traitent). Le référent est le critère par défaut ; la
-cardiologie donne 19 items dans un cas et 25 dans l'autre.
-
-**Les quatre pages qui filtrent par collège** — Items, Répartition, Planning
-et Cartes — offrent la même paire : un menu de collèges, un menu de critère.
-La Répartition a longtemps eu deux menus de collèges côte à côte (« Tous les
-référents ★ » et « Présent dans… ») : deux listes identiques, faciles à
-confondre. Il n'y en a plus qu'une par page.
-
-Sur la page Items, l'unité dépend de la vue. En vue « par item » une ligne est
-un item ; en vue « par collège » une ligne est un couple item-collège, et le
-critère « référent » ne garde que la ligne du collège référent — sinon on
-ferait apparaître la ligne « psychiatrie » d'un item que porte la cardiologie.
-Trente couples collège-item figurent d'ailleurs sur deux lignes dans les
-données source, un item traité par deux chapitres du même collège : les
-comptes en lignes et en items diffèrent alors légitimement.
+cardiologie donne 19 items dans un cas et 25 dans l'autre. La même paire de
+filtres équipe la recherche de l'onglet Cartes.
 
 Dans les deux recherches, le collège référent ouvre la liste des badges avec
 son étoile, et c'est lui qui donne sa couleur à la séance créée. Sa
@@ -274,6 +261,18 @@ chargement.
 Corollaire : plus de rechargement forcé quand un nouveau worker prend la main.
 Le code affiché est déjà le bon, et recharger sous les doigts dix secondes
 après l'ouverture ne ferait qu'interrompre ce qu'on est en train de faire.
+
+**Le numéro ne suffit pourtant pas à garantir l'accord.** Il vide le cache du
+navigateur, mais l'hébergement statique ignore la chaîne de requête : une page
+restée en cache demande `store.js?v=<ancienne empreinte>` et reçoit le fichier
+courant. Page ancienne, scripts récents — et un identifiant renommé entre les
+deux suffit à vider une page de son contenu.
+
+Chaque page porte donc son empreinte dans une balise `edn-build`, que `ui.js`
+compare à la sienne. En cas de désaccord, la page est rechargée une fois : elle
+est servie réseau d'abord, donc la version à jour arrive. Une seule fois, pour
+qu'une coupure réseau ne déclenche pas une boucle ; la console garde alors la
+trace du désaccord.
 
 ## Supprimer, et que ça reste supprimé
 

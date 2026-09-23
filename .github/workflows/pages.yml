@@ -34,10 +34,12 @@ jobs:
         # Le drapeau g est indispensable : __BUILD__ apparaît plusieurs fois
         # sur une même ligne dans certaines pages.
         run: |
-          sed -i "s/__BUILD__/${GITHUB_SHA::8}/g" sw.js *.html
-          grep -n "var BUILD" sw.js
+          sed -i "s/__BUILD__/${GITHUB_SHA::8}/g" sw.js *.html assets/js/ui.js
+          grep -n "var BUILD" sw.js assets/js/ui.js
           grep -c "?v=${GITHUB_SHA::8}" index.html
-          ! grep -rn "__BUILD__" sw.js *.html
+          # Le contrôle page/scripts ne vaut que si les deux portent l'empreinte.
+          grep -q "edn-build\" content=\"${GITHUB_SHA::8}" index.html
+          ! grep -rn "__BUILD__" sw.js *.html assets/js/ui.js
 
       - name: Préparer Pages
         uses: actions/configure-pages@v5

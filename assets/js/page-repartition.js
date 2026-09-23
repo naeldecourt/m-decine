@@ -9,7 +9,7 @@
   var S = window.Store, U = window.UI;
   var $ = U.$, $$ = U.$$, esc = U.esc;
 
-  var etat = { q: '', col: '', portee: 'ref', transversal: '', tri: 'n', sens: 1, intitules: false };
+  var etat = { q: '', ref: '', present: '', transversal: '', tri: 'n', sens: 1, intitules: false };
   var TABLE = null;
 
   /* ------------------------------------------------------- construction */
@@ -68,14 +68,8 @@
   function filtre() {
     var q = U.sansAccent(etat.q.trim());
     return construire().filter(function (r) {
-      if (etat.col) {
-        // Un seul menu de collèges, et un critère à côté : deux listes de
-        // collèges côte à côte se confondaient trop facilement.
-        var ok = etat.portee === 'ref'
-          ? r.ref.id === etat.col
-          : r.cols.some(function (c) { return c.id === etat.col; });
-        if (!ok) return false;
-      }
+      if (etat.ref && r.ref.id !== etat.ref) return false;
+      if (etat.present && !r.cols.some(function (c) { return c.id === etat.present; })) return false;
       if (etat.transversal === 'mono' && r.nbCols !== 1) return false;
       if (etat.transversal === 'multi' && r.nbCols < 2) return false;
       if (etat.transversal === 'trois' && r.nbCols < 3) return false;
@@ -219,17 +213,18 @@
     var options = S.colleges().map(function (c) {
       return '<option value="' + esc(c.id) + '">' + esc(c.nom) + '</option>';
     }).join('');
-    $('#f-col').insertAdjacentHTML('beforeend', options);
+    $('#f-ref').insertAdjacentHTML('beforeend', options);
+    $('#f-present').insertAdjacentHTML('beforeend', options);
 
     $('#f-q').addEventListener('input', function () { etat.q = this.value; rendreTable(); });
-    $('#f-col').addEventListener('change', function () { etat.col = this.value; rendreTable(); });
-    $('#f-portee').addEventListener('change', function () { etat.portee = this.value; rendreTable(); });
+    $('#f-ref').addEventListener('change', function () { etat.ref = this.value; rendreTable(); });
+    $('#f-present').addEventListener('change', function () { etat.present = this.value; rendreTable(); });
     $('#f-transversal').addEventListener('change', function () { etat.transversal = this.value; rendreTable(); });
     $('#f-intitules').addEventListener('change', function () { etat.intitules = this.checked; rendreTable(); });
     $('#f-reset').addEventListener('click', function () {
-      etat.q = ''; etat.col = ''; etat.portee = 'ref'; etat.transversal = '';
-      $('#f-q').value = ''; $('#f-col').value = '';
-      $('#f-portee').value = 'ref'; $('#f-transversal').value = '';
+      etat.q = ''; etat.ref = ''; etat.present = ''; etat.transversal = '';
+      $('#f-q').value = ''; $('#f-ref').value = '';
+      $('#f-present').value = ''; $('#f-transversal').value = '';
       rendreTable();
     });
     $('#x-csv').addEventListener('click', exporter);
@@ -260,16 +255,10 @@
       });
     });
 
-    // Le lien ?college= vient de la page Spécialités, qui parle de la charge
-    // d'un collège : ce sont donc tous les items qu'il traite, pas seulement
-    // ceux dont il est référent. On ajuste le critère pour que l'affichage
-    // corresponde à ce que montrent les menus.
     var col = new URLSearchParams(location.search).get('college');
     if (col && S.colleges().some(function (c) { return c.id === col; })) {
-      etat.col = col;
-      etat.portee = 'present';
-      $('#f-col').value = col;
-      $('#f-portee').value = 'present';
+      etat.present = col;
+      $('#f-present').value = col;
     }
 
     rendreSynthese();

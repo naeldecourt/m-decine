@@ -6,7 +6,7 @@
   var $ = U.$, $$ = U.$$, esc = U.esc;
   var PAR_PAGE = 100;
 
-  var etat = { q: '', col: '', statut: '', tours: '', tri: 'n', sens: 1, page: 1, masques: false };
+  var etat = { q: '', ref: '', col: '', statut: '', tours: '', tri: 'n', sens: 1, page: 1, masques: false };
   var detail = null;
 
   /* Abréviations que l'on tape naturellement mais qui n'apparaissent pas dans
@@ -64,6 +64,7 @@
     var q = U.sansAccent(etat.q.trim());
     var liste = S.lignes().filter(function (l) {
       if (etat.masques !== l.masque) return false;
+      if (etat.ref && !refDe(l)) return false;
       if (etat.col && (l.cols || []).indexOf(etat.col) === -1) return false;
       if (etat.statut && l.statut !== etat.statut) return false;
       if (etat.tours === '0' && l.nbTours !== 0) return false;
@@ -74,6 +75,15 @@
       return true;
     });
     return liste.sort(compare);
+  }
+
+  /* Le filtre « collège en écriture » ne garde que les lignes dont ce collège
+     porte l'item. En vue « par collège » une ligne est un couple item-collège :
+     on exige en plus que la ligne soit celle de ce collège, sinon on ferait
+     apparaître la ligne « psychiatrie » d'un item que porte la cardiologie. */
+  function refDe(l) {
+    if (!l.n || !S.estRef(l.n, etat.ref)) return false;
+    return S.vue() === 'item' || l.col === etat.ref;
   }
 
   /* Les chapitres hors programme (n = 0) sont rejetés en fin de liste. */
@@ -112,12 +122,20 @@
   function celluleSpe(l) {
     var etiquette = S.vue() === 'item' ? 'Collèges' : 'Collège';
     if (S.vue() === 'item') {
+      // Les collèges en écriture d'abord, étoilés : la même lecture que sur la
+      // Répartition, pour qu'un badge veuille dire la même chose partout.
+      var refs = S.refsItem(l.n);
+      var cols = (l.cols || []).slice().sort(function (a, b) {
+        return (refs.indexOf(b) !== -1) - (refs.indexOf(a) !== -1);
+      });
       return '<td class="spe-cell" data-label="' + etiquette + '" style="--spe:' +
-        S.college(l.cols[0]).couleur + '">' +
-        (l.cols || []).map(function (id) {
+        S.college(cols[0] || l.cols[0]).couleur + '">' +
+        cols.map(function (id) {
           var c = S.college(id);
-          return '<span class="spe" style="--spe:' + c.couleur + '" title="' + esc(c.nom) + '">' +
-            '<span class="spe__code">' + esc(c.court) + '</span></span>';
+          var ref = refs.indexOf(id) !== -1;
+          return '<span class="spe' + (ref ? ' spe--ref' : '') + '" style="--spe:' + c.couleur +
+            '" title="' + esc(c.nom + (ref ? ' — collège en écriture' : '')) + '">' +
+            '<span class="spe__code">' + esc(c.court) + '</span>' + (ref ? '★' : '') + '</span>';
         }).join(' ') + '</td>';
     }
     var c = S.college(l.col);
@@ -241,13 +259,15 @@
 
   function brancher() {
     $('#f-q').addEventListener('input', function () { etat.q = this.value; etat.page = 1; rendreTable(); });
+    $('#f-ref').addEventListener('change', function () { etat.ref = this.value; etat.page = 1; rendreTable(); });
     $('#f-col').addEventListener('change', function () { etat.col = this.value; etat.page = 1; rendreTable(); });
     $('#f-statut').addEventListener('change', function () { etat.statut = this.value; etat.page = 1; rendreTable(); });
     $('#f-tours').addEventListener('change', function () { etat.tours = this.value; etat.page = 1; rendreTable(); });
 
     $('#f-reset').addEventListener('click', function () {
-      etat.q = ''; etat.col = ''; etat.statut = ''; etat.tours = ''; etat.page = 1; etat.masques = false;
-      $('#f-q').value = ''; $('#f-col').value = ''; $('#f-statut').value = ''; $('#f-tours').value = '';
+      etat.q = ''; etat.ref = ''; etat.col = ''; etat.statut = ''; etat.tours = ''; etat.page = 1; etat.masques = false;
+      $('#f-q').value = ''; $('#f-ref').value = ''; $('#f-col').value = '';
+      $('#f-statut').value = ''; $('#f-tours').value = '';
       $('#f-masques').setAttribute('aria-pressed', 'false');
       rendreTable();
     });
@@ -373,9 +393,14 @@
   }
 
   function remplirFiltres() {
-    var sel = $('#f-col');
-    S.colleges().forEach(function (c) {
-      sel.insertAdjacentHTML('beforeend', '<option value="' + esc(c.id) + '">' + esc(c.nom) + '</option>');
+    var options = S.colleges().map(function (c) {
+      return '<option value="' + esc(c.id) + '">' + esc(c.nom) + '</option>';
+    }).join('');
+    // Un menu absent ne doit pas interrompre le reste : une page servie depuis
+    // le cache peut être plus ancienne que ce script.
+    ['#f-ref', '#f-col'].forEach(function (id) {
+      var sel = $(id);
+      if (sel) sel.insertAdjacentHTML('beforeend', options);
     });
     // Le nom long est masqué sur téléphone : le code suffit à lire les pastilles.
     $('#legende').innerHTML = S.SUPPORTS.map(function (s) {

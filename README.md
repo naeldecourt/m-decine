@@ -13,7 +13,7 @@ navigateur.
 | Fichier | Contenu |
 |---|---|
 | `index.html` | Accueil, chiffres clés, présentation |
-| `items.html` | Liste des items : tours T1-T8, confiance, ressources, filtres, tri, pagination, import/export |
+| `items.html` | Liste des items : tours T1-T8, confiance, ressources, filtres (dont collège en écriture ★), tri, pagination, import/export |
 | `repartition.html` | Tous les items avec leur collège référent ★ et les autres collèges où ils figurent, et une case « à faire » |
 | `specialites.html` | Une carte par collège : couverture, tours, temps, confiance moyenne |
 | `stats.html` | Chiffres du jour, courbes des 7 derniers jours, priorités, classement des collèges |
@@ -45,6 +45,20 @@ Cet intervalle est allongé de 30 % par tour supplémentaire, plafonné à ×2,5
 Les pages Items et Statistiques classent les lignes par **score de priorité**,
 qui combine le retard accumulé, le niveau de confiance et le nombre de tours
 déjà effectués.
+
+### Filtrer par collège en écriture
+
+La page Items porte deux menus de collège, comme la Répartition : **Tous les
+collèges en écriture ★** ne garde que les items que ce collège porte, **Tous
+les collèges** garde ceux où il figure. Les deux se cumulent.
+
+L'unité dépend de la vue. En vue « par item » une ligne est un item ; en vue
+« par collège » une ligne est un couple item-collège, et le filtre « en
+écriture » n'y garde que la ligne du bon collège — sinon on ferait apparaître
+la ligne « psychiatrie » d'un item que porte la cardiologie.
+
+En vue « par item », les collèges en écriture ouvrent la liste des badges avec
+leur étoile, comme partout ailleurs.
 
 ## Deux vues du programme
 

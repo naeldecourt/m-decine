@@ -63,12 +63,21 @@
 
   function estObjet(v) { return v && typeof v === 'object' && !Array.isArray(v); }
 
-  /** Signature d'un tour : deux tours identiques ne doivent pas se dupliquer. */
+  /** Signature d'un tour : deux tours identiques ne doivent pas se dupliquer.
+      Le magasin l'expose ; on garde une copie pour rester testable seul. */
   function signatureTour(t) {
+    if (window.Store && window.Store.signatureTour) return window.Store.signatureTour(t);
     return [t.d, t.c, t.m, t.s || ''].join('|');
   }
 
-  function fusionneTours(a, b) {
+  /**
+   * Réunion des tours, clé par clé.
+   * Un tour supprimé laisse sa signature au registre : sans ça, réunir les
+   * deux côtés le rendrait à chaque synchronisation — c'est toute la
+   * difficulté d'effacer un tour parmi plusieurs, la clé restant en place.
+   */
+  function fusionneTours(a, b, sup, majA, majB) {
+    sup = sup || {};
     var sortie = {};
     var cles = {};
     Object.keys(a || {}).forEach(function (k) { cles[k] = 1; });
@@ -76,12 +85,25 @@
     Object.keys(cles).forEach(function (k) {
       var la = Array.isArray(a && a[k]) ? a[k] : [];
       var lb = Array.isArray(b && b[k]) ? b[k] : [];
+      // Date d'écriture de chaque tour encore détenu. Un tour sans date est
+      // antérieur à cette version, donc antérieur à toute suppression : on ne
+      // se rabat pas sur l'horodatage de l'appareil, qui avance dès qu'on
+      // touche à n'importe quoi d'autre et ferait revenir le tour effacé.
+      var porteur = {};
+      la.concat(lb).forEach(function (t) {
+        if (!t || !t.d) return;
+        var sig = signatureTour(t);
+        var q = Number(t.u) || 0;
+        if (q > (porteur[sig] || 0)) porteur[sig] = q;
+      });
       var vus = {}, res = [];
       la.concat(lb).forEach(function (t) {
         if (!t || !t.d) return;
         var sig = signatureTour(t);
         if (vus[sig]) return;
         vus[sig] = 1;
+        var efface = sup['tour:' + k + '#' + sig];
+        if (efface && efface > (porteur[sig] || 0)) return;   // supprimé depuis
         res.push(t);
       });
       res.sort(function (x, y) { return x.d < y.d ? -1 : (x.d > y.d ? 1 : 0); });
@@ -217,8 +239,8 @@
       maj: Math.max(majL, majD),
       sup: sup,
       // on ne perd jamais un tour : réunion des deux côtés
-      tours: appliqueSup(fusionneTours(local.tours, distant.tours), 'tours', sup,
-                         porte(local.tours, distant.tours)),
+      tours: appliqueSup(fusionneTours(local.tours, distant.tours, sup, majL, majD),
+                         'tours', sup, porte(local.tours, distant.tours)),
       res: appliqueSup(fusionneListes(local.res, distant.res), 'res', sup,
                        porte(local.res, distant.res)),
       // dictionnaires : réunion, le plus récent tranche les conflits

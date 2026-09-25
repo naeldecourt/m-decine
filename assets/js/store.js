@@ -232,6 +232,15 @@
   /** Vrai si ce collège est référent de cet item. */
   function estRef(n, college) { return refsItem(n).indexOf(college) !== -1; }
 
+  /* Signature d'un tour : deux tours identiques ne se dupliquent pas à la
+     fusion, et c'est aussi ce qui identifie un tour supprimé. Doit rester
+     alignée sur celle de sync.js, qui la réutilise. */
+  function signatureTour(t) {
+    return [t.d, t.c, t.m, t.s || ''].join('|');
+  }
+
+  function cleTour(k, t) { return k + '#' + signatureTour(t); }
+
   /* ------------------------------------------------------- lecture tour */
 
   function tours(k) {
@@ -301,13 +310,22 @@
       d: tour.d || today(),
       c: Math.min(5, Math.max(1, Number(tour.c) || 3)),
       m: Math.max(0, Number(tour.m) || 0),
-      s: tour.s || ''
+      s: tour.s || '',
+      // Date d'écriture — hors signature, donc sans effet sur la déduplication.
+      // Elle dit à la fusion si ce tour a été écrit avant ou après une
+      // suppression reçue d'ailleurs. Les tours plus anciens que cette version
+      // n'en ont pas : ils comptent alors pour antérieurs à toute suppression.
+      u: Date.now()
     };
-    if (index >= 0 && index < liste.length) liste[index] = t;
-    else if (liste.length < MAX_TOURS) liste.push(t);
+    if (index >= 0 && index < liste.length) {
+      // Le tour remplacé disparaît : sa signature ne doit pas revenir.
+      marqueSuppr('tour', cleTour(k, liste[index]));
+      liste[index] = t;
+    } else if (liste.length < MAX_TOURS) liste.push(t);
     else return false;
     d.tours[k] = trie(liste);
     oublieSuppr('tours', k);
+    oublieSuppr('tour', cleTour(k, t));   // on vient de l'écrire : il existe
     return save();
   }
 
@@ -315,6 +333,9 @@
     var d = load();
     var liste = trie(tours(k));
     if (index < 0 || index >= liste.length) return false;
+    // Une pierre tombale par tour : supprimer un tour parmi plusieurs laisse la
+    // clé en place, et la fusion, qui réunit les deux côtés, le rendrait.
+    marqueSuppr('tour', cleTour(k, liste[index]));
     liste.splice(index, 1);
     if (liste.length) d.tours[k] = liste;
     else { delete d.tours[k]; marqueSuppr('tours', k); }
@@ -1028,6 +1049,7 @@
     MAX_TOURS: MAX_TOURS, SUPPORTS: SUPPORTS, INTERVALLES: INTERVALLES,
     iso: iso, today: today, parse: parse, formatFr: formatFr, joursEntre: joursEntre, duree: duree,
     vue: vue, setVue: setVue, cle: cle, refsItem: refsItem, estRef: estRef,
+    signatureTour: signatureTour,
     colleges: colleges, college: college,
     tours: tours, dernier: dernier, confiance: confiance, minutes: minutes,
     prochaine: prochaine, retard: retard, priorite: priorite, statut: statut,

@@ -347,6 +347,24 @@ séances portent pour cela leur propre date de modification (`u`) ; pour le
 reste, on se rabat sur l'horodatage de l'appareil, plus grossier mais qui
 penche du bon côté — garder une donnée en trop plutôt qu'en perdre une.
 
+Les tours ont leur propre pierre tombale, **par tour et non par item** :
+supprimer un tour parmi plusieurs laisse la clé de l'item en place, et la
+fusion des tours — qui réunit les deux côtés — le rendrait à chaque
+synchronisation. Un tour est identifié par sa signature (date, confiance,
+durée, support) ; modifier un tour enterre donc l'ancienne version, sans quoi
+elle reviendrait en double.
+
+Chaque tour porte aussi sa date d'écriture. Un tour qui n'en a pas est
+antérieur à cette version, donc antérieur à toute suppression : on ne se rabat
+pas sur l'horodatage de l'appareil, qui avance dès qu'on touche à n'importe
+quoi d'autre et ferait revenir le tour effacé au retour d'un appareil resté
+hors connexion.
+
+Corollaire de la signature : deux tours rigoureusement identiques — même date,
+même confiance, même durée, même support — sont considérés comme un seul. C'est
+ce qui évite de dupliquer un tour enregistré depuis deux appareils ; trois
+séances indistinguables le même jour n'en comptent donc qu'une.
+
 Les suppressions de plus de 90 jours sont purgées : tous les appareils les ont
 forcément vues passer, et le registre n'a pas à grossir sans fin.
 

@@ -1328,3 +1328,10 @@ html.focus-ouvert, body.focus-ouvert { overflow: hidden; height: 100%; }
   .focus__bilan { gap: 8px; }
   .bilan { padding: 9px 12px; }
 }
+
+/* La version livrée, en pied de page : discrète mais toujours lisible. */
+.version {
+  display: inline-block; margin-left: 8px; padding: 1px 7px;
+  border-radius: 999px; background: var(--bg-2); color: var(--ink-2);
+  font-size: .78rem; font-variant-numeric: tabular-nums; white-space: nowrap;
+}

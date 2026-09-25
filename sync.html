@@ -148,6 +148,22 @@ service cloud.firestore {
   </section>
 
   <section>
+    <div class="sec-title"><span class="sec-title__icon" id="i-maj"></span><h2>Version du site</h2></div>
+    <div class="card card--pad stack">
+      <p class="mb0">Version actuellement chargée sur cet appareil :
+        <strong id="v-build">—</strong>.</p>
+      <p class="small muted mb0">Le site se met à jour tout seul à l'ouverture. Si un défaut
+      corrigé persiste, c'est que cet appareil sert encore d'anciens fichiers gardés en mémoire :
+      ce bouton les jette et recharge tout. Tes données de révision ne sont pas touchées — elles
+      ne passent pas par cette mémoire-là.</p>
+      <div class="row" style="gap:10px">
+        <button type="button" class="btn btn--primary" id="v-forcer">Forcer la mise à jour</button>
+        <span class="small muted" id="v-etat"></span>
+      </div>
+    </div>
+  </section>
+
+  <section>
     <div class="notice">
       <p class="mb0"><strong>Tu préfères éviter le cloud ?</strong> L'export et l'import JSON de la
       <a href="items.html#donnees">liste des items</a> font le même travail à la main : un fichier
@@ -169,6 +185,7 @@ service cloud.firestore {
     <p class="mb0 small" style="margin-top:6px">
       Programme et intitulés d'items donnés à titre indicatif : le référentiel officiel
       publié par l'UNESS fait seul foi.
+      <span class="version" id="version"></span>
     </p>
   </div>
 </footer>

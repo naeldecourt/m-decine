@@ -327,7 +327,14 @@ restée en cache demande `store.js?v=<ancienne empreinte>` et reçoit le fichier
 courant. Page ancienne, scripts récents — et un identifiant renommé entre les
 deux suffit à vider une page de son contenu.
 
-Chaque page porte donc son empreinte dans une balise `edn-build`, que `ui.js`
+**La version chargée est affichée** en pied de page et sur la page Sync. Sans
+elle, impossible de distinguer un défaut du site d'un appareil resté sur une
+version ancienne — la question s'est posée assez souvent pour mériter une
+réponse visible. La page Sync porte aussi un bouton **Forcer la mise à jour**,
+qui jette le service worker et tous ses caches puis recharge : les données de
+révision, elles, vivent ailleurs et ne sont pas touchées.
+
+Chaque page porte son empreinte dans une balise `edn-build`, que `ui.js`
 compare à la sienne. En cas de désaccord, la page est rechargée une fois : elle
 est servie réseau d'abord, donc la version à jour arrive. Une seule fois, pour
 qu'une coupure réseau ne déclenche pas une boucle ; la console garde alors la

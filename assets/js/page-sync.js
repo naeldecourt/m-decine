@@ -105,5 +105,41 @@
     });
 
     document.addEventListener('edn:sync', function (ev) { majEtat(ev.detail); });
+
+    /* ------------------------------------------------ version et mise à jour */
+
+    var icone = $('#i-maj');
+    if (icone) icone.innerHTML = U.icone('refresh');
+
+    var meta = document.querySelector('meta[name="edn-build"]');
+    var build = meta && meta.getAttribute('content');
+    var vb = $('#v-build');
+    if (vb) vb.textContent = (!build || build === '__' + 'BUILD__') ? 'de développement' : build;
+
+    var forcer = $('#v-forcer');
+    if (forcer) forcer.addEventListener('click', function () {
+      var etat = $('#v-etat');
+      forcer.disabled = true;
+      if (etat) etat.textContent = 'Nettoyage…';
+      // On jette le service worker et tous ses caches, puis on recharge : le
+      // navigateur repart alors du serveur pour chaque fichier.
+      var taches = [];
+      if (window.caches && caches.keys) {
+        taches.push(caches.keys().then(function (cles) {
+          return Promise.all(cles.map(function (c) { return caches.delete(c); }));
+        }));
+      }
+      if (navigator.serviceWorker && navigator.serviceWorker.getRegistrations) {
+        taches.push(navigator.serviceWorker.getRegistrations().then(function (regs) {
+          return Promise.all(regs.map(function (r) { return r.unregister(); }));
+        }));
+      }
+      Promise.all(taches).catch(function () { /* on recharge quand même */ })
+        .then(function () {
+          if (etat) etat.textContent = 'Rechargement…';
+          // Une adresse unique force le navigateur à refaire la requête.
+          location.replace(location.pathname + '?maj=' + Date.now());
+        });
+    });
   });
 })();

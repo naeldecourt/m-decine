@@ -352,6 +352,14 @@
     var y = $('#annee');
     if (y) y.textContent = String(new Date().getFullYear());
 
+    // La version livrée, en clair : sans elle, impossible de savoir si un
+    // défaut vient du site ou d'un appareil resté sur une version ancienne.
+    var v = $('#version');
+    if (v) {
+      v.textContent = 'Version ' + (BUILD === '__' + 'BUILD__' ? 'de développement' : BUILD);
+      v.title = 'Version du site actuellement chargée';
+    }
+
     brancheIndicateurSync();
     enregistreServiceWorker();
   });

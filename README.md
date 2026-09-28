@@ -102,6 +102,12 @@ conséquences en découlent :
   n'a pas d'équivalent parmi les 24. Plutôt qu'une étoile fausse, ils n'en
   portent pas, et la page le dit.
 
+**Une correction manuelle** s'écarte du tableau, consignée en tête de
+`items.js` : l'item 340 (AVC) porte aussi l'étoile en neurologie, là où le
+tableau la place en relecture derrière la réanimation. Le test qui confronte
+les 367 items au fichier source l'inscrit explicitement — une divergence non
+listée reste un échec.
+
 Les collèges où figure un item, eux, restent ceux de la donnée d'origine : seule
 l'étoile vient du tableau. Trente-trois couples item-collège ont été ajoutés,
 uniquement là où un collège en écriture n'était pas rattaché à son item — sans

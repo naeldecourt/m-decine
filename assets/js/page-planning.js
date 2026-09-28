@@ -421,11 +421,14 @@
     });
   }
 
-  /** Collège de référence d'un item, pour colorer la séance créée. */
+  /** Collège qui donne sa couleur à une séance créée depuis un item : le
+      premier collège en écriture. Un item peut en avoir plusieurs — d'où une
+      liste — et vingt-cinq n'en ont aucun, auquel cas la séance prend la
+      couleur neutre des séances sans collège. */
   function collegeDeLItem(n) {
     if (!n) return '';
-    var it = (window.EDN_ITEMS || []).filter(function (x) { return x.n === Number(n); })[0];
-    return it ? it.ref : '';
+    var refs = S.refsItem(n);
+    return refs.length ? refs[0] : '';
   }
 
   /* --------------------------------- appui long : déplacer au doigt */

@@ -16,7 +16,11 @@
    · item 342 (malaise, perte de connaissance, crise comitiale) — la neurologie
      est ajoutée aux collèges en écriture. Le tableau ne lui donne que la
      réanimation, et sa colonne relecture est vide ; correction demandée par
-     l'utilisateur. */
+     l'utilisateur.
+   · item 223 (dyslipidémies) — la cardiologie est ajoutée aux collèges en
+     écriture, à côté de l'endocrinologie. Le tableau y place la médecine
+     vasculaire en relecture, laquelle tombe dans le groupe cardiologie ;
+     correction demandée par l'utilisateur. */
 
 window.EDN_COLLEGES = [
  {"id":"cardiologie","nom":"Cardiologie - Chir Vasc.","court":"CAR","couleur":"#ef4444"},
@@ -62,7 +66,7 @@ window.EDN_LIGNES = [
  {"id":"FC14@cardiologie","n":342,"t":"Malaise et perte de connaissance","c":"cardiologie","fc":"FC14","ref":0},
  {"id":"FC15@cardiologie","n":339,"t":"Angor chronique stable et syndrome coronarien aigu","c":"cardiologie","fc":"FC15","ref":1},
  {"id":"FC16@cardiologie","n":225,"t":"Artériopathies aorte et membres inférieurs","c":"cardiologie","fc":"FC16","ref":1},
- {"id":"FC17@cardiologie","n":223,"t":"Dyslipidémies","c":"cardiologie","fc":"FC17","ref":0},
+ {"id":"FC17@cardiologie","n":223,"t":"Dyslipidémies","c":"cardiologie","fc":"FC17","ref":1},
  {"id":"FC18@cardiologie","n":234,"t":"Insuffisance cardiaque","c":"cardiologie","fc":"FC18","ref":1},
  {"id":"FC19@cardiologie","n":238,"t":"Souffle cardiaque de l’enfant","c":"cardiologie","fc":"FC19","ref":1},
  {"id":"FC20@cardiologie","n":331,"t":"Arrêt cardiocirculatoire","c":"cardiologie","fc":"FC20","ref":0},
@@ -1057,7 +1061,7 @@ window.EDN_ITEMS = [
  {"n":220,"t":"Adénopathie superficielle de l’adulte et de l’enfant","cols":["orl","pediatrie","hematologie","infectiologie","medecine-interne"],"ref":["hematologie"]},
  {"n":221,"t":"Athérome et patient polyathéromateux","cols":["cardiologie","sante-publique"],"ref":["cardiologie"]},
  {"n":222,"t":"Facteurs de risque cardiovasculaires et prévention","cols":["cardiologie","sante-publique"],"ref":["cardiologie"]},
- {"n":223,"t":"Dyslipidémies","cols":["cardiologie","endocrinologie"],"ref":["endocrinologie"]},
+ {"n":223,"t":"Dyslipidémies","cols":["cardiologie","endocrinologie"],"ref":["cardiologie","endocrinologie"]},
  {"n":224,"t":"Hypertension artérielle","cols":["cardiologie","pediatrie","endocrinologie","mir","nephrologie","medecine-interne","ophtalmologie"],"ref":["cardiologie"]},
  {"n":225,"t":"Artériopathies aorte et membres inférieurs","cols":["cardiologie"],"ref":["cardiologie"]},
  {"n":226,"t":"Thrombose veineuse profonde et embolie pulmonaire","cols":["cardiologie","pneumologie","hematologie","mir","medecine-interne"],"ref":["cardiologie"]},

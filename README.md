@@ -94,7 +94,8 @@ regroupements (« Cardiologie - Chir Vasc. » fond à elle seule quatre collège
 officiels). Chaque collège officiel est donc ramené à son groupe, et deux
 conséquences en découlent :
 
-- **37 items ont plusieurs étoiles**, soit parce que le tableau leur donne
+- **37 items ont plusieurs étoiles** d'après le tableau — 39 avec les deux
+  corrections manuelles décrites plus bas —, soit parce qu'il leur donne
   plusieurs collèges en écriture, soit parce que ces collèges tombent dans des
   groupes différents. Elles sont toutes affichées, sur le même plan.
 - **25 items n'en ont aucune.** Leur collège en écriture — Médecine générale,
@@ -102,11 +103,13 @@ conséquences en découlent :
   n'a pas d'équivalent parmi les 24. Plutôt qu'une étoile fausse, ils n'en
   portent pas, et la page le dit.
 
-**Une correction manuelle** s'écarte du tableau, consignée en tête de
-`items.js` : l'item 340 (AVC) porte aussi l'étoile en neurologie, là où le
-tableau la place en relecture derrière la réanimation. Le test qui confronte
-les 367 items au fichier source l'inscrit explicitement — une divergence non
-listée reste un échec.
+**Deux corrections manuelles** s'écartent du tableau, consignées en tête de
+`items.js` : les items 340 (AVC) et 342 (malaise, perte de connaissance, crise
+comitiale) portent aussi l'étoile en neurologie. Le tableau ne donne le premier
+qu'à la réanimation, la neurologie venant en relecture ; pour le second il ne la
+cite pas du tout, sa colonne relecture étant vide. Le test qui confronte les 367
+items au fichier source les inscrit explicitement — une divergence non listée
+reste un échec.
 
 Les collèges où figure un item, eux, restent ceux de la donnée d'origine : seule
 l'étoile vient du tableau. Trente-trois couples item-collège ont été ajoutés,

@@ -94,7 +94,7 @@ regroupements (« Cardiologie - Chir Vasc. » fond à elle seule quatre collège
 officiels). Chaque collège officiel est donc ramené à son groupe, et deux
 conséquences en découlent :
 
-- **37 items ont plusieurs étoiles** d'après le tableau — 40 avec les trois
+- **37 items ont plusieurs étoiles** d'après le tableau — 41 avec les quatre
   corrections manuelles décrites plus bas —, soit parce qu'il leur donne
   plusieurs collèges en écriture, soit parce que ces collèges tombent dans des
   groupes différents. Elles sont toutes affichées, sur le même plan.
@@ -103,15 +103,16 @@ conséquences en découlent :
   n'a pas d'équivalent parmi les 24. Plutôt qu'une étoile fausse, ils n'en
   portent pas, et la page le dit.
 
-**Trois corrections manuelles** s'écartent du tableau, consignées en tête de
-`items.js`. Les items 340 (AVC) et 342 (malaise, perte de connaissance, crise
-comitiale) portent aussi l'étoile en neurologie : le tableau ne donne le premier
-qu'à la réanimation, la neurologie venant en relecture ; pour le second il ne la
-cite pas du tout, sa colonne relecture étant vide. L'item 223 (dyslipidémies)
-porte aussi l'étoile en cardiologie, à côté de l'endocrinologie : le tableau y
-met la médecine vasculaire en relecture, laquelle tombe dans le groupe
-cardiologie. Le test qui confronte les 367 items au fichier source les inscrit
-explicitement — une divergence non listée reste un échec.
+**Quatre corrections manuelles** s'écartent du tableau, consignées en tête de
+`items.js`. Trois items que le tableau donne à la réanimation portent aussi
+l'étoile en neurologie : le 336 (coma non traumatique), le 340 (AVC) et le 342
+(malaise, perte de connaissance, crise comitiale). Le tableau ne met la
+neurologie en relecture que pour l'AVC ; pour les deux autres il ne la cite pas
+du tout. Le quatrième, l'item 223 (dyslipidémies), porte aussi l'étoile en
+cardiologie à côté de l'endocrinologie : le tableau y met la médecine vasculaire
+en relecture, laquelle tombe dans le groupe cardiologie. Le test qui confronte
+les 367 items au fichier source les inscrit explicitement — une divergence non
+listée reste un échec.
 
 Les collèges où figure un item, eux, restent ceux de la donnée d'origine : seule
 l'étoile vient du tableau. Trente-trois couples item-collège ont été ajoutés,

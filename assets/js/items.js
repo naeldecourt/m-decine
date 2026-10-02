@@ -9,18 +9,19 @@
    plusieurs — EDN_ITEMS.ref est donc une liste — et vingt-cinq items n'en
    ont aucun ici, leur collège en écriture n'existant pas parmi les 24.
 
-   CORRECTIONS MANUELLES, à conserver si le tableau est réimporté :
-   · item 340 (AVC) — la neurologie est ajoutée aux collèges en écriture.
-     Le tableau la place en relecture, derrière la réanimation ; correction
-     demandée par l'utilisateur.
-   · item 342 (malaise, perte de connaissance, crise comitiale) — la neurologie
-     est ajoutée aux collèges en écriture. Le tableau ne lui donne que la
-     réanimation, et sa colonne relecture est vide ; correction demandée par
-     l'utilisateur.
+   CORRECTIONS MANUELLES, à conserver si le tableau est réimporté. Toutes sont
+   demandées par l'utilisateur, et classées par numéro d'item :
    · item 223 (dyslipidémies) — la cardiologie est ajoutée aux collèges en
      écriture, à côté de l'endocrinologie. Le tableau y place la médecine
-     vasculaire en relecture, laquelle tombe dans le groupe cardiologie ;
-     correction demandée par l'utilisateur. */
+     vasculaire en relecture, laquelle tombe dans le groupe cardiologie.
+   · item 336 (coma non traumatique) — la neurologie est ajoutée aux collèges
+     en écriture. Le tableau ne lui donne que la réanimation, et met la
+     pédiatrie en relecture ; la neurologie n'y figure pas.
+   · item 340 (AVC) — la neurologie est ajoutée aux collèges en écriture.
+     Le tableau la place en relecture, derrière la réanimation.
+   · item 342 (malaise, perte de connaissance, crise comitiale) — la neurologie
+     est ajoutée aux collèges en écriture. Le tableau ne lui donne que la
+     réanimation, et sa colonne relecture est vide. */
 
 window.EDN_COLLEGES = [
  {"id":"cardiologie","nom":"Cardiologie - Chir Vasc.","court":"CAR","couleur":"#ef4444"},
@@ -219,7 +220,7 @@ window.EDN_LIGNES = [
  {"id":"FC22@neurologie","n":151,"t":"Méningites et méningo-encéphalites","c":"neurologie","fc":"FC22","ref":0},
  {"id":"FC23@neurologie","n":168,"t":"Infections à herpès virus et infections par le VIH","c":"neurologie","fc":"FC23","ref":0},
  {"id":"FC24@neurologie","n":299,"t":"Tumeurs intracrâniennes","c":"neurologie","fc":"FC24","ref":1},
- {"id":"FC25@neurologie","n":336,"t":"Comas non traumatiques","c":"neurologie","fc":"FC25","ref":0},
+ {"id":"FC25@neurologie","n":336,"t":"Comas non traumatiques","c":"neurologie","fc":"FC25","ref":1},
  {"id":"FC26@neurologie","n":340,"t":"Accident vasculaire cérébral","c":"neurologie","fc":"FC26","ref":1},
  {"id":"FC27@neurologie","n":341,"t":"Hémorragie méningée","c":"neurologie","fc":"FC27","ref":0},
  {"id":"FC28@neurologie","n":342,"t":"Malaise, perte de connaissance et crise comitiale","c":"neurologie","fc":"FC28","ref":1},
@@ -1174,7 +1175,7 @@ window.EDN_ITEMS = [
  {"n":333,"t":"Situations sanitaires exceptionnelles et afflux de victimes","cols":["mir"],"ref":["mir"]},
  {"n":334,"t":"Brûlures","cols":["osteo","mir","neurologie"],"ref":["osteo","mir","neurologie"]},
  {"n":335,"t":"Traumatologie maxillo-faciale","cols":["orl"],"ref":["orl"]},
- {"n":336,"t":"Coma non traumatique de l’adulte","cols":["neurologie","mir"],"ref":["mir"]},
+ {"n":336,"t":"Coma non traumatique de l’adulte","cols":["neurologie","mir"],"ref":["neurologie","mir"]},
  {"n":337,"t":"Intoxications aiguës","cols":["pediatrie","mir"],"ref":["mir"]},
  {"n":338,"t":"Anaphylaxie et œdème de Quincke","cols":["pneumologie","mir"],"ref":["mir"]},
  {"n":339,"t":"Angor chronique stable et syndrome coronarien aigu","cols":["cardiologie","mir"],"ref":["cardiologie"]},

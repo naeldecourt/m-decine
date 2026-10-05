@@ -65,7 +65,7 @@ leur étoile, comme partout ailleurs.
 Un même item peut être traité par plusieurs collèges. Le site propose donc deux
 vues, permutables depuis la liste des items :
 
-- **Par collège** — 753 lignes, une par couple item-collège. Les tours sont
+- **Par collège** — 787 lignes, une par couple item-collège. Les tours sont
   suivis séparément dans chaque collège, et le collège de référence porte
   l'étoile ★.
 - **Par item** — 367 lignes, une par numéro d'item, les collèges concernés
@@ -94,7 +94,7 @@ regroupements (« Cardiologie - Chir Vasc. » fond à elle seule quatre collège
 officiels). Chaque collège officiel est donc ramené à son groupe, et deux
 conséquences en découlent :
 
-- **37 items ont plusieurs étoiles** d'après le tableau — 42 avec les cinq
+- **37 items ont plusieurs étoiles** d'après le tableau — 43 avec les six
   corrections manuelles décrites plus bas —, soit parce qu'il leur donne
   plusieurs collèges en écriture, soit parce que ces collèges tombent dans des
   groupes différents. Elles sont toutes affichées, sur le même plan.
@@ -103,23 +103,25 @@ conséquences en découlent :
   n'a pas d'équivalent parmi les 24. Plutôt qu'une étoile fausse, ils n'en
   portent pas, et la page le dit.
 
-**Cinq corrections manuelles** s'écartent du tableau, consignées en tête de
-`items.js`. Quatre portent sur des items que le tableau donne à la réanimation :
-le 336 (coma non traumatique), le 340 (AVC) et le 342 (malaise, perte de
-connaissance, crise comitiale) gagnent l'étoile en neurologie, le 120
+**Six corrections manuelles** s'écartent du tableau, consignées en tête de
+`items.js`. Cinq portent sur des items que le tableau donne à la seule
+réanimation : le 336 (coma non traumatique), le 340 (AVC) et le 342 (malaise,
+perte de connaissance, crise comitiale) gagnent l'étoile en neurologie, le 120
 (complications de l'immobilité et du décubitus) la gagne en gériatrie — le
-collège qui porte aussi la MPR. Le tableau ne met ce collège en relecture que
-pour l'AVC ; pour les trois autres il ne le cite pas du tout. La cinquième,
-l'item 223 (dyslipidémies), porte aussi l'étoile en cardiologie à côté de
-l'endocrinologie : le tableau y met la médecine vasculaire en relecture,
-laquelle tombe dans le groupe cardiologie. Le test qui confronte les 367 items
-au fichier source les inscrit explicitement — une divergence non listée reste un
-échec.
+collège qui porte aussi la MPR —, et le 136 (anesthésie locale, locorégionale
+et générale) la gagne en douleur et soins palliatifs. Le tableau ne met le
+collège visé en relecture que pour l'AVC ; pour les quatre autres il ne le cite
+pas du tout. La sixième, l'item 223 (dyslipidémies), porte aussi l'étoile en
+cardiologie à côté de l'endocrinologie : le tableau y met la médecine vasculaire
+en relecture, laquelle tombe dans le groupe cardiologie. Le test qui confronte
+les 367 items au fichier source les inscrit explicitement — une divergence non
+listée reste un échec.
 
 Les collèges où figure un item, eux, restent ceux de la donnée d'origine : seule
-l'étoile vient du tableau. Trente-trois couples item-collège ont été ajoutés,
-uniquement là où un collège en écriture n'était pas rattaché à son item — sans
-quoi l'étoile n'aurait eu nulle part où s'afficher.
+l'étoile vient du tableau. Trente-quatre couples item-collège ont été ajoutés —
+trente-trois à l'import, un pour la correction de l'item 136 —, uniquement là où
+un collège en écriture n'était pas rattaché à son item ; sans quoi l'étoile
+n'aurait eu nulle part où s'afficher. D'où 787 lignes pour 753 à l'origine.
 
 ## Trouver un item à planifier
 

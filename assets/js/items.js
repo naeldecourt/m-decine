@@ -16,6 +16,11 @@
      ne donne l'item qu'à la réanimation, et sa colonne relecture est vide.
      Les deux lignes item-collège de la gériatrie sont étoilées, comme partout
      ailleurs où un collège en a plusieurs pour un même item.
+   · item 136 (anesthésie locale, locorégionale et générale) — la douleur et
+     les soins palliatifs sont ajoutés aux collèges en écriture. Le tableau ne
+     donne l'item qu'à la réanimation, et sa colonne relecture est vide. Ce
+     collège n'était pas rattaché à l'item : la ligne item-collège a été créée
+     pour que l'étoile ait où s'afficher — d'où 787 lignes et non 786.
    · item 223 (dyslipidémies) — la cardiologie est ajoutée aux collèges en
      écriture, à côté de l'endocrinologie. Le tableau y place la médecine
      vasculaire en relecture, laquelle tombe dans le groupe cardiologie.
@@ -676,6 +681,7 @@ window.EDN_LIGNES = [
  {"id":"REF040@douleur","n":40,"t":"Algies pelviennes chez la femme","c":"douleur","fc":"REF040","ref":1},
  {"id":"REF096@douleur","n":96,"t":"Neuropathies périphériques","c":"douleur","fc":"REF096","ref":1},
  {"id":"REF100@douleur","n":100,"t":"Céphalée aiguë et chronique","c":"douleur","fc":"REF100","ref":1},
+ {"id":"REF136@douleur","n":136,"t":"Anesthésie locale, locorégionale et générale","c":"douleur","fc":"REF136","ref":1},
  {"id":"REF142@douleur","n":142,"t":"Soins palliatifs en néonatalogie et deuil périnatal","c":"douleur","fc":"REF142","ref":1},
  {"id":"FC01@medecine-interne","n":1,"t":"La relation médecin-malade","c":"medecine-interne","fc":"FC01","ref":0},
  {"id":"FC02@medecine-interne","n":2,"t":"Valeurs professionnelles du médecin et des autres professions de santé","c":"medecine-interne","fc":"FC02","ref":0},
@@ -980,7 +986,7 @@ window.EDN_ITEMS = [
  {"n":133,"t":"Autonomie et dépendance chez la personne âgée","cols":["geriatrie"]},
  {"n":134,"t":"Douleur de la personne âgée","cols":["neurologie","osteo","geriatrie","douleur","mir"],"ref":["douleur","mir"]},
  {"n":135,"t":"Autres traitements de la douleur","cols":["osteo","mir","douleur"],"ref":["mir","douleur"]},
- {"n":136,"t":"Anesthésie locale, locorégionale et générale","cols":["mir"],"ref":["mir"]},
+ {"n":136,"t":"Anesthésie locale, locorégionale et générale","cols":["mir","douleur"],"ref":["mir","douleur"]},
  {"n":137,"t":"Douleur chez l’enfant : évaluation et traitements","cols":["pediatrie","douleur"],"ref":["pediatrie"]},
  {"n":138,"t":"Douleur chez la personne vulnérable","cols":["psychiatrie","douleur"],"ref":["douleur"]},
  {"n":139,"t":"Soins palliatifs : repères cliniques et organisation","cols":["geriatrie","douleur"],"ref":["douleur"]},

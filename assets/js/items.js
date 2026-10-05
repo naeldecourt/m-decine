@@ -11,6 +11,11 @@
 
    CORRECTIONS MANUELLES, à conserver si le tableau est réimporté. Toutes sont
    demandées par l'utilisateur, et classées par numéro d'item :
+   · item 120 (complications de l'immobilité et du décubitus) — la gériatrie,
+     qui porte aussi la MPR, est ajoutée aux collèges en écriture. Le tableau
+     ne donne l'item qu'à la réanimation, et sa colonne relecture est vide.
+     Les deux lignes item-collège de la gériatrie sont étoilées, comme partout
+     ailleurs où un collège en a plusieurs pour un même item.
    · item 223 (dyslipidémies) — la cardiologie est ajoutée aux collèges en
      écriture, à côté de l'endocrinologie. Le tableau y place la médecine
      vasculaire en relecture, laquelle tombe dans le groupe cardiologie.
@@ -624,7 +629,7 @@ window.EDN_LIGNES = [
  {"id":"FC10@geriatrie","n":70,"t":"Raisonner devant une plainte thymique et une dépression","c":"geriatrie","fc":"FC10","ref":0},
  {"id":"FC11@geriatrie","n":108,"t":"Diagnostiquer et raisonner devant un syndrome confusionnel","c":"geriatrie","fc":"FC11","ref":0},
  {"id":"FC12@geriatrie","n":109,"t":"Raisonner devant une chute et démarche diagnostique et thérapeutique","c":"geriatrie","fc":"FC12","ref":0},
- {"id":"FC13@geriatrie","n":120,"t":"Prévenir et prendre en charge un syndrome d’immobilisation","c":"geriatrie","fc":"FC13","ref":0},
+ {"id":"FC13@geriatrie","n":120,"t":"Prévenir et prendre en charge un syndrome d’immobilisation","c":"geriatrie","fc":"FC13","ref":1},
  {"id":"FC14@geriatrie","n":252,"t":"Troubles nutritionnels chez le sujet âgé","c":"geriatrie","fc":"FC14","ref":1},
  {"id":"FC15@geriatrie","n":125,"t":"Raisonner sur les troubles vésico-sphinctériens","c":"geriatrie","fc":"FC15","ref":0},
  {"id":"FC16@geriatrie","n":322,"t":"Apprendre à prescrire chez le patient âgé","c":"geriatrie","fc":"FC16","ref":0},
@@ -638,7 +643,7 @@ window.EDN_LIGNES = [
  {"id":"FC24@geriatrie","n":106,"t":"Maladie de Parkinson","c":"geriatrie","fc":"FC24","ref":0},
  {"id":"FC25@geriatrie","n":131,"t":"Troubles de la marche et de l’équilibre : particularités chez le sujet âgé","c":"geriatrie","fc":"FC25","ref":1},
  {"id":"FC26@geriatrie","n":118,"t":"La personne handicapée (+ITEM 119 LISA)","c":"geriatrie","fc":"FC26","ref":1},
- {"id":"FC27@geriatrie","n":120,"t":"Complications hypomobilité et du décubitus","c":"geriatrie","fc":"FC27","ref":0},
+ {"id":"FC27@geriatrie","n":120,"t":"Complications hypomobilité et du décubitus","c":"geriatrie","fc":"FC27","ref":1},
  {"id":"FC28@geriatrie","n":122,"t":"Principales techniques de rééducation et de réadaptation","c":"geriatrie","fc":"FC28","ref":1},
  {"id":"FC29@geriatrie","n":125,"t":"Troubles de la miction et incontinence urinaire de l’adulte et du sujet âgé","c":"geriatrie","fc":"FC29","ref":0},
  {"id":"FC30@geriatrie","n":129,"t":"Arthrose de hanche et de genou","c":"geriatrie","fc":"FC30","ref":0},
@@ -959,7 +964,7 @@ window.EDN_ITEMS = [
  {"n":117,"t":"Psoriasis","cols":["osteo","dermatologie"],"ref":["dermatologie"]},
  {"n":118,"t":"La personne handicapée (+ITEM 119 LISA)","cols":["neurologie","geriatrie"],"ref":["geriatrie"]},
  {"n":119,"t":"Soins et accompagnement de la maladie chronique et du handicap","cols":["geriatrie"],"ref":["geriatrie"]},
- {"n":120,"t":"Complications hypomobilité et du décubitus","cols":["geriatrie","mir"],"ref":["mir"]},
+ {"n":120,"t":"Complications hypomobilité et du décubitus","cols":["geriatrie","mir"],"ref":["geriatrie","mir"]},
  {"n":121,"t":"Handicap psychique","cols":["psychiatrie"],"ref":["psychiatrie"]},
  {"n":122,"t":"Principales techniques de rééducation et de réadaptation","cols":["geriatrie"],"ref":["geriatrie"]},
  {"n":123,"t":"Vieillissement normal","cols":["geriatrie"],"ref":["geriatrie"]},

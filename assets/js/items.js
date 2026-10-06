@@ -29,6 +29,9 @@
      pédiatrie en relecture ; la neurologie n'y figure pas.
    · item 340 (AVC) — la neurologie est ajoutée aux collèges en écriture.
      Le tableau la place en relecture, derrière la réanimation.
+   · item 341 (hémorragie méningée) — la neurologie est ajoutée aux collèges
+     en écriture. Le tableau y place la neurochirurgie en relecture, laquelle
+     tombe dans le groupe neurologie, derrière la réanimation.
    · item 342 (malaise, perte de connaissance, crise comitiale) — la neurologie
      est ajoutée aux collèges en écriture. Le tableau ne lui donne que la
      réanimation, et sa colonne relecture est vide.
@@ -235,7 +238,7 @@ window.EDN_LIGNES = [
  {"id":"FC24@neurologie","n":299,"t":"Tumeurs intracrâniennes","c":"neurologie","fc":"FC24","ref":1},
  {"id":"FC25@neurologie","n":336,"t":"Comas non traumatiques","c":"neurologie","fc":"FC25","ref":1},
  {"id":"FC26@neurologie","n":340,"t":"Accident vasculaire cérébral","c":"neurologie","fc":"FC26","ref":1},
- {"id":"FC27@neurologie","n":341,"t":"Hémorragie méningée","c":"neurologie","fc":"FC27","ref":0},
+ {"id":"FC27@neurologie","n":341,"t":"Hémorragie méningée","c":"neurologie","fc":"FC27","ref":1},
  {"id":"FC28@neurologie","n":342,"t":"Malaise, perte de connaissance et crise comitiale","c":"neurologie","fc":"FC28","ref":1},
  {"id":"FC29@neurologie","n":95,"t":"Radiculalgies et syndromes canalaires, neuropathies périphériques aiguës et PRNV (+ITEM 96 et 97 LISA)","c":"neurologie","fc":"FC29","ref":1},
  {"id":"FC30@neurologie","n":96,"t":"Neuropathies périphériques","c":"neurologie","fc":"FC30","ref":1},
@@ -1194,7 +1197,7 @@ window.EDN_ITEMS = [
  {"n":338,"t":"Anaphylaxie et œdème de Quincke","cols":["pneumologie","mir"],"ref":["mir"]},
  {"n":339,"t":"Angor chronique stable et syndrome coronarien aigu","cols":["cardiologie","mir"],"ref":["cardiologie"]},
  {"n":340,"t":"Accidents vasculaires cérébraux","cols":["neurologie","mir","geriatrie"],"ref":["neurologie","mir"]},
- {"n":341,"t":"Hémorragie sous-arachnoïdienne","cols":["neurologie","mir"],"ref":["mir"]},
+ {"n":341,"t":"Hémorragie sous-arachnoïdienne","cols":["neurologie","mir"],"ref":["neurologie","mir"]},
  {"n":342,"t":"Malaise, perte de connaissance et crise comitiale","cols":["cardiologie","neurologie","mir"],"ref":["neurologie","mir"]},
  {"n":343,"t":"État confusionnel et troubles de la conscience","cols":["pediatrie","neurologie"],"ref":["neurologie"]},
  {"n":344,"t":"Prééclampsie","cols":["gynecologie","mir"],"ref":["gynecologie","mir"]},

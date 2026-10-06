@@ -94,7 +94,7 @@ regroupements (« Cardiologie - Chir Vasc. » fond à elle seule quatre collège
 officiels). Chaque collège officiel est donc ramené à son groupe, et deux
 conséquences en découlent :
 
-- **37 items ont plusieurs étoiles** d'après le tableau — 43 avec les six
+- **37 items ont plusieurs étoiles** d'après le tableau — 44 avec les sept
   corrections manuelles décrites plus bas —, soit parce qu'il leur donne
   plusieurs collèges en écriture, soit parce que ces collèges tombent dans des
   groupes différents. Elles sont toutes affichées, sur le même plan.
@@ -103,15 +103,15 @@ conséquences en découlent :
   n'a pas d'équivalent parmi les 24. Plutôt qu'une étoile fausse, ils n'en
   portent pas, et la page le dit.
 
-**Six corrections manuelles** s'écartent du tableau, consignées en tête de
-`items.js`. Cinq portent sur des items que le tableau donne à la seule
+**Sept corrections manuelles** s'écartent du tableau, consignées en tête de
+`items.js`. Six portent sur des items que le tableau donne à la seule
 réanimation : le 336 (coma non traumatique), le 340 (AVC) et le 342 (malaise,
 perte de connaissance, crise comitiale) gagnent l'étoile en neurologie, le 120
 (complications de l'immobilité et du décubitus) la gagne en gériatrie — le
-collège qui porte aussi la MPR —, et le 136 (anesthésie locale, locorégionale
-et générale) la gagne en douleur et soins palliatifs. Le tableau ne met le
-collège visé en relecture que pour l'AVC ; pour les quatre autres il ne le cite
-pas du tout. La sixième, l'item 223 (dyslipidémies), porte aussi l'étoile en
+collège qui porte aussi la MPR —, le 136 (anesthésie locale, locorégionale et
+générale) en douleur et soins palliatifs, et le 360 (pneumothorax) en
+pneumologie. Le tableau met le collège visé en relecture pour l'AVC et le
+pneumothorax ; pour les quatre autres il ne le cite pas du tout. La septième, l'item 223 (dyslipidémies), porte aussi l'étoile en
 cardiologie à côté de l'endocrinologie : le tableau y met la médecine vasculaire
 en relecture, laquelle tombe dans le groupe cardiologie. Le test qui confronte
 les 367 items au fichier source les inscrit explicitement — une divergence non

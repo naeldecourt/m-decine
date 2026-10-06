@@ -31,7 +31,10 @@
      Le tableau la place en relecture, derrière la réanimation.
    · item 342 (malaise, perte de connaissance, crise comitiale) — la neurologie
      est ajoutée aux collèges en écriture. Le tableau ne lui donne que la
-     réanimation, et sa colonne relecture est vide. */
+     réanimation, et sa colonne relecture est vide.
+   · item 360 (pneumothorax) — la pneumologie est ajoutée aux collèges en
+     écriture. Le tableau la place en relecture, avec la chirurgie thoracique,
+     derrière la réanimation. */
 
 window.EDN_COLLEGES = [
  {"id":"cardiologie","nom":"Cardiologie - Chir Vasc.","court":"CAR","couleur":"#ef4444"},
@@ -130,7 +133,7 @@ window.EDN_LIGNES = [
  {"id":"FC04@pneumologie","n":204,"t":"Toux chez l’adulte","c":"pneumologie","fc":"FC04","ref":1},
  {"id":"FC05@pneumologie","n":226,"t":"Thrombose veineuse profonde et embolie pulmonaire","c":"pneumologie","fc":"FC05","ref":0},
  {"id":"FC06@pneumologie","n":203,"t":"Dyspnée aiguë et chronique","c":"pneumologie","fc":"FC06","ref":1},
- {"id":"FC07@pneumologie","n":360,"t":"Pneumothorax","c":"pneumologie","fc":"FC07","ref":0},
+ {"id":"FC07@pneumologie","n":360,"t":"Pneumothorax","c":"pneumologie","fc":"FC07","ref":1},
  {"id":"FC08@pneumologie","n":159,"t":"Tuberculose de l’adulte","c":"pneumologie","fc":"FC08","ref":0},
  {"id":"FC09@pneumologie","n":206,"t":"Épanchement pleural liquidien","c":"pneumologie","fc":"FC09","ref":1},
  {"id":"FC10@pneumologie","n":211,"t":"Sarcoïdose","c":"pneumologie","fc":"FC10","ref":0},
@@ -1210,7 +1213,7 @@ window.EDN_ITEMS = [
  {"n":357,"t":"Péritonite aiguë","cols":["hge","infectiologie","mir"],"ref":["hge","mir"]},
  {"n":358,"t":"Pancréatite aiguë","cols":["hge","mir"],"ref":["hge","mir"]},
  {"n":359,"t":"PaO2, PaCO2 et insuffisance respiratoire aiguë de l’adulte","cols":["pneumologie","mir"],"ref":["mir"]},
- {"n":360,"t":"Pneumothorax","cols":["pneumologie","mir"],"ref":["mir"]},
+ {"n":360,"t":"Pneumothorax","cols":["pneumologie","mir"],"ref":["pneumologie","mir"]},
  {"n":361,"t":"Lésions péri-articulaires et ligamentaires : épaule, genou et cheville","cols":["osteo"],"ref":["osteo"]},
  {"n":362,"t":"Prothèses et ostéosynthèses","cols":["osteo","infectiologie"],"ref":["osteo"]},
  {"n":363,"t":"Fractures extrémité inférieure du radius","cols":["osteo"],"ref":["osteo"]},

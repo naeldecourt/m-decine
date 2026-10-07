@@ -94,7 +94,7 @@ regroupements (« Cardiologie - Chir Vasc. » fond à elle seule quatre collège
 officiels). Chaque collège officiel est donc ramené à son groupe, et deux
 conséquences en découlent :
 
-- **37 items ont plusieurs étoiles** d'après le tableau — 45 avec les huit
+- **37 items ont plusieurs étoiles** d'après le tableau — 46 avec les neuf
   corrections manuelles décrites plus bas —, soit parce qu'il leur donne
   plusieurs collèges en écriture, soit parce que ces collèges tombent dans des
   groupes différents. Elles sont toutes affichées, sur le même plan.
@@ -103,21 +103,24 @@ conséquences en découlent :
   n'a pas d'équivalent parmi les 24. Plutôt qu'une étoile fausse, ils n'en
   portent pas, et la page le dit.
 
-**Huit corrections manuelles** s'écartent du tableau, consignées en tête de
-`items.js`. Sept portent sur des items que le tableau donne à la seule
-réanimation : le 336 (coma non traumatique), le 340 (AVC), le 341 (hémorragie
-méningée) et le 342 (malaise, perte de connaissance, crise comitiale) gagnent
-l'étoile en neurologie, le 120
-(complications de l'immobilité et du décubitus) la gagne en gériatrie — le
-collège qui porte aussi la MPR —, le 136 (anesthésie locale, locorégionale et
-générale) en douleur et soins palliatifs, et le 360 (pneumothorax) en
-pneumologie. Le tableau met le collège visé en relecture pour l'AVC,
-l'hémorragie méningée (par la neurochirurgie) et le pneumothorax ; pour les
-quatre autres il ne le cite pas du tout. La huitième, l'item 223 (dyslipidémies), porte aussi l'étoile en
-cardiologie à côté de l'endocrinologie : le tableau y met la médecine vasculaire
-en relecture, laquelle tombe dans le groupe cardiologie. Le test qui confronte
-les 367 items au fichier source les inscrit explicitement — une divergence non
-listée reste un échec.
+**Neuf corrections manuelles** s'écartent du tableau, consignées en tête de
+`items.js`. Dans chaque cas, un collège est ajouté en écriture à côté de celui
+que donne le tableau :
+
+| Item | Collège ajouté | Ce qu'en dit le tableau |
+|---|---|---|
+| 120 — immobilité et décubitus | Gériatrie - MPR | ne le cite pas |
+| 136 — anesthésie | Douleur - Soins pal. | ne le cite pas (ligne créée) |
+| 171 — gale et pédiculose | Dermatologie | relecture |
+| 223 — dyslipidémies | Cardiologie | relecture (médecine vasculaire) |
+| 336 — coma non traumatique | Neurologie | ne le cite pas |
+| 340 — AVC | Neurologie | relecture |
+| 341 — hémorragie méningée | Neurologie | relecture (neurochirurgie) |
+| 342 — malaise, perte de connaissance | Neurologie | ne le cite pas |
+| 360 — pneumothorax | Pneumologie | relecture |
+
+Le test qui confronte les 367 items au fichier source les inscrit
+explicitement — une divergence non listée reste un échec.
 
 Les collèges où figure un item, eux, restent ceux de la donnée d'origine : seule
 l'étoile vient du tableau. Trente-quatre couples item-collège ont été ajoutés —

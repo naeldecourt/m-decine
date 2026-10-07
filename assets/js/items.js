@@ -21,6 +21,9 @@
      donne l'item qu'à la réanimation, et sa colonne relecture est vide. Ce
      collège n'était pas rattaché à l'item : la ligne item-collège a été créée
      pour que l'étoile ait où s'afficher — d'où 787 lignes et non 786.
+   · item 171 (gale et pédiculose) — la dermatologie est ajoutée aux collèges
+     en écriture, à côté de l'infectiologie. Le tableau la place en relecture,
+     derrière la parasitologie et les maladies infectieuses.
    · item 223 (dyslipidémies) — la cardiologie est ajoutée aux collèges en
      écriture, à côté de l'endocrinologie. Le tableau y place la médecine
      vasculaire en relecture, laquelle tombe dans le groupe cardiologie.
@@ -591,7 +594,7 @@ window.EDN_LIGNES = [
  {"id":"FC09@dermatologie","n":162,"t":"Infections sexuellement transmissibles","c":"dermatologie","fc":"FC09","ref":1},
  {"id":"FC10@dermatologie","n":168,"t":"Infections à herpès virus du sujet immunocompétent","c":"dermatologie","fc":"FC10","ref":0},
  {"id":"FC11@dermatologie","n":169,"t":"Infection à VIH : manifestations cutanéo-muqueuses de la primo-infection","c":"dermatologie","fc":"FC11","ref":0},
- {"id":"FC12@dermatologie","n":171,"t":"Ectoparasitoses cutanées : gale et pédiculose","c":"dermatologie","fc":"FC12","ref":0},
+ {"id":"FC12@dermatologie","n":171,"t":"Ectoparasitoses cutanées : gale et pédiculose","c":"dermatologie","fc":"FC12","ref":1},
  {"id":"FC13@dermatologie","n":187,"t":"Hypersensibilités et allergies cutanéo-muqueuses chez l’enfant","c":"dermatologie","fc":"FC13","ref":1},
  {"id":"FC14@dermatologie","n":194,"t":"Lupus érythémateux disséminé","c":"dermatologie","fc":"FC14","ref":0},
  {"id":"FC15@dermatologie","n":201,"t":"Transplantation d’organes : complications cutanées","c":"dermatologie","fc":"FC15","ref":0},
@@ -1027,7 +1030,7 @@ window.EDN_ITEMS = [
  {"n":168,"t":"Infections à herpès virus du sujet immunocompétent","cols":["orl","neurologie","infectiologie","dermatologie"]},
  {"n":169,"t":"Infections à VIH","cols":["infectiologie","dermatologie","medecine-interne"],"ref":["infectiologie","medecine-interne"]},
  {"n":170,"t":"Paludisme","cols":["mir","infectiologie"],"ref":["infectiologie"]},
- {"n":171,"t":"Gale et pédiculose","cols":["infectiologie","dermatologie"],"ref":["infectiologie"]},
+ {"n":171,"t":"Gale et pédiculose","cols":["infectiologie","dermatologie"],"ref":["infectiologie","dermatologie"]},
  {"n":172,"t":"Parasitoses digestives","cols":["infectiologie"],"ref":["infectiologie"]},
  {"n":173,"t":"Zoonoses","cols":["infectiologie"],"ref":["infectiologie"]},
  {"n":174,"t":"Pathologie infectieuse chez les migrants adultes et enfants","cols":["pediatrie","infectiologie"],"ref":["infectiologie"]},

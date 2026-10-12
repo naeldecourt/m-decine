@@ -94,18 +94,20 @@ regroupements (« Cardiologie - Chir Vasc. » fond à elle seule quatre collège
 officiels). Chaque collège officiel est donc ramené à son groupe, et deux
 conséquences en découlent :
 
-- **37 items ont plusieurs étoiles** d'après le tableau — 46 avec les neuf
+- **37 items ont plusieurs étoiles** d'après le tableau — 46 avec les
   corrections manuelles décrites plus bas —, soit parce qu'il leur donne
   plusieurs collèges en écriture, soit parce que ces collèges tombent dans des
   groupes différents. Elles sont toutes affichées, sur le même plan.
-- **25 items n'en ont aucune.** Leur collège en écriture — Médecine générale,
+- **24 items n'en ont aucune.** Leur collège en écriture — Médecine générale,
   Humanités, Génétique médicale, Radiologie, Biochimie, Médecines intégratives —
   n'a pas d'équivalent parmi les 24. Plutôt qu'une étoile fausse, ils n'en
   portent pas, et la page le dit.
 
-**Neuf corrections manuelles** s'écartent du tableau, consignées en tête de
-`items.js`. Dans chaque cas, un collège est ajouté en écriture à côté de celui
-que donne le tableau :
+**Dix corrections manuelles** s'écartent du tableau, consignées en tête de
+`items.js`. Neuf ajoutent un collège en écriture à côté de celui que donne le
+tableau ; la dixième, le 350, donne sa seule étoile à un item qui n'en avait
+aucune, son collège en écriture — la médecine générale — n'étant pas parmi
+les 24 :
 
 | Item | Collège ajouté | Ce qu'en dit le tableau |
 |---|---|---|
@@ -117,6 +119,7 @@ que donne le tableau :
 | 340 — AVC | Neurologie | relecture |
 | 341 — hémorragie méningée | Neurologie | relecture (neurochirurgie) |
 | 342 — malaise, perte de connaissance | Neurologie | ne le cite pas |
+| 350 — grosse jambe rouge aiguë | Dermatologie | relecture (écriture : médecine générale) |
 | 360 — pneumothorax | Pneumologie | relecture |
 
 Le test qui confronte les 367 items au fichier source les inscrit

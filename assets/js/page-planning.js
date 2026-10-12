@@ -423,7 +423,7 @@
 
   /** Collège qui donne sa couleur à une séance créée depuis un item : le
       premier collège en écriture. Un item peut en avoir plusieurs — d'où une
-      liste — et vingt-cinq n'en ont aucun, auquel cas la séance prend la
+      liste — et certains n'en ont aucun, auquel cas la séance prend la
       couleur neutre des séances sans collège. */
   function collegeDeLItem(n) {
     if (!n) return '';

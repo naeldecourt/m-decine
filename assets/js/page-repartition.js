@@ -38,7 +38,7 @@
 
     TABLE = Object.keys(parNum).map(function (k) {
       var e = parNum[k];
-      // Un item peut avoir plusieurs collèges en écriture ; vingt-cinq n'en ont
+      // Un item peut avoir plusieurs collèges en écriture ; certains n'en ont
       // aucun ici, leur collège d'écriture n'existant pas parmi les 24.
       var refs = e.cols.filter(function (c) { return c.ref; }).sort(alpha);
       var autres = e.cols.filter(function (c) { return !c.ref; }).sort(alpha);

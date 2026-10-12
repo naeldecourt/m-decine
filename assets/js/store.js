@@ -208,7 +208,7 @@
   /* ------------------------------------------------------ item référent */
 
   /* Les collèges en écriture d'un item — ceux qui font foi pour les EDN, et
-     qui portent l'étoile. Un item peut en avoir plusieurs ; vingt-cinq n'en
+     qui portent l'étoile. Un item peut en avoir plusieurs ; certains n'en
      ont aucun parmi les 24 collèges du site, et n'ont alors pas d'étoile du
      tout : mieux vaut pas d'étoile qu'une étoile fausse. La table est
      construite une fois, les filtres la consultent à chaque frappe. */

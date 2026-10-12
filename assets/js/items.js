@@ -6,7 +6,7 @@
 
    « ref » désigne le collège en écriture, celui qui fait foi pour les EDN :
    il vient du tableau officiel écriture / relecture. Un item peut en avoir
-   plusieurs — EDN_ITEMS.ref est donc une liste — et vingt-cinq items n'en
+   plusieurs — EDN_ITEMS.ref est donc une liste — et vingt-quatre items n'en
    ont aucun ici, leur collège en écriture n'existant pas parmi les 24.
 
    CORRECTIONS MANUELLES, à conserver si le tableau est réimporté. Toutes sont
@@ -38,6 +38,10 @@
    · item 342 (malaise, perte de connaissance, crise comitiale) — la neurologie
      est ajoutée aux collèges en écriture. Le tableau ne lui donne que la
      réanimation, et sa colonne relecture est vide.
+   · item 350 (grosse jambe rouge aiguë) — la dermatologie devient le collège
+     en écriture. Le tableau donne l'item à la médecine générale, absente des
+     24, et place la dermatologie en relecture : l'item n'avait aucune étoile,
+     il en a désormais une.
    · item 360 (pneumothorax) — la pneumologie est ajoutée aux collèges en
      écriture. Le tableau la place en relecture, avec la chirurgie thoracique,
      derrière la réanimation. */
@@ -605,7 +609,7 @@ window.EDN_LIGNES = [
  {"id":"FC20@dermatologie","n":302,"t":"Tumeurs cutanées épithéliales et mélaniques","c":"dermatologie","fc":"FC20","ref":1},
  {"id":"FC21@dermatologie","n":319,"t":"Lymphomes malins cutanés","c":"dermatologie","fc":"FC21","ref":0},
  {"id":"FC22@dermatologie","n":330,"t":"Anti-inflammatoires : aspects dermatologiques","c":"dermatologie","fc":"FC22","ref":0},
- {"id":"FC23@dermatologie","n":350,"t":"Grosse jambe rouge aiguë","c":"dermatologie","fc":"FC23","ref":0},
+ {"id":"FC23@dermatologie","n":350,"t":"Grosse jambe rouge aiguë","c":"dermatologie","fc":"FC23","ref":1},
  {"id":"FC24@dermatologie","n":0,"t":"Troubles des phanères","c":"dermatologie","fc":"FC24","ref":0},
  {"id":"FC25@dermatologie","n":0,"t":"Lésions élémentaires et secondaires sur peaux noires","c":"dermatologie","fc":"FC25","ref":0},
  {"id":"FC01@therapeutique","n":321,"t":"Choix et décision thérapeutique","c":"therapeutique","fc":"FC01","ref":1},
@@ -1209,7 +1213,7 @@ window.EDN_ITEMS = [
  {"n":347,"t":"Rétention aiguë d’urine","cols":["urologie"],"ref":["urologie"]},
  {"n":348,"t":"Insuffisance rénale aiguë et anurie","cols":["mir","nephrologie","urologie"],"ref":["mir","nephrologie"]},
  {"n":349,"t":"Infection aiguë des parties molles","cols":["osteo","mir"],"ref":["osteo","mir"]},
- {"n":350,"t":"Grosse jambe rouge aiguë","cols":["dermatologie"]},
+ {"n":350,"t":"Grosse jambe rouge aiguë","cols":["dermatologie"],"ref":["dermatologie"]},
  {"n":351,"t":"Agitation et délire aigu","cols":["psychiatrie"],"ref":["psychiatrie"]},
  {"n":352,"t":"Crise d’angoisse aiguë et attaque de panique","cols":["psychiatrie"],"ref":["psychiatrie"]},
  {"n":353,"t":"Risque et conduites suicidaires","cols":["psychiatrie","pediatrie"],"ref":["psychiatrie"]},

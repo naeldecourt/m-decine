@@ -6,8 +6,9 @@
 
    « ref » désigne le collège en écriture, celui qui fait foi pour les EDN :
    il vient du tableau officiel écriture / relecture. Un item peut en avoir
-   plusieurs — EDN_ITEMS.ref est donc une liste — et vingt-quatre items n'en
-   ont aucun ici, leur collège en écriture n'existant pas parmi les 24.
+   plusieurs — EDN_ITEMS.ref est donc une liste — et vingt-sept items n'en
+   ont aucun ici : vingt-quatre parce que leur collège en écriture n'existe
+   pas parmi les 24, trois parce que l'étoile en a été retirée à la main.
 
    CORRECTIONS MANUELLES, à conserver si le tableau est réimporté. Toutes sont
    demandées par l'utilisateur, et classées par numéro d'item :
@@ -24,16 +25,26 @@
    · item 171 (gale et pédiculose) — la dermatologie est ajoutée aux collèges
      en écriture, à côté de l'infectiologie. Le tableau la place en relecture,
      derrière la parasitologie et les maladies infectieuses.
+   · items 190, 207, 208, 227, 228, 239, 241 et 248 — la cardiologie est
+     retirée des collèges en écriture. Le tableau l'y mettait par la chirurgie
+     thoracique et cardio-vasculaire (190, 207, 208, 241) ou par la médecine
+     vasculaire (227, 228, 239, 248), collèges qui tombent dans le groupe
+     cardiologie du site. Ce qui reste en écriture :
+       190 fièvre prolongée ............. médecine interne
+       207 opacités intrathoraciques .... aucun (l'autre, la radiologie, est
+                                          hors des 24)
+       208 insuffisance resp. chronique . pneumologie
+       227 insuffisance veineuse chron. . aucun
+       228 ulcère de jambe .............. aucun
+       239 acrosyndromes ................ médecine interne, qui était en
+                                          relecture et prend l'étoile
+       241 goitre, nodules thyroïdiens .. endocrinologie
+       248 prévention par la nutrition .. endocrinologie
+     Les lignes item-collège de cardiologie sont conservées sans étoile :
+     elles peuvent porter des tours déjà saisis.
    · item 223 (dyslipidémies) — la cardiologie est ajoutée aux collèges en
      écriture, à côté de l'endocrinologie. Le tableau y place la médecine
      vasculaire en relecture, laquelle tombe dans le groupe cardiologie.
-   · items 241 (goitre, nodules et cancers thyroïdiens) et 248 (prévention
-     primaire par la nutrition) — la cardiologie est retirée des collèges en
-     écriture, l'endocrinologie y reste seule. Le tableau l'y mettait par la
-     chirurgie thoracique et cardio-vasculaire pour le 241, par la médecine
-     vasculaire pour le 248, deux collèges qui tombent dans le groupe
-     cardiologie. Les lignes item-collège, créées à l'import pour loger ces
-     étoiles, sont conservées sans étoile : elles peuvent porter des tours.
    · item 336 (coma non traumatique) — la neurologie est ajoutée aux collèges
      en écriture. Le tableau ne lui donne que la réanimation, et met la
      pédiatrie en relecture ; la neurologie n'y figure pas.
@@ -90,7 +101,7 @@ window.EDN_LIGNES = [
  {"id":"FC07@cardiologie","n":231,"t":"Électrocardiogramme","c":"cardiologie","fc":"FC07","ref":1},
  {"id":"FC08@cardiologie","n":232,"t":"Fibrillation atriale","c":"cardiologie","fc":"FC08","ref":1},
  {"id":"FC09@cardiologie","n":233,"t":"Valvulopathies","c":"cardiologie","fc":"FC09","ref":1},
- {"id":"FC10@cardiologie","n":227,"t":"Insuffisance veineuse chronique","c":"cardiologie","fc":"FC10","ref":1},
+ {"id":"FC10@cardiologie","n":227,"t":"Insuffisance veineuse chronique","c":"cardiologie","fc":"FC10","ref":0},
  {"id":"FC11@cardiologie","n":235,"t":"Péricardite aiguë","c":"cardiologie","fc":"FC11","ref":1},
  {"id":"FC12@cardiologie","n":236,"t":"Troubles de la conduction","c":"cardiologie","fc":"FC12","ref":1},
  {"id":"FC13@cardiologie","n":237,"t":"Palpitations et troubles du rythme","c":"cardiologie","fc":"FC13","ref":1},
@@ -104,12 +115,12 @@ window.EDN_LIGNES = [
  {"id":"FC21@cardiologie","n":226,"t":"Thrombose veineuse profonde et embolie pulmonaire","c":"cardiologie","fc":"FC21","ref":1},
  {"id":"FC22@cardiologie","n":330,"t":"Antiagrégants plaquettaires et anticoagulants","c":"cardiologie","fc":"FC22","ref":0},
  {"id":"FC23@cardiologie","n":152,"t":"Endocardite infectieuse","c":"cardiologie","fc":"FC23","ref":0},
- {"id":"FC24@cardiologie","n":228,"t":"Ulcère de jambe","c":"cardiologie","fc":"FC24","ref":1},
- {"id":"FC25@cardiologie","n":239,"t":"Acrosyndromes","c":"cardiologie","fc":"FC25","ref":1},
- {"id":"REF190@cardiologie","n":190,"t":"Fièvre prolongée","c":"cardiologie","fc":"REF190","ref":1},
+ {"id":"FC24@cardiologie","n":228,"t":"Ulcère de jambe","c":"cardiologie","fc":"FC24","ref":0},
+ {"id":"FC25@cardiologie","n":239,"t":"Acrosyndromes","c":"cardiologie","fc":"FC25","ref":0},
+ {"id":"REF190@cardiologie","n":190,"t":"Fièvre prolongée","c":"cardiologie","fc":"REF190","ref":0},
  {"id":"REF201@cardiologie","n":201,"t":"Transplantation d’organes","c":"cardiologie","fc":"REF201","ref":1},
- {"id":"REF207@cardiologie","n":207,"t":"Opacités et masses intrathoraciques","c":"cardiologie","fc":"REF207","ref":1},
- {"id":"REF208@cardiologie","n":208,"t":"Insuffisance respiratoire chronique","c":"cardiologie","fc":"REF208","ref":1},
+ {"id":"REF207@cardiologie","n":207,"t":"Opacités et masses intrathoraciques","c":"cardiologie","fc":"REF207","ref":0},
+ {"id":"REF208@cardiologie","n":208,"t":"Insuffisance respiratoire chronique","c":"cardiologie","fc":"REF208","ref":0},
  {"id":"REF241@cardiologie","n":241,"t":"Goitre, nodules et cancers thyroïdiens","c":"cardiologie","fc":"REF241","ref":0},
  {"id":"REF248@cardiologie","n":248,"t":"Prévention primaire par la nutrition","c":"cardiologie","fc":"REF248","ref":0},
  {"id":"FC01@hge","n":167,"t":"Hépatites virales","c":"hge","fc":"FC01","ref":1},
@@ -730,7 +741,7 @@ window.EDN_LIGNES = [
  {"id":"FC25@medecine-interne","n":220,"t":"Adénopathie superficielle de l’enfant et de l’adulte","c":"medecine-interne","fc":"FC25","ref":0},
  {"id":"FC26@medecine-interne","n":201,"t":"Greffe d’organe","c":"medecine-interne","fc":"FC26","ref":0},
  {"id":"FC27@medecine-interne","n":226,"t":"Thrombose veineuse et embolie pulmonaire","c":"medecine-interne","fc":"FC27","ref":0},
- {"id":"FC28@medecine-interne","n":239,"t":"Acrosyndromes","c":"medecine-interne","fc":"FC28","ref":0},
+ {"id":"FC28@medecine-interne","n":239,"t":"Acrosyndromes","c":"medecine-interne","fc":"FC28","ref":1},
  {"id":"FC29@medecine-interne","n":251,"t":"Amaigrissement à tous les âges","c":"medecine-interne","fc":"FC29","ref":0},
  {"id":"FC30@medecine-interne","n":257,"t":"Œdèmes des membres inférieurs","c":"medecine-interne","fc":"FC30","ref":0},
  {"id":"FC31@medecine-interne","n":268,"t":"Hypercalcémie","c":"medecine-interne","fc":"FC31","ref":0},
@@ -1060,7 +1071,7 @@ window.EDN_ITEMS = [
  {"n":187,"t":"Hypersensibilités et allergies cutanéo-muqueuses chez l’enfant","cols":["dermatologie","medecine-interne"],"ref":["dermatologie","medecine-interne"]},
  {"n":188,"t":"Asthme et rhinite","cols":["pneumologie","pediatrie","mir"],"ref":["pneumologie"]},
  {"n":189,"t":"Déficit immunitaire","cols":["pediatrie","medecine-interne"],"ref":["medecine-interne"]},
- {"n":190,"t":"Fièvre prolongée","cols":["infectiologie","medecine-interne","cardiologie"],"ref":["medecine-interne","cardiologie"]},
+ {"n":190,"t":"Fièvre prolongée","cols":["infectiologie","medecine-interne","cardiologie"],"ref":["medecine-interne"]},
  {"n":191,"t":"Fièvre chez un patient immunodéprimé","cols":["mir","infectiologie","medecine-interne"],"ref":["medecine-interne"]},
  {"n":192,"t":"Pathologies auto-immunes","cols":["osteo","medecine-interne"],"ref":["medecine-interne"]},
  {"n":193,"t":"Vascularites systémiques","cols":["osteo","nephrologie","medecine-interne"],"ref":["medecine-interne"]},
@@ -1077,8 +1088,8 @@ window.EDN_ITEMS = [
  {"n":204,"t":"Toux chez l’adulte","cols":["pneumologie","pediatrie"],"ref":["pneumologie"]},
  {"n":205,"t":"Hémoptysie","cols":["pneumologie","mir"],"ref":["pneumologie"]},
  {"n":206,"t":"Épanchement pleural liquidien","cols":["pneumologie","mir"],"ref":["pneumologie"]},
- {"n":207,"t":"Opacités et masses intrathoraciques","cols":["pneumologie","pediatrie","cardiologie"],"ref":["cardiologie"]},
- {"n":208,"t":"Insuffisance respiratoire chronique","cols":["pneumologie","cardiologie"],"ref":["pneumologie","cardiologie"]},
+ {"n":207,"t":"Opacités et masses intrathoraciques","cols":["pneumologie","pediatrie","cardiologie"]},
+ {"n":208,"t":"Insuffisance respiratoire chronique","cols":["pneumologie","cardiologie"],"ref":["pneumologie"]},
  {"n":209,"t":"Bronchopneumopathie chronique obstructive","cols":["pneumologie","mir"],"ref":["pneumologie"]},
  {"n":210,"t":"Pneumopathies interstitielles diffuses","cols":["pneumologie","medecine-interne"],"ref":["pneumologie"]},
  {"n":211,"t":"Sarcoïdose","cols":["pneumologie","osteo","dermatologie","medecine-interne"],"ref":["medecine-interne"]},
@@ -1097,8 +1108,8 @@ window.EDN_ITEMS = [
  {"n":224,"t":"Hypertension artérielle","cols":["cardiologie","pediatrie","endocrinologie","mir","nephrologie","medecine-interne","ophtalmologie"],"ref":["cardiologie"]},
  {"n":225,"t":"Artériopathies aorte et membres inférieurs","cols":["cardiologie"],"ref":["cardiologie"]},
  {"n":226,"t":"Thrombose veineuse profonde et embolie pulmonaire","cols":["cardiologie","pneumologie","hematologie","mir","medecine-interne"],"ref":["cardiologie"]},
- {"n":227,"t":"Insuffisance veineuse chronique","cols":["cardiologie"],"ref":["cardiologie"]},
- {"n":228,"t":"Ulcère de jambe","cols":["cardiologie","dermatologie"],"ref":["cardiologie"]},
+ {"n":227,"t":"Insuffisance veineuse chronique","cols":["cardiologie"]},
+ {"n":228,"t":"Ulcère de jambe","cols":["cardiologie","dermatologie"]},
  {"n":229,"t":"Surveillance et complications des abords veineux","cols":["mir"],"ref":["mir"]},
  {"n":230,"t":"Douleur thoracique","cols":["cardiologie"],"ref":["cardiologie"]},
  {"n":231,"t":"Électrocardiogramme","cols":["cardiologie"],"ref":["cardiologie"]},
@@ -1109,7 +1120,7 @@ window.EDN_ITEMS = [
  {"n":236,"t":"Troubles de la conduction","cols":["cardiologie"],"ref":["cardiologie"]},
  {"n":237,"t":"Palpitations et troubles du rythme","cols":["cardiologie"],"ref":["cardiologie"]},
  {"n":238,"t":"Souffle cardiaque de l’enfant","cols":["cardiologie","pediatrie"],"ref":["cardiologie","pediatrie"]},
- {"n":239,"t":"Acrosyndromes","cols":["cardiologie","dermatologie","medecine-interne"],"ref":["cardiologie"]},
+ {"n":239,"t":"Acrosyndromes","cols":["cardiologie","dermatologie","medecine-interne"],"ref":["medecine-interne"]},
  {"n":240,"t":"Hypoglycémie chez l’adulte et l’enfant","cols":["pediatrie","endocrinologie"],"ref":["endocrinologie"]},
  {"n":241,"t":"Goitre, nodules et cancers thyroïdiens","cols":["orl","endocrinologie","cardiologie"],"ref":["endocrinologie"]},
  {"n":242,"t":"Hyperthyroïdie","cols":["endocrinologie","ophtalmologie"],"ref":["endocrinologie"]},

@@ -113,7 +113,7 @@
       }).join('') + '</div>';
     if (r.sansRef) {
       html += '<div class="small muted" style="margin-top:3px">' +
-        'collège en écriture hors des 24 du site</div>';
+        'aucun collège référent parmi les 24 du site</div>';
     }
     if (etat.intitules && r.variantes) {
       html += '<ul class="small muted" style="margin:7px 0 0;padding-left:1.1em">' +

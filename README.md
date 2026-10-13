@@ -94,29 +94,39 @@ regroupements (« Cardiologie - Chir Vasc. » fond à elle seule quatre collège
 officiels). Chaque collège officiel est donc ramené à son groupe, et deux
 conséquences en découlent :
 
-- **37 items ont plusieurs étoiles** d'après le tableau — 44 avec les
+- **37 items ont plusieurs étoiles** d'après le tableau — 42 avec les
   corrections manuelles décrites plus bas —, soit parce qu'il leur donne
   plusieurs collèges en écriture, soit parce que ces collèges tombent dans des
   groupes différents. Elles sont toutes affichées, sur le même plan.
-- **24 items n'en ont aucune.** Leur collège en écriture — Médecine générale,
-  Humanités, Génétique médicale, Radiologie, Biochimie, Médecines intégratives —
-  n'a pas d'équivalent parmi les 24. Plutôt qu'une étoile fausse, ils n'en
-  portent pas, et la page le dit.
+- **27 items n'en ont aucune.** Pour vingt-quatre d'entre eux, leur collège en
+  écriture — Médecine générale, Humanités, Génétique médicale, Radiologie,
+  Biochimie, Médecines intégratives — n'a pas d'équivalent parmi les 24. Pour
+  les trois autres (207, 227, 228), l'étoile de cardiologie que donnait le
+  tableau a été retirée à la main. Plutôt qu'une étoile fausse, ils n'en
+  portent pas, et la page l'indique : « aucun collège référent parmi les 24 du
+  site ».
 
-**Douze corrections manuelles** s'écartent du tableau, consignées en tête de
-`items.js`. Neuf ajoutent un collège en écriture à côté de celui que donne le
+**Dix-huit corrections manuelles** s'écartent du tableau, consignées en tête
+de `items.js`. Neuf ajoutent un collège en écriture à côté de celui que donne le
 tableau ; une, le 350, donne sa seule étoile à un item qui n'en avait aucune,
-son collège en écriture — la médecine générale — n'étant pas parmi les 24 ;
-deux, les 241 et 248, retirent l'étoile de cardiologie que le tableau leur
-donnait :
+son collège en écriture — la médecine générale — n'étant pas parmi les 24 ; huit
+retirent l'étoile de cardiologie que le tableau donnait par la chirurgie
+thoracique et cardio-vasculaire ou par la médecine vasculaire, deux collèges que
+le site range en cardiologie :
 
 | Item | Correction | Ce qu'en dit le tableau |
 |---|---|---|
 | 120 — immobilité et décubitus | + Gériatrie - MPR | ne le cite pas |
 | 136 — anesthésie | + Douleur - Soins pal. | ne le cite pas (ligne créée) |
 | 171 — gale et pédiculose | + Dermatologie | relecture |
+| 190 — fièvre prolongée | − Cardiologie | écriture (chir. thoracique et CV) |
+| 207 — opacités et masses intrathoraciques | − Cardiologie (plus aucune étoile) | écriture (chir. thoracique et CV) |
+| 208 — insuffisance respiratoire chronique | − Cardiologie | écriture (chir. thoracique et CV) |
 | 223 — dyslipidémies | + Cardiologie | relecture (médecine vasculaire) |
-| 241 — goitre, nodules et cancers thyroïdiens | − Cardiologie | écriture (chir. thoracique et cardio-vasculaire) |
+| 227 — insuffisance veineuse chronique | − Cardiologie (plus aucune étoile) | écriture (médecine vasculaire) |
+| 228 — ulcère de jambe | − Cardiologie (plus aucune étoile) | écriture (médecine vasculaire) |
+| 239 — acrosyndromes | − Cardiologie, + Médecine interne | écriture (médecine vasculaire) ; MI en relecture |
+| 241 — goitre, nodules et cancers thyroïdiens | − Cardiologie | écriture (chir. thoracique et CV) |
 | 248 — prévention primaire par la nutrition | − Cardiologie | écriture (médecine vasculaire) |
 | 336 — coma non traumatique | + Neurologie | ne le cite pas |
 | 340 — AVC | + Neurologie | relecture |
@@ -125,9 +135,10 @@ donnait :
 | 350 — grosse jambe rouge aiguë | + Dermatologie | relecture (écriture : médecine générale) |
 | 360 — pneumothorax | + Pneumologie | relecture |
 
-Pour les deux retraits, la ligne item-collège de cardiologie — créée à l'import
-pour loger l'étoile — est conservée sans étoile : elle peut porter des tours
-déjà saisis, que la supprimer ferait disparaître de l'affichage.
+Pour les retraits, la ligne item-collège de cardiologie est conservée sans
+étoile, y compris quand elle n'avait été créée à l'import que pour loger
+l'étoile : elle peut porter des tours déjà saisis, que la supprimer ferait
+disparaître de l'affichage.
 
 Le test qui confronte les 367 items au fichier source les inscrit
 explicitement — une divergence non listée reste un échec.

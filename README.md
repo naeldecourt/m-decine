@@ -94,7 +94,7 @@ regroupements (« Cardiologie - Chir Vasc. » fond à elle seule quatre collège
 officiels). Chaque collège officiel est donc ramené à son groupe, et deux
 conséquences en découlent :
 
-- **37 items ont plusieurs étoiles** d'après le tableau — 46 avec les
+- **37 items ont plusieurs étoiles** d'après le tableau — 44 avec les
   corrections manuelles décrites plus bas —, soit parce qu'il leur donne
   plusieurs collèges en écriture, soit parce que ces collèges tombent dans des
   groupes différents. Elles sont toutes affichées, sur le même plan.
@@ -103,24 +103,31 @@ conséquences en découlent :
   n'a pas d'équivalent parmi les 24. Plutôt qu'une étoile fausse, ils n'en
   portent pas, et la page le dit.
 
-**Dix corrections manuelles** s'écartent du tableau, consignées en tête de
+**Douze corrections manuelles** s'écartent du tableau, consignées en tête de
 `items.js`. Neuf ajoutent un collège en écriture à côté de celui que donne le
-tableau ; la dixième, le 350, donne sa seule étoile à un item qui n'en avait
-aucune, son collège en écriture — la médecine générale — n'étant pas parmi
-les 24 :
+tableau ; une, le 350, donne sa seule étoile à un item qui n'en avait aucune,
+son collège en écriture — la médecine générale — n'étant pas parmi les 24 ;
+deux, les 241 et 248, retirent l'étoile de cardiologie que le tableau leur
+donnait :
 
-| Item | Collège ajouté | Ce qu'en dit le tableau |
+| Item | Correction | Ce qu'en dit le tableau |
 |---|---|---|
-| 120 — immobilité et décubitus | Gériatrie - MPR | ne le cite pas |
-| 136 — anesthésie | Douleur - Soins pal. | ne le cite pas (ligne créée) |
-| 171 — gale et pédiculose | Dermatologie | relecture |
-| 223 — dyslipidémies | Cardiologie | relecture (médecine vasculaire) |
-| 336 — coma non traumatique | Neurologie | ne le cite pas |
-| 340 — AVC | Neurologie | relecture |
-| 341 — hémorragie méningée | Neurologie | relecture (neurochirurgie) |
-| 342 — malaise, perte de connaissance | Neurologie | ne le cite pas |
-| 350 — grosse jambe rouge aiguë | Dermatologie | relecture (écriture : médecine générale) |
-| 360 — pneumothorax | Pneumologie | relecture |
+| 120 — immobilité et décubitus | + Gériatrie - MPR | ne le cite pas |
+| 136 — anesthésie | + Douleur - Soins pal. | ne le cite pas (ligne créée) |
+| 171 — gale et pédiculose | + Dermatologie | relecture |
+| 223 — dyslipidémies | + Cardiologie | relecture (médecine vasculaire) |
+| 241 — goitre, nodules et cancers thyroïdiens | − Cardiologie | écriture (chir. thoracique et cardio-vasculaire) |
+| 248 — prévention primaire par la nutrition | − Cardiologie | écriture (médecine vasculaire) |
+| 336 — coma non traumatique | + Neurologie | ne le cite pas |
+| 340 — AVC | + Neurologie | relecture |
+| 341 — hémorragie méningée | + Neurologie | relecture (neurochirurgie) |
+| 342 — malaise, perte de connaissance | + Neurologie | ne le cite pas |
+| 350 — grosse jambe rouge aiguë | + Dermatologie | relecture (écriture : médecine générale) |
+| 360 — pneumothorax | + Pneumologie | relecture |
+
+Pour les deux retraits, la ligne item-collège de cardiologie — créée à l'import
+pour loger l'étoile — est conservée sans étoile : elle peut porter des tours
+déjà saisis, que la supprimer ferait disparaître de l'affichage.
 
 Le test qui confronte les 367 items au fichier source les inscrit
 explicitement — une divergence non listée reste un échec.

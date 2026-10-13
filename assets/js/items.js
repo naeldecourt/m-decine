@@ -27,6 +27,13 @@
    · item 223 (dyslipidémies) — la cardiologie est ajoutée aux collèges en
      écriture, à côté de l'endocrinologie. Le tableau y place la médecine
      vasculaire en relecture, laquelle tombe dans le groupe cardiologie.
+   · items 241 (goitre, nodules et cancers thyroïdiens) et 248 (prévention
+     primaire par la nutrition) — la cardiologie est retirée des collèges en
+     écriture, l'endocrinologie y reste seule. Le tableau l'y mettait par la
+     chirurgie thoracique et cardio-vasculaire pour le 241, par la médecine
+     vasculaire pour le 248, deux collèges qui tombent dans le groupe
+     cardiologie. Les lignes item-collège, créées à l'import pour loger ces
+     étoiles, sont conservées sans étoile : elles peuvent porter des tours.
    · item 336 (coma non traumatique) — la neurologie est ajoutée aux collèges
      en écriture. Le tableau ne lui donne que la réanimation, et met la
      pédiatrie en relecture ; la neurologie n'y figure pas.
@@ -103,8 +110,8 @@ window.EDN_LIGNES = [
  {"id":"REF201@cardiologie","n":201,"t":"Transplantation d’organes","c":"cardiologie","fc":"REF201","ref":1},
  {"id":"REF207@cardiologie","n":207,"t":"Opacités et masses intrathoraciques","c":"cardiologie","fc":"REF207","ref":1},
  {"id":"REF208@cardiologie","n":208,"t":"Insuffisance respiratoire chronique","c":"cardiologie","fc":"REF208","ref":1},
- {"id":"REF241@cardiologie","n":241,"t":"Goitre, nodules et cancers thyroïdiens","c":"cardiologie","fc":"REF241","ref":1},
- {"id":"REF248@cardiologie","n":248,"t":"Prévention primaire par la nutrition","c":"cardiologie","fc":"REF248","ref":1},
+ {"id":"REF241@cardiologie","n":241,"t":"Goitre, nodules et cancers thyroïdiens","c":"cardiologie","fc":"REF241","ref":0},
+ {"id":"REF248@cardiologie","n":248,"t":"Prévention primaire par la nutrition","c":"cardiologie","fc":"REF248","ref":0},
  {"id":"FC01@hge","n":167,"t":"Hépatites virales","c":"hge","fc":"FC01","ref":1},
  {"id":"FC02@hge","n":219,"t":"Pathologies du fer","c":"hge","fc":"FC02","ref":0},
  {"id":"FC03@hge","n":269,"t":"Douleurs abdominales aiguës","c":"hge","fc":"FC03","ref":1},
@@ -1104,14 +1111,14 @@ window.EDN_ITEMS = [
  {"n":238,"t":"Souffle cardiaque de l’enfant","cols":["cardiologie","pediatrie"],"ref":["cardiologie","pediatrie"]},
  {"n":239,"t":"Acrosyndromes","cols":["cardiologie","dermatologie","medecine-interne"],"ref":["cardiologie"]},
  {"n":240,"t":"Hypoglycémie chez l’adulte et l’enfant","cols":["pediatrie","endocrinologie"],"ref":["endocrinologie"]},
- {"n":241,"t":"Goitre, nodules et cancers thyroïdiens","cols":["orl","endocrinologie","cardiologie"],"ref":["endocrinologie","cardiologie"]},
+ {"n":241,"t":"Goitre, nodules et cancers thyroïdiens","cols":["orl","endocrinologie","cardiologie"],"ref":["endocrinologie"]},
  {"n":242,"t":"Hyperthyroïdie","cols":["endocrinologie","ophtalmologie"],"ref":["endocrinologie"]},
  {"n":243,"t":"Hypothyroïdie","cols":["endocrinologie"],"ref":["endocrinologie"]},
  {"n":244,"t":"Adénome hypophysaire","cols":["endocrinologie"],"ref":["endocrinologie"]},
  {"n":245,"t":"Insuffisance surrénale chez l’adulte et l’enfant","cols":["pediatrie","endocrinologie","mir"],"ref":["endocrinologie"]},
  {"n":246,"t":"Gynécomastie","cols":["endocrinologie"],"ref":["endocrinologie"]},
  {"n":247,"t":"Diabète de type 1, type 2 et complications","cols":["pediatrie","endocrinologie","mir","nephrologie","ophtalmologie"],"ref":["endocrinologie"]},
- {"n":248,"t":"Prévention primaire par la nutrition","cols":["endocrinologie","cardiologie"],"ref":["endocrinologie","cardiologie"]},
+ {"n":248,"t":"Prévention primaire par la nutrition","cols":["endocrinologie","cardiologie"],"ref":["endocrinologie"]},
  {"n":249,"t":"Modifications thérapeutiques du mode de vie","cols":["endocrinologie","geriatrie"]},
  {"n":250,"t":"Dénutrition adulte et enfant","cols":["pediatrie","endocrinologie"],"ref":["endocrinologie"]},
  {"n":251,"t":"Amaigrissement à tous les âges","cols":["endocrinologie","medecine-interne"],"ref":["endocrinologie"]},

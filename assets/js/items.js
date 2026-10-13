@@ -27,6 +27,9 @@
      donne l'item qu'à la réanimation, et sa colonne relecture est vide. Ce
      collège n'était pas rattaché à l'item : la ligne item-collège a été créée
      pour que l'étoile ait où s'afficher — d'où 787 lignes et non 786.
+   · item 163 (coqueluche) — la pédiatrie est ajoutée aux collèges en écriture,
+     à côté de l'infectiologie. Le tableau la place en relecture, avec les
+     maladies infectieuses, derrière la bactériologie-virologie.
    · item 171 (gale et pédiculose) — la dermatologie est ajoutée aux collèges
      en écriture, à côté de l'infectiologie. Le tableau la place en relecture,
      derrière la parasitologie et les maladies infectieuses.
@@ -385,7 +388,7 @@ window.EDN_LIGNES = [
  {"id":"FC31@pediatrie","n":149,"t":"Angines","c":"pediatrie","fc":"FC31","ref":0},
  {"id":"FC32@pediatrie","n":150,"t":"Otites","c":"pediatrie","fc":"FC32","ref":0},
  {"id":"FC33@pediatrie","n":148,"t":"Sinusites","c":"pediatrie","fc":"FC33","ref":0},
- {"id":"FC34@pediatrie","n":163,"t":"Coqueluche","c":"pediatrie","fc":"FC34","ref":0},
+ {"id":"FC34@pediatrie","n":163,"t":"Coqueluche","c":"pediatrie","fc":"FC34","ref":1},
  {"id":"FC35@pediatrie","n":286,"t":"Diarrhée aiguë","c":"pediatrie","fc":"FC35","ref":1},
  {"id":"FC36@pediatrie","n":161,"t":"Infections urinaires","c":"pediatrie","fc":"FC36","ref":0},
  {"id":"FC37@pediatrie","n":151,"t":"Méningites et méningo-encéphalites","c":"pediatrie","fc":"FC37","ref":0},
@@ -1049,7 +1052,7 @@ window.EDN_ITEMS = [
  {"n":160,"t":"Tétanos","cols":["infectiologie"],"ref":["infectiologie"]},
  {"n":161,"t":"Infections urinaires de l’adulte et de l’enfant","cols":["pediatrie","mir","nephrologie","infectiologie","urologie"],"ref":["urologie"]},
  {"n":162,"t":"Infections sexuellement transmissibles","cols":["gynecologie","infectiologie","dermatologie"],"ref":["dermatologie"]},
- {"n":163,"t":"Coqueluche","cols":["pediatrie","infectiologie"],"ref":["infectiologie"]},
+ {"n":163,"t":"Coqueluche","cols":["pediatrie","infectiologie"],"ref":["pediatrie","infectiologie"]},
  {"n":164,"t":"Éruptions fébriles","cols":["pediatrie"],"ref":["pediatrie"]},
  {"n":165,"t":"Oreillons","cols":["infectiologie"],"ref":["infectiologie"]},
  {"n":166,"t":"Grippe","cols":["infectiologie"]},

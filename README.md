@@ -98,7 +98,7 @@ conséquences en découlent :
   corrections manuelles décrites plus bas —, soit parce qu'il leur donne
   plusieurs collèges en écriture, soit parce que ces collèges tombent dans des
   groupes différents. Elles sont toutes affichées, sur le même plan.
-- **27 items n'en ont aucune.** Pour vingt-quatre d'entre eux, leur collège en
+- **26 items n'en ont aucune.** Pour vingt-trois d'entre eux, leur collège en
   écriture — Médecine générale, Humanités, Génétique médicale, Radiologie,
   Biochimie, Médecines intégratives — n'a pas d'équivalent parmi les 24. Pour
   les trois autres (207, 227, 228), l'étoile de cardiologie que donnait le
@@ -106,16 +106,18 @@ conséquences en découlent :
   portent pas, et la page l'indique : « aucun collège référent parmi les 24 du
   site ».
 
-**Dix-huit corrections manuelles** s'écartent du tableau, consignées en tête
+**Dix-neuf corrections manuelles** s'écartent du tableau, consignées en tête
 de `items.js`. Neuf ajoutent un collège en écriture à côté de celui que donne le
-tableau ; une, le 350, donne sa seule étoile à un item qui n'en avait aucune,
-son collège en écriture — la médecine générale — n'étant pas parmi les 24 ; huit
+tableau ; deux, les 45 et 350, donnent sa seule étoile à un item qui n'en avait
+aucune, son collège en écriture — génétique médicale, médecine générale —
+n'étant pas parmi les 24 ; huit
 retirent l'étoile de cardiologie que le tableau donnait par la chirurgie
 thoracique et cardio-vasculaire ou par la médecine vasculaire, deux collèges que
 le site range en cardiologie :
 
 | Item | Correction | Ce qu'en dit le tableau |
 |---|---|---|
+| 45 — spécificités des maladies génétiques | + Pédiatrie | relecture (écriture : génétique médicale) |
 | 120 — immobilité et décubitus | + Gériatrie - MPR | ne le cite pas |
 | 136 — anesthésie | + Douleur - Soins pal. | ne le cite pas (ligne créée) |
 | 171 — gale et pédiculose | + Dermatologie | relecture |

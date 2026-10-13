@@ -6,12 +6,17 @@
 
    « ref » désigne le collège en écriture, celui qui fait foi pour les EDN :
    il vient du tableau officiel écriture / relecture. Un item peut en avoir
-   plusieurs — EDN_ITEMS.ref est donc une liste — et vingt-sept items n'en
-   ont aucun ici : vingt-quatre parce que leur collège en écriture n'existe
+   plusieurs — EDN_ITEMS.ref est donc une liste — et vingt-six items n'en
+   ont aucun ici : vingt-trois parce que leur collège en écriture n'existe
    pas parmi les 24, trois parce que l'étoile en a été retirée à la main.
 
    CORRECTIONS MANUELLES, à conserver si le tableau est réimporté. Toutes sont
    demandées par l'utilisateur, et classées par numéro d'item :
+   · item 45 (spécificités des maladies génétiques) — la pédiatrie devient le
+     collège en écriture. Le tableau donne l'item à la génétique médicale,
+     absente des 24, et place la pédiatrie en relecture : l'item n'avait aucune
+     étoile, il en a désormais une. Ses trois lignes de pédiatrie (trisomie 21,
+     X fragile, mucoviscidose) sont étoilées toutes trois.
    · item 120 (complications de l'immobilité et du décubitus) — la gériatrie,
      qui porte aussi la MPR, est ajoutée aux collèges en écriture. Le tableau
      ne donne l'item qu'à la réanimation, et sa colonne relecture est vide.
@@ -352,8 +357,8 @@ window.EDN_LIGNES = [
  {"id":"FC03@pediatrie","n":55,"t":"Développement psychomoteur du nourrisson et de l’enfant","c":"pediatrie","fc":"FC03","ref":1},
  {"id":"FC04@pediatrie","n":47,"t":"Dépistages chez l’enfant (+ITEM 52 et 89)","c":"pediatrie","fc":"FC04","ref":1},
  {"id":"FC05@pediatrie","n":47,"t":"Suivi médical pédiatrique (+ITEM 59 et 256)","c":"pediatrie","fc":"FC05","ref":1},
- {"id":"FC06@pediatrie","n":45,"t":"Trisomie 21","c":"pediatrie","fc":"FC06","ref":0},
- {"id":"FC07@pediatrie","n":45,"t":"Syndrome de l’X fragile","c":"pediatrie","fc":"FC07","ref":0},
+ {"id":"FC06@pediatrie","n":45,"t":"Trisomie 21","c":"pediatrie","fc":"FC06","ref":1},
+ {"id":"FC07@pediatrie","n":45,"t":"Syndrome de l’X fragile","c":"pediatrie","fc":"FC07","ref":1},
  {"id":"FC08@pediatrie","n":48,"t":"Alimentation et besoins nutritionnels du nourrisson et de l’enfant","c":"pediatrie","fc":"FC08","ref":1},
  {"id":"FC09@pediatrie","n":250,"t":"Dénutrition chez l’adulte et l’enfant","c":"pediatrie","fc":"FC09","ref":0},
  {"id":"FC10@pediatrie","n":253,"t":"Obésité de l’enfant et de l’adulte","c":"pediatrie","fc":"FC10","ref":0},
@@ -409,7 +414,7 @@ window.EDN_LIGNES = [
  {"id":"FC60@pediatrie","n":207,"t":"Opacités et masses intrathoraciques","c":"pediatrie","fc":"FC60","ref":0},
  {"id":"FC61@pediatrie","n":159,"t":"Tuberculose","c":"pediatrie","fc":"FC61","ref":0},
  {"id":"FC62@pediatrie","n":110,"t":"Troubles du sommeil et SAOS","c":"pediatrie","fc":"FC62","ref":0},
- {"id":"FC63@pediatrie","n":45,"t":"Mucoviscidose chez l’enfant","c":"pediatrie","fc":"FC63","ref":0},
+ {"id":"FC63@pediatrie","n":45,"t":"Mucoviscidose chez l’enfant","c":"pediatrie","fc":"FC63","ref":1},
  {"id":"FC64@pediatrie","n":238,"t":"Souffle cardiaque","c":"pediatrie","fc":"FC64","ref":1},
  {"id":"FC65@pediatrie","n":331,"t":"Arrêt cardiorespiratoire","c":"pediatrie","fc":"FC65","ref":0},
  {"id":"FC66@pediatrie","n":345,"t":"Malaise grave du nourrisson","c":"pediatrie","fc":"FC66","ref":1},
@@ -926,7 +931,7 @@ window.EDN_ITEMS = [
  {"n":42,"t":"Aménorrhée et anomalies du cycle menstruel (+ITEM 35 LISA)","cols":["gynecologie","endocrinologie"],"ref":["gynecologie"]},
  {"n":43,"t":"Hémorragies génitales et anomalies du cycle menstruel (+ITEM 35 LISA)","cols":["gynecologie"],"ref":["gynecologie"]},
  {"n":44,"t":"Tuméfaction pelvienne chez la femme","cols":["gynecologie","urologie"],"ref":["gynecologie"]},
- {"n":45,"t":"Spécificités des maladies génétiques","cols":["pediatrie","medecine-interne"]},
+ {"n":45,"t":"Spécificités des maladies génétiques","cols":["pediatrie","medecine-interne"],"ref":["pediatrie"]},
  {"n":46,"t":"Médecine génomique","cols":["medecine-interne"]},
  {"n":47,"t":"Suivi médical pédiatrique (+ITEM 59 et 256)","cols":["orl","osteo","pediatrie","ophtalmologie"],"ref":["pediatrie"]},
  {"n":48,"t":"Alimentation et besoins nutritionnels du nourrisson et de l’enfant","cols":["pediatrie"],"ref":["pediatrie"]},

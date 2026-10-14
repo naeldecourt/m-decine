@@ -6,8 +6,8 @@
 
    « ref » désigne le collège en écriture, celui qui fait foi pour les EDN :
    il vient du tableau officiel écriture / relecture. Un item peut en avoir
-   plusieurs — EDN_ITEMS.ref est donc une liste — et vingt-six items n'en
-   ont aucun ici : vingt-trois parce que leur collège en écriture n'existe
+   plusieurs — EDN_ITEMS.ref est donc une liste — et vingt-cinq items n'en
+   ont aucun ici : vingt-deux parce que leur collège en écriture n'existe
    pas parmi les 24, trois parce que l'étoile en a été retirée à la main.
 
    CORRECTIONS MANUELLES, à conserver si le tableau est réimporté. Toutes sont
@@ -30,6 +30,10 @@
    · item 163 (coqueluche) — la pédiatrie est ajoutée aux collèges en écriture,
      à côté de l'infectiologie. Le tableau la place en relecture, avec les
      maladies infectieuses, derrière la bactériologie-virologie.
+   · item 168 (infections à herpès virus du sujet immunocompétent) — la
+     dermatologie devient le collège en écriture. Le tableau donne l'item à la
+     médecine générale, absente des 24, et sa colonne relecture est vide :
+     l'item n'avait aucune étoile, il en a désormais une.
    · item 171 (gale et pédiculose) — la dermatologie est ajoutée aux collèges
      en écriture, à côté de l'infectiologie. Le tableau la place en relecture,
      derrière la parasitologie et les maladies infectieuses.
@@ -622,7 +626,7 @@ window.EDN_LIGNES = [
  {"id":"FC07@dermatologie","n":117,"t":"Psoriasis","c":"dermatologie","fc":"FC07","ref":1},
  {"id":"FC08@dermatologie","n":155,"t":"Infections cutanéo-muqueuses bactériennes et mycosiques","c":"dermatologie","fc":"FC08","ref":1},
  {"id":"FC09@dermatologie","n":162,"t":"Infections sexuellement transmissibles","c":"dermatologie","fc":"FC09","ref":1},
- {"id":"FC10@dermatologie","n":168,"t":"Infections à herpès virus du sujet immunocompétent","c":"dermatologie","fc":"FC10","ref":0},
+ {"id":"FC10@dermatologie","n":168,"t":"Infections à herpès virus du sujet immunocompétent","c":"dermatologie","fc":"FC10","ref":1},
  {"id":"FC11@dermatologie","n":169,"t":"Infection à VIH : manifestations cutanéo-muqueuses de la primo-infection","c":"dermatologie","fc":"FC11","ref":0},
  {"id":"FC12@dermatologie","n":171,"t":"Ectoparasitoses cutanées : gale et pédiculose","c":"dermatologie","fc":"FC12","ref":1},
  {"id":"FC13@dermatologie","n":187,"t":"Hypersensibilités et allergies cutanéo-muqueuses chez l’enfant","c":"dermatologie","fc":"FC13","ref":1},
@@ -1057,7 +1061,7 @@ window.EDN_ITEMS = [
  {"n":165,"t":"Oreillons","cols":["infectiologie"],"ref":["infectiologie"]},
  {"n":166,"t":"Grippe","cols":["infectiologie"]},
  {"n":167,"t":"Hépatites virales","cols":["hge","mir","infectiologie"],"ref":["hge"]},
- {"n":168,"t":"Infections à herpès virus du sujet immunocompétent","cols":["orl","neurologie","infectiologie","dermatologie"]},
+ {"n":168,"t":"Infections à herpès virus du sujet immunocompétent","cols":["orl","neurologie","infectiologie","dermatologie"],"ref":["dermatologie"]},
  {"n":169,"t":"Infections à VIH","cols":["infectiologie","dermatologie","medecine-interne"],"ref":["infectiologie","medecine-interne"]},
  {"n":170,"t":"Paludisme","cols":["mir","infectiologie"],"ref":["infectiologie"]},
  {"n":171,"t":"Gale et pédiculose","cols":["infectiologie","dermatologie"],"ref":["infectiologie","dermatologie"]},

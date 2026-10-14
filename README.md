@@ -98,7 +98,7 @@ conséquences en découlent :
   corrections manuelles décrites plus bas —, soit parce qu'il leur donne
   plusieurs collèges en écriture, soit parce que ces collèges tombent dans des
   groupes différents. Elles sont toutes affichées, sur le même plan.
-- **26 items n'en ont aucune.** Pour vingt-trois d'entre eux, leur collège en
+- **25 items n'en ont aucune.** Pour vingt-deux d'entre eux, leur collège en
   écriture — Médecine générale, Humanités, Génétique médicale, Radiologie,
   Biochimie, Médecines intégratives — n'a pas d'équivalent parmi les 24. Pour
   les trois autres (207, 227, 228), l'étoile de cardiologie que donnait le
@@ -106,9 +106,9 @@ conséquences en découlent :
   portent pas, et la page l'indique : « aucun collège référent parmi les 24 du
   site ».
 
-**Vingt corrections manuelles** s'écartent du tableau, consignées en tête
-de `items.js`. Dix ajoutent un collège en écriture à côté de celui que donne le
-tableau ; deux, les 45 et 350, donnent sa seule étoile à un item qui n'en avait
+**Vingt et une corrections manuelles** s'écartent du tableau, consignées en
+tête de `items.js`. Dix ajoutent un collège en écriture à côté de celui que donne
+le tableau ; trois, les 45, 168 et 350, donnent sa seule étoile à un item qui n'en avait
 aucune, son collège en écriture — génétique médicale, médecine générale —
 n'étant pas parmi les 24 ; huit
 retirent l'étoile de cardiologie que le tableau donnait par la chirurgie
@@ -121,6 +121,7 @@ le site range en cardiologie :
 | 120 — immobilité et décubitus | + Gériatrie - MPR | ne le cite pas |
 | 136 — anesthésie | + Douleur - Soins pal. | ne le cite pas (ligne créée) |
 | 163 — coqueluche | + Pédiatrie | relecture |
+| 168 — infections à herpès virus | + Dermatologie | ne la cite pas (écriture : médecine générale) |
 | 171 — gale et pédiculose | + Dermatologie | relecture |
 | 190 — fièvre prolongée | − Cardiologie | écriture (chir. thoracique et CV) |
 | 207 — opacités et masses intrathoraciques | − Cardiologie (plus aucune étoile) | écriture (chir. thoracique et CV) |

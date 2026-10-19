@@ -17,6 +17,9 @@
      absente des 24, et place la pédiatrie en relecture : l'item n'avait aucune
      étoile, il en a désormais une. Ses trois lignes de pédiatrie (trisomie 21,
      X fragile, mucoviscidose) sont étoilées toutes trois.
+   · item 117 (psoriasis) — la rhumatologie est ajoutée aux collèges en
+     écriture, à côté de la dermatologie. Le tableau ne donne l'item qu'à la
+     dermatologie, et sa colonne relecture est vide.
    · item 120 (complications de l'immobilité et du décubitus) — la gériatrie,
      qui porte aussi la MPR, est ajoutée aux collèges en écriture. Le tableau
      ne donne l'item qu'à la réanimation, et sa colonne relecture est vide.
@@ -333,7 +336,7 @@ window.EDN_LIGNES = [
  {"id":"FC15@osteo","n":363,"t":"Fractures extrémité inférieure du radius","c":"osteo","fc":"FC15","ref":1},
  {"id":"FC16@osteo","n":365,"t":"Surveillance malade sous plâtre ou résine","c":"osteo","fc":"FC16","ref":1},
  {"id":"FC17@osteo","n":109,"t":"Troubles marche et équilibre","c":"osteo","fc":"FC17","ref":0},
- {"id":"FC18@osteo","n":117,"t":"Psoriasis","c":"osteo","fc":"FC18","ref":0},
+ {"id":"FC18@osteo","n":117,"t":"Psoriasis","c":"osteo","fc":"FC18","ref":1},
  {"id":"FC19@osteo","n":128,"t":"Ostéopathies fragilisantes","c":"osteo","fc":"FC19","ref":1},
  {"id":"FC20@osteo","n":129,"t":"Arthrose","c":"osteo","fc":"FC20","ref":1},
  {"id":"FC21@osteo","n":134,"t":"Douleur aiguë et douleur chronique","c":"osteo","fc":"FC21","ref":0},
@@ -1010,7 +1013,7 @@ window.EDN_ITEMS = [
  {"n":114,"t":"Exanthème et érythrodermie de l’enfant et de l’adulte","cols":["dermatologie"],"ref":["dermatologie"]},
  {"n":115,"t":"Toxidermies","cols":["dermatologie"],"ref":["dermatologie"]},
  {"n":116,"t":"Prurit","cols":["dermatologie"],"ref":["dermatologie"]},
- {"n":117,"t":"Psoriasis","cols":["osteo","dermatologie"],"ref":["dermatologie"]},
+ {"n":117,"t":"Psoriasis","cols":["osteo","dermatologie"],"ref":["osteo","dermatologie"]},
  {"n":118,"t":"La personne handicapée (+ITEM 119 LISA)","cols":["neurologie","geriatrie"],"ref":["geriatrie"]},
  {"n":119,"t":"Soins et accompagnement de la maladie chronique et du handicap","cols":["geriatrie"],"ref":["geriatrie"]},
  {"n":120,"t":"Complications hypomobilité et du décubitus","cols":["geriatrie","mir"],"ref":["geriatrie","mir"]},

@@ -57,6 +57,8 @@
        248 prévention par la nutrition .. endocrinologie
      Les lignes item-collège de cardiologie sont conservées sans étoile :
      elles peuvent porter des tours déjà saisis.
+   · item 211 (sarcoïdose) — la pneumologie est ajoutée aux collèges en
+     écriture, à côté de la médecine interne. Le tableau la place en relecture.
    · item 223 (dyslipidémies) — la cardiologie est ajoutée aux collèges en
      écriture, à côté de l'endocrinologie. Le tableau y place la médecine
      vasculaire en relecture, laquelle tombe dans le groupe cardiologie.
@@ -179,7 +181,7 @@ window.EDN_LIGNES = [
  {"id":"FC07@pneumologie","n":360,"t":"Pneumothorax","c":"pneumologie","fc":"FC07","ref":1},
  {"id":"FC08@pneumologie","n":159,"t":"Tuberculose de l’adulte","c":"pneumologie","fc":"FC08","ref":0},
  {"id":"FC09@pneumologie","n":206,"t":"Épanchement pleural liquidien","c":"pneumologie","fc":"FC09","ref":1},
- {"id":"FC10@pneumologie","n":211,"t":"Sarcoïdose","c":"pneumologie","fc":"FC10","ref":0},
+ {"id":"FC10@pneumologie","n":211,"t":"Sarcoïdose","c":"pneumologie","fc":"FC10","ref":1},
  {"id":"FC11@pneumologie","n":210,"t":"Pneumopathies interstitielles diffuses","c":"pneumologie","fc":"FC11","ref":1},
  {"id":"FC12@pneumologie","n":208,"t":"Insuffisance respiratoire chronique","c":"pneumologie","fc":"FC12","ref":1},
  {"id":"FC13@pneumologie","n":75,"t":"Addiction au tabac","c":"pneumologie","fc":"FC13","ref":0},
@@ -1107,7 +1109,7 @@ window.EDN_ITEMS = [
  {"n":208,"t":"Insuffisance respiratoire chronique","cols":["pneumologie","cardiologie"],"ref":["pneumologie"]},
  {"n":209,"t":"Bronchopneumopathie chronique obstructive","cols":["pneumologie","mir"],"ref":["pneumologie"]},
  {"n":210,"t":"Pneumopathies interstitielles diffuses","cols":["pneumologie","medecine-interne"],"ref":["pneumologie"]},
- {"n":211,"t":"Sarcoïdose","cols":["pneumologie","osteo","dermatologie","medecine-interne"],"ref":["medecine-interne"]},
+ {"n":211,"t":"Sarcoïdose","cols":["pneumologie","osteo","dermatologie","medecine-interne"],"ref":["pneumologie","medecine-interne"]},
  {"n":212,"t":"Hémogramme chez l’adulte et l’enfant : indications","cols":["hematologie"],"ref":["hematologie"]},
  {"n":213,"t":"Anémie chez l’adulte et l’enfant","cols":["pediatrie","hematologie","medecine-interne"],"ref":["medecine-interne"]},
  {"n":214,"t":"Thrombopénie chez l’adulte et l’enfant","cols":["hematologie","mir","medecine-interne"],"ref":["medecine-interne"]},

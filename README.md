@@ -94,7 +94,7 @@ regroupements (« Cardiologie - Chir Vasc. » fond à elle seule quatre collège
 officiels). Chaque collège officiel est donc ramené à son groupe, et deux
 conséquences en découlent :
 
-- **37 items ont plusieurs étoiles** d'après le tableau — 44 avec les
+- **37 items ont plusieurs étoiles** d'après le tableau — 45 avec les
   corrections manuelles décrites plus bas —, soit parce qu'il leur donne
   plusieurs collèges en écriture, soit parce que ces collèges tombent dans des
   groupes différents. Elles sont toutes affichées, sur le même plan.
@@ -106,8 +106,8 @@ conséquences en découlent :
   portent pas, et la page l'indique : « aucun collège référent parmi les 24 du
   site ».
 
-**Vingt-deux corrections manuelles** s'écartent du tableau, consignées en
-tête de `items.js`. Onze ajoutent un collège en écriture à côté de celui que donne
+**Vingt-trois corrections manuelles** s'écartent du tableau, consignées en
+tête de `items.js`. Douze ajoutent un collège en écriture à côté de celui que donne
 le tableau ; trois, les 45, 168 et 350, donnent sa seule étoile à un item qui n'en avait
 aucune, son collège en écriture — génétique médicale, médecine générale —
 n'étant pas parmi les 24 ; huit
@@ -127,6 +127,7 @@ le site range en cardiologie :
 | 190 — fièvre prolongée | − Cardiologie | écriture (chir. thoracique et CV) |
 | 207 — opacités et masses intrathoraciques | − Cardiologie (plus aucune étoile) | écriture (chir. thoracique et CV) |
 | 208 — insuffisance respiratoire chronique | − Cardiologie | écriture (chir. thoracique et CV) |
+| 211 — sarcoïdose | + Pneumologie | relecture |
 | 223 — dyslipidémies | + Cardiologie | relecture (médecine vasculaire) |
 | 227 — insuffisance veineuse chronique | − Cardiologie (plus aucune étoile) | écriture (médecine vasculaire) |
 | 228 — ulcère de jambe | − Cardiologie (plus aucune étoile) | écriture (médecine vasculaire) |

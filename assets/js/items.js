@@ -59,6 +59,9 @@
      elles peuvent porter des tours déjà saisis.
    · item 211 (sarcoïdose) — la pneumologie est ajoutée aux collèges en
      écriture, à côté de la médecine interne. Le tableau la place en relecture.
+   · item 213 (anémie chez l'adulte et l'enfant) — l'hématologie est ajoutée
+     aux collèges en écriture, à côté de la médecine interne. Le tableau ne la
+     cite pas : il met la pédiatrie en relecture.
    · item 223 (dyslipidémies) — la cardiologie est ajoutée aux collèges en
      écriture, à côté de l'endocrinologie. Le tableau y place la médecine
      vasculaire en relecture, laquelle tombe dans le groupe cardiologie.
@@ -437,7 +440,7 @@ window.EDN_LIGNES = [
  {"id":"FC71@pediatrie","n":364,"t":"Traumatismes","c":"pediatrie","fc":"FC71","ref":1},
  {"id":"REF030@pediatrie","n":30,"t":"Prématurité et retard de croissance intra-utérin","c":"pediatrie","fc":"REF030","ref":1},
  {"id":"FC01@hematologie","n":212,"t":"Hémogramme chez l’adulte et l’enfant : indications","c":"hematologie","fc":"FC01","ref":1},
- {"id":"FC02@hematologie","n":213,"t":"Anémie chez l’adulte et l’enfant","c":"hematologie","fc":"FC02","ref":0},
+ {"id":"FC02@hematologie","n":213,"t":"Anémie chez l’adulte et l’enfant","c":"hematologie","fc":"FC02","ref":1},
  {"id":"FC03@hematologie","n":315,"t":"Leucémies aiguës","c":"hematologie","fc":"FC03","ref":1},
  {"id":"FC04@hematologie","n":316,"t":"Syndromes myélodysplasiques","c":"hematologie","fc":"FC04","ref":1},
  {"id":"FC05@hematologie","n":296,"t":"Agranulocytose médicamenteuse","c":"hematologie","fc":"FC05","ref":1},
@@ -1111,7 +1114,7 @@ window.EDN_ITEMS = [
  {"n":210,"t":"Pneumopathies interstitielles diffuses","cols":["pneumologie","medecine-interne"],"ref":["pneumologie"]},
  {"n":211,"t":"Sarcoïdose","cols":["pneumologie","osteo","dermatologie","medecine-interne"],"ref":["pneumologie","medecine-interne"]},
  {"n":212,"t":"Hémogramme chez l’adulte et l’enfant : indications","cols":["hematologie"],"ref":["hematologie"]},
- {"n":213,"t":"Anémie chez l’adulte et l’enfant","cols":["pediatrie","hematologie","medecine-interne"],"ref":["medecine-interne"]},
+ {"n":213,"t":"Anémie chez l’adulte et l’enfant","cols":["pediatrie","hematologie","medecine-interne"],"ref":["hematologie","medecine-interne"]},
  {"n":214,"t":"Thrombopénie chez l’adulte et l’enfant","cols":["hematologie","mir","medecine-interne"],"ref":["medecine-interne"]},
  {"n":215,"t":"Purpura chez l’adulte et l’enfant","cols":["pediatrie","hematologie","infectiologie","dermatologie","medecine-interne"],"ref":["medecine-interne"]},
  {"n":216,"t":"Syndrome hémorragique d’origine hématologique","cols":["hematologie"],"ref":["hematologie"]},

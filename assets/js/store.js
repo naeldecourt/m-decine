@@ -908,6 +908,28 @@
     return s;
   }
 
+  /** Items du programme travaillés, chacun compté une fois quel que soit le
+      nombre de collèges où il l'a été : le 154 fait en pneumologie et en
+      pédiatrie vaut 1 sur 367. Indépendant de la vue active — on regarde les
+      clés des deux vues — et les lignes masquées ne comptent pas. */
+  function progressionItems() {
+    var faits = {};
+    (window.EDN_LIGNES || []).forEach(function (base) {
+      if (!base.n) return;
+      var k = base.n + '@' + base.c;
+      if (!masque(k) && tours(k).length) faits[base.n] = true;
+    });
+    var total = 0;
+    (window.EDN_ITEMS || []).forEach(function (base) {
+      if (!base.n) return;
+      total++;
+      var k = String(base.n);
+      if (!masque(k) && tours(k).length) faits[base.n] = true;
+    });
+    var vus = Object.keys(faits).length;
+    return { vus: vus, total: total, progression: total ? vus / total : 0 };
+  }
+
   /** Synthèse par collège (toujours calculée sur la vue « par collège »). */
   function parCollege() {
     var vueInitiale = vue();
@@ -1073,7 +1095,7 @@
     cfg: cfg, setCfg: setCfg, reset: reset,
     brut: brut, remplace: remplace,
     lignes: lignes, lignesActives: lignesActives,
-    synthese: synthese, parCollege: parCollege,
+    synthese: synthese, parCollege: parCollege, progressionItems: progressionItems,
     activite: activite, serie: serie, retardRattrape: retardRattrape,
     exportJson: exportJson, importJson: importJson, exportCsv: exportCsv, telecharger: telecharger
   };

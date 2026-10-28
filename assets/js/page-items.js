@@ -202,9 +202,11 @@
 
   function rendreSynthese() {
     var s = S.synthese();
-    $('#s-progression').textContent = Math.round(s.progression * 100) + ' %';
-    $('#s-bar').style.width = (s.progression * 100).toFixed(1) + '%';
-    $('#s-vus').textContent = s.vus + ' / ' + s.total;
+    // Progression en items du programme, pas en lignes item-collège.
+    var p = S.progressionItems();
+    $('#s-progression').textContent = Math.round(p.progression * 100) + ' %';
+    $('#s-bar').style.width = (p.progression * 100).toFixed(1) + '%';
+    $('#s-vus').textContent = p.vus + ' / ' + p.total;
     $('#s-retard').textContent = s.retard;
     $('#s-tours').textContent = s.tours;
     $('#s-temps').textContent = S.duree(s.minutes);

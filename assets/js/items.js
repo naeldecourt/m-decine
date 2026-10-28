@@ -36,6 +36,10 @@
      n'avaient aucune étoile, ils en ont désormais une. Les lignes de pédiatrie
      (rhinopharyngite aiguë et sinusites pour le 148, angines pour le 149)
      sont toutes étoilées.
+   · item 154 (infections broncho-pulmonaires communautaires) — la pédiatrie
+     est ajoutée aux collèges en écriture, à côté de la pneumologie, seule
+     étoilée par le tableau. Ses deux lignes de pédiatrie (bronchiolite aiguë
+     du nourrisson, pneumonies aiguës communautaires) sont étoilées.
    · item 163 (coqueluche) — la pédiatrie est ajoutée aux collèges en écriture,
      à côté de l'infectiologie. Le tableau la place en relecture, avec les
      maladies infectieuses, derrière la bactériologie-virologie.
@@ -428,10 +432,10 @@ window.EDN_LIGNES = [
  {"id":"FC53@pediatrie","n":56,"t":"Handicap","c":"pediatrie","fc":"FC53","ref":1},
  {"id":"FC54@pediatrie","n":203,"t":"Dyspnée et détresse respiratoire aiguë","c":"pediatrie","fc":"FC54","ref":0},
  {"id":"FC55@pediatrie","n":204,"t":"Toux","c":"pediatrie","fc":"FC55","ref":0},
- {"id":"FC56@pediatrie","n":154,"t":"Bronchiolite aiguë du nourrisson","c":"pediatrie","fc":"FC56","ref":0},
+ {"id":"FC56@pediatrie","n":154,"t":"Bronchiolite aiguë du nourrisson","c":"pediatrie","fc":"FC56","ref":1},
  {"id":"FC57@pediatrie","n":188,"t":"Asthme","c":"pediatrie","fc":"FC57","ref":0},
  {"id":"FC58@pediatrie","n":186,"t":"Hypersensibilités et allergies","c":"pediatrie","fc":"FC58","ref":0},
- {"id":"FC59@pediatrie","n":154,"t":"Pneumonies aiguës communautaires","c":"pediatrie","fc":"FC59","ref":0},
+ {"id":"FC59@pediatrie","n":154,"t":"Pneumonies aiguës communautaires","c":"pediatrie","fc":"FC59","ref":1},
  {"id":"FC60@pediatrie","n":207,"t":"Opacités et masses intrathoraciques","c":"pediatrie","fc":"FC60","ref":0},
  {"id":"FC61@pediatrie","n":159,"t":"Tuberculose","c":"pediatrie","fc":"FC61","ref":0},
  {"id":"FC62@pediatrie","n":110,"t":"Troubles du sommeil et SAOS","c":"pediatrie","fc":"FC62","ref":0},
@@ -1061,7 +1065,7 @@ window.EDN_ITEMS = [
  {"n":151,"t":"Méningites, méningo-encéphalites et abcès cérébral de l’adulte et de l’enfant","cols":["neurologie","pediatrie","mir","infectiologie"],"ref":["infectiologie"]},
  {"n":152,"t":"Endocardite infectieuse","cols":["cardiologie","mir","infectiologie","medecine-interne"],"ref":["infectiologie"]},
  {"n":153,"t":"Surveillance des porteurs de valves cardiaques","cols":["cardiologie","infectiologie"],"ref":["cardiologie"]},
- {"n":154,"t":"Infections broncho-pulmonaires communautaires de l’adulte","cols":["pneumologie","pediatrie","mir","infectiologie"],"ref":["pneumologie"]},
+ {"n":154,"t":"Infections broncho-pulmonaires communautaires de l’adulte","cols":["pneumologie","pediatrie","mir","infectiologie"],"ref":["pediatrie","pneumologie"]},
  {"n":155,"t":"Infections cutanéo-muqueuses bactériennes et mycosiques","cols":["pneumologie","orl","pediatrie","mir","infectiologie","dermatologie"],"ref":["dermatologie"]},
  {"n":156,"t":"Infections ostéo-articulaires de l’adulte et de l’enfant","cols":["osteo","infectiologie"],"ref":["infectiologie"]},
  {"n":157,"t":"Septicémie, bactériémie et fongémie de l’adulte et de l’enfant","cols":["pediatrie","infectiologie"],"ref":["infectiologie"]},

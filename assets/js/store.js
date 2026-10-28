@@ -46,7 +46,7 @@
     // Sans lui, une fusion ne réunit que ce qui existe des deux côtés et
     // ressuscite ce qu'un appareil vient d'effacer.
     sup:   {},
-    cfg:   { vue: 'college', dateEdn: '', itemsJour: 6, objectif: 3 }
+    cfg:   { vue: 'college', dateEdn: '', itemsJour: 6, objectif: 3, progression: 'items' }
   };
 
   // Au-delà de ce délai, une suppression est oubliée : tous les appareils

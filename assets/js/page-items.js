@@ -202,8 +202,14 @@
 
   function rendreSynthese() {
     var s = S.synthese();
-    // Progression en items du programme, pas en lignes item-collège.
-    var p = S.progressionItems();
+    // Au choix : en items du programme (un item fait dans plusieurs collèges
+    // compte une fois sur 367), ou en lignes de la vue active.
+    var enLignes = S.cfg().progression === 'lignes';
+    var p = enLignes ? s : S.progressionItems();
+    $$('[data-prog]').forEach(function (b) {
+      b.setAttribute('aria-pressed', String((b.dataset.prog === 'lignes') === enLignes));
+    });
+    $('#s-unite').textContent = enLignes ? 'lignes travaillées' : 'items travaillés';
     $('#s-progression').textContent = Math.round(p.progression * 100) + ' %';
     $('#s-bar').style.width = (p.progression * 100).toFixed(1) + '%';
     $('#s-vus').textContent = p.vus + ' / ' + p.total;
@@ -279,6 +285,13 @@
       this.setAttribute('aria-pressed', String(etat.masques));
       etat.page = 1;
       rendreTable();
+    });
+
+    $$('[data-prog]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        S.setCfg('progression', b.dataset.prog);
+        rendreSynthese();
+      });
     });
 
     $$('[data-vue]').forEach(function (b) {

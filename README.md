@@ -98,7 +98,7 @@ conséquences en découlent :
   corrections manuelles décrites plus bas —, soit parce qu'il leur donne
   plusieurs collèges en écriture, soit parce que ces collèges tombent dans des
   groupes différents. Elles sont toutes affichées, sur le même plan.
-- **25 items n'en ont aucune.** Pour vingt-deux d'entre eux, leur collège en
+- **23 items n'en ont aucune.** Pour vingt d'entre eux, leur collège en
   écriture — Médecine générale, Humanités, Génétique médicale, Radiologie,
   Biochimie, Médecines intégratives — n'a pas d'équivalent parmi les 24. Pour
   les trois autres (207, 227, 228), l'étoile de cardiologie que donnait le
@@ -106,9 +106,9 @@ conséquences en découlent :
   portent pas, et la page l'indique : « aucun collège référent parmi les 24 du
   site ».
 
-**Vingt-quatre corrections manuelles** s'écartent du tableau, consignées en
+**Vingt-six corrections manuelles** s'écartent du tableau, consignées en
 tête de `items.js`. Treize ajoutent un collège en écriture à côté de celui que donne
-le tableau ; trois, les 45, 168 et 350, donnent sa seule étoile à un item qui n'en avait
+le tableau ; cinq, les 45, 148, 149, 168 et 350, donnent sa seule étoile à un item qui n'en avait
 aucune, son collège en écriture — génétique médicale, médecine générale —
 n'étant pas parmi les 24 ; huit
 retirent l'étoile de cardiologie que le tableau donnait par la chirurgie
@@ -121,6 +121,8 @@ le site range en cardiologie :
 | 117 — psoriasis | + Rhumato - Ortho. | ne le cite pas |
 | 120 — immobilité et décubitus | + Gériatrie - MPR | ne le cite pas |
 | 136 — anesthésie | + Douleur - Soins pal. | ne le cite pas (ligne créée) |
+| 148 — infections naso-sinusiennes | + Pédiatrie | écriture : médecine générale |
+| 149 — angines et rhinopharyngites | + Pédiatrie | écriture : médecine générale |
 | 163 — coqueluche | + Pédiatrie | relecture |
 | 168 — infections à herpès virus | + Dermatologie | ne la cite pas (écriture : médecine générale) |
 | 171 — gale et pédiculose | + Dermatologie | relecture |

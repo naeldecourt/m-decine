@@ -6,8 +6,8 @@
 
    « ref » désigne le collège en écriture, celui qui fait foi pour les EDN :
    il vient du tableau officiel écriture / relecture. Un item peut en avoir
-   plusieurs — EDN_ITEMS.ref est donc une liste — et vingt-cinq items n'en
-   ont aucun ici : vingt-deux parce que leur collège en écriture n'existe
+   plusieurs — EDN_ITEMS.ref est donc une liste — et vingt-trois items n'en
+   ont aucun ici : vingt parce que leur collège en écriture n'existe
    pas parmi les 24, trois parce que l'étoile en a été retirée à la main.
 
    CORRECTIONS MANUELLES, à conserver si le tableau est réimporté. Toutes sont
@@ -30,6 +30,12 @@
      donne l'item qu'à la réanimation, et sa colonne relecture est vide. Ce
      collège n'était pas rattaché à l'item : la ligne item-collège a été créée
      pour que l'étoile ait où s'afficher — d'où 787 lignes et non 786.
+   · items 148 (infections naso-sinusiennes) et 149 (angines et
+     rhinopharyngites) — la pédiatrie devient le collège en écriture. Le
+     tableau donne ces items à la médecine générale, absente des 24 : ils
+     n'avaient aucune étoile, ils en ont désormais une. Les lignes de pédiatrie
+     (rhinopharyngite aiguë et sinusites pour le 148, angines pour le 149)
+     sont toutes étoilées.
    · item 163 (coqueluche) — la pédiatrie est ajoutée aux collèges en écriture,
      à côté de l'infectiologie. Le tableau la place en relecture, avec les
      maladies infectieuses, derrière la bactériologie-virologie.
@@ -396,10 +402,10 @@ window.EDN_LIGNES = [
  {"id":"FC27@pediatrie","n":297,"t":"Cancers de l’enfant et leucémies aiguës","c":"pediatrie","fc":"FC27","ref":1},
  {"id":"FC28@pediatrie","n":177,"t":"Spécificités infectiologiques pédiatriques","c":"pediatrie","fc":"FC28","ref":0},
  {"id":"FC29@pediatrie","n":147,"t":"Fièvre aiguë","c":"pediatrie","fc":"FC29","ref":0},
- {"id":"FC30@pediatrie","n":148,"t":"Rhinopharyngite aiguë","c":"pediatrie","fc":"FC30","ref":0},
- {"id":"FC31@pediatrie","n":149,"t":"Angines","c":"pediatrie","fc":"FC31","ref":0},
+ {"id":"FC30@pediatrie","n":148,"t":"Rhinopharyngite aiguë","c":"pediatrie","fc":"FC30","ref":1},
+ {"id":"FC31@pediatrie","n":149,"t":"Angines","c":"pediatrie","fc":"FC31","ref":1},
  {"id":"FC32@pediatrie","n":150,"t":"Otites","c":"pediatrie","fc":"FC32","ref":0},
- {"id":"FC33@pediatrie","n":148,"t":"Sinusites","c":"pediatrie","fc":"FC33","ref":0},
+ {"id":"FC33@pediatrie","n":148,"t":"Sinusites","c":"pediatrie","fc":"FC33","ref":1},
  {"id":"FC34@pediatrie","n":163,"t":"Coqueluche","c":"pediatrie","fc":"FC34","ref":1},
  {"id":"FC35@pediatrie","n":286,"t":"Diarrhée aiguë","c":"pediatrie","fc":"FC35","ref":1},
  {"id":"FC36@pediatrie","n":161,"t":"Infections urinaires","c":"pediatrie","fc":"FC36","ref":0},
@@ -1049,8 +1055,8 @@ window.EDN_ITEMS = [
  {"n":145,"t":"Surveillance des maladies infectieuses transmissibles","cols":["infectiologie","sante-publique"],"ref":["infectiologie"]},
  {"n":146,"t":"Vaccinations","cols":["pediatrie","infectiologie","sante-publique"],"ref":["infectiologie"]},
  {"n":147,"t":"Fièvre aiguë chez l’enfant et l’adulte","cols":["pediatrie","infectiologie"],"ref":["infectiologie"]},
- {"n":148,"t":"Infections naso-sinusiennes de l’adulte et de l’enfant","cols":["orl","pediatrie","infectiologie"]},
- {"n":149,"t":"Angines de l’adulte et de l’enfant et rhinopharyngites de l’enfant","cols":["orl","pediatrie","infectiologie"]},
+ {"n":148,"t":"Infections naso-sinusiennes de l’adulte et de l’enfant","cols":["orl","pediatrie","infectiologie"],"ref":["pediatrie"]},
+ {"n":149,"t":"Angines de l’adulte et de l’enfant et rhinopharyngites de l’enfant","cols":["orl","pediatrie","infectiologie"],"ref":["pediatrie"]},
  {"n":150,"t":"Otites infectieuses","cols":["orl","pediatrie","infectiologie"],"ref":["orl"]},
  {"n":151,"t":"Méningites, méningo-encéphalites et abcès cérébral de l’adulte et de l’enfant","cols":["neurologie","pediatrie","mir","infectiologie"],"ref":["infectiologie"]},
  {"n":152,"t":"Endocardite infectieuse","cols":["cardiologie","mir","infectiologie","medecine-interne"],"ref":["infectiologie"]},

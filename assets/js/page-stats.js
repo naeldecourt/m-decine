@@ -3,7 +3,7 @@
   'use strict';
 
   var S = window.Store, U = window.UI;
-  var $ = U.$, esc = U.esc;
+  var $ = U.$, $$ = U.$$, esc = U.esc;
 
   var JOURS = ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'];
 
@@ -173,14 +173,22 @@
      réservés aux conteneurs de graphiques. */
   function rendreGlobal() {
     var s = S.synthese();
-    $('#v-progression').textContent = Math.round(s.progression * 100) + ' %';
-    $('#v-vus').textContent = s.vus + ' / ' + s.total;
+    // Au choix, comme sur la page Items : en items du programme (un item fait
+    // dans plusieurs collèges compte une fois sur 367), ou en lignes.
+    var enLignes = S.cfg().progression === 'lignes';
+    var p = enLignes ? s : S.progressionItems();
+    $$('[data-prog]').forEach(function (b) {
+      b.setAttribute('aria-pressed', String((b.dataset.prog === 'lignes') === enLignes));
+    });
+    $('#v-unite').textContent = enLignes ? 'lignes travaillées' : 'items travaillés';
+    $('#v-progression').textContent = Math.round(p.progression * 100) + ' %';
+    $('#v-vus').textContent = p.vus + ' / ' + p.total;
     $('#v-acquis').textContent = s.acquis;
     $('#v-retard').textContent = s.retard;
     $('#v-objectif').textContent = s.objectifAtteint + ' / ' + s.total;
     $('#v-temps').textContent = S.duree(s.minutes);
     $('#v-confiance').textContent = s.confMoyenne ? s.confMoyenne.toFixed(1).replace('.', ',') + '/5' : '—';
-    $('#v-bar').style.width = (s.progression * 100).toFixed(1) + '%';
+    $('#v-bar').style.width = (p.progression * 100).toFixed(1) + '%';
   }
 
   function rendre() {
@@ -194,6 +202,14 @@
   // données reçues d'un autre appareil : on redessine
   document.addEventListener('edn:distant', rendre);
 
-  document.addEventListener('DOMContentLoaded', rendre);
+  document.addEventListener('DOMContentLoaded', function () {
+    $$('[data-prog]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        S.setCfg('progression', b.dataset.prog);
+        rendreGlobal();
+      });
+    });
+    rendre();
+  });
   document.addEventListener('edn:theme', function () { rendreSemaine(); });
 })();

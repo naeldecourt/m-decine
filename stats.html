@@ -142,7 +142,11 @@
     <div class="card card--pad">
       <div class="row" style="justify-content:space-between;margin-bottom:10px">
         <strong>Progression du programme</strong>
-        <span class="muted small"><b id="v-vus">—</b> lignes travaillées</span>
+        <div class="themes" role="group" aria-label="Compter la progression en">
+          <button type="button" data-prog="items" aria-pressed="true">Sur 367 items</button>
+          <button type="button" data-prog="lignes" aria-pressed="false">Sur toutes les lignes</button>
+        </div>
+        <span class="muted small"><b id="v-vus">—</b> <span id="v-unite">items travaillés</span></span>
       </div>
       <div class="bar" style="height:10px;margin-bottom:18px"><span id="v-bar" style="width:0%"></span></div>
       <div class="grid grid--4" style="gap:18px">

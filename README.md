@@ -94,7 +94,7 @@ regroupements (« Cardiologie - Chir Vasc. » fond à elle seule quatre collège
 officiels). Chaque collège officiel est donc ramené à son groupe, et deux
 conséquences en découlent :
 
-- **37 items ont plusieurs étoiles** d'après le tableau — 47 avec les
+- **37 items ont plusieurs étoiles** d'après le tableau — 48 avec les
   corrections manuelles décrites plus bas —, soit parce qu'il leur donne
   plusieurs collèges en écriture, soit parce que ces collèges tombent dans des
   groupes différents. Elles sont toutes affichées, sur le même plan.
@@ -106,8 +106,8 @@ conséquences en découlent :
   portent pas, et la page l'indique : « aucun collège référent parmi les 24 du
   site ».
 
-**Vingt-sept corrections manuelles** s'écartent du tableau, consignées en
-tête de `items.js`. Quatorze ajoutent un collège en écriture à côté de celui que donne
+**Vingt-huit corrections manuelles** s'écartent du tableau, consignées en
+tête de `items.js`. Quinze ajoutent un collège en écriture à côté de celui que donne
 le tableau ; cinq, les 45, 148, 149, 168 et 350, donnent sa seule étoile à un item qui n'en avait
 aucune, son collège en écriture — génétique médicale, médecine générale —
 n'étant pas parmi les 24 ; huit
@@ -127,6 +127,7 @@ le site range en cardiologie :
 | 163 — coqueluche | + Pédiatrie | relecture |
 | 168 — infections à herpès virus | + Dermatologie | ne la cite pas (écriture : médecine générale) |
 | 171 — gale et pédiculose | + Dermatologie | relecture |
+| 186 — hypersensibilités et allergies respiratoires | + Pneumologie | écriture : médecine interne seule |
 | 190 — fièvre prolongée | − Cardiologie | écriture (chir. thoracique et CV) |
 | 207 — opacités et masses intrathoraciques | − Cardiologie (plus aucune étoile) | écriture (chir. thoracique et CV) |
 | 208 — insuffisance respiratoire chronique | − Cardiologie | écriture (chir. thoracique et CV) |

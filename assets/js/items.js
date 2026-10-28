@@ -50,6 +50,9 @@
    · item 171 (gale et pédiculose) — la dermatologie est ajoutée aux collèges
      en écriture, à côté de l'infectiologie. Le tableau la place en relecture,
      derrière la parasitologie et les maladies infectieuses.
+   · item 186 (hypersensibilités et allergies respiratoires) — la pneumologie
+     est ajoutée aux collèges en écriture, à côté de la médecine interne, seule
+     étoilée par le tableau.
    · items 190, 207, 208, 227, 228, 239, 241 et 248 — la cardiologie est
      retirée des collèges en écriture. Le tableau l'y mettait par la chirurgie
      thoracique et cardio-vasculaire (190, 207, 208, 241) ou par la médecine
@@ -185,7 +188,7 @@ window.EDN_LIGNES = [
  {"id":"FC30@hge","n":357,"t":"Péritonite aiguë","c":"hge","fc":"FC30","ref":1},
  {"id":"FC31@hge","n":201,"t":"Transplantation hépatique","c":"hge","fc":"FC31","ref":0},
  {"id":"FC32@hge","n":289,"t":"Hernies pariétales","c":"hge","fc":"FC32","ref":1},
- {"id":"FC01@pneumologie","n":186,"t":"Hypersensibilités et allergies respiratoires","c":"pneumologie","fc":"FC01","ref":0},
+ {"id":"FC01@pneumologie","n":186,"t":"Hypersensibilités et allergies respiratoires","c":"pneumologie","fc":"FC01","ref":1},
  {"id":"FC02@pneumologie","n":188,"t":"Asthme et rhinite","c":"pneumologie","fc":"FC02","ref":1},
  {"id":"FC03@pneumologie","n":209,"t":"Bronchopneumopathie chronique obstructive","c":"pneumologie","fc":"FC03","ref":1},
  {"id":"FC04@pneumologie","n":204,"t":"Toux chez l’adulte","c":"pneumologie","fc":"FC04","ref":1},
@@ -1097,7 +1100,7 @@ window.EDN_ITEMS = [
  {"n":183,"t":"Missions et fonctionnement des services de santé au travail","cols":["medecine-legale"],"ref":["medecine-legale"]},
  {"n":184,"t":"Accidents du travail et maladies professionnelles","cols":["medecine-legale"],"ref":["medecine-legale"]},
  {"n":185,"t":"Réaction inflammatoire","cols":["osteo","medecine-interne"],"ref":["medecine-interne"]},
- {"n":186,"t":"Hypersensibilités et allergies respiratoires","cols":["pneumologie","pediatrie","medecine-interne"],"ref":["medecine-interne"]},
+ {"n":186,"t":"Hypersensibilités et allergies respiratoires","cols":["pneumologie","pediatrie","medecine-interne"],"ref":["pneumologie","medecine-interne"]},
  {"n":187,"t":"Hypersensibilités et allergies cutanéo-muqueuses chez l’enfant","cols":["dermatologie","medecine-interne"],"ref":["dermatologie","medecine-interne"]},
  {"n":188,"t":"Asthme et rhinite","cols":["pneumologie","pediatrie","mir"],"ref":["pneumologie"]},
  {"n":189,"t":"Déficit immunitaire","cols":["pediatrie","medecine-interne"],"ref":["medecine-interne"]},

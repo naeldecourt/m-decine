@@ -75,6 +75,8 @@
    · item 213 (anémie chez l'adulte et l'enfant) — l'hématologie est ajoutée
      aux collèges en écriture, à côté de la médecine interne. Le tableau ne la
      cite pas : il met la pédiatrie en relecture.
+   · item 220 (adénopathie superficielle) — l'ORL est ajoutée aux collèges en
+     écriture, à côté de l'hématologie, seule étoilée par le tableau.
    · item 223 (dyslipidémies) — la cardiologie est ajoutée aux collèges en
      écriture, à côté de l'endocrinologie. Le tableau y place la médecine
      vasculaire en relecture, laquelle tombe dans le groupe cardiologie.
@@ -257,7 +259,7 @@ window.EDN_LIGNES = [
  {"id":"FC09@orl","n":149,"t":"Angines et rhinopharyngites","c":"orl","fc":"FC09","ref":0},
  {"id":"FC10@orl","n":150,"t":"Otites infectieuses","c":"orl","fc":"FC10","ref":1},
  {"id":"FC11@orl","n":203,"t":"Dyspnée laryngée aiguë et chronique","c":"orl","fc":"FC11","ref":0},
- {"id":"FC12@orl","n":220,"t":"Adénopathie cervicale superficielle","c":"orl","fc":"FC12","ref":0},
+ {"id":"FC12@orl","n":220,"t":"Adénopathie cervicale superficielle","c":"orl","fc":"FC12","ref":1},
  {"id":"FC13@orl","n":241,"t":"Goitre, nodules et cancers thyroïdiens","c":"orl","fc":"FC13","ref":0},
  {"id":"FC14@orl","n":273,"t":"Dysphagie","c":"orl","fc":"FC14","ref":0},
  {"id":"FC15@orl","n":298,"t":"Tumeurs de la cavité buccale et ORL","c":"orl","fc":"FC15","ref":1},
@@ -1134,7 +1136,7 @@ window.EDN_ITEMS = [
  {"n":217,"t":"Syndrome mononucléosique","cols":["hematologie","infectiologie","medecine-interne"],"ref":["medecine-interne"]},
  {"n":218,"t":"Éosinophilie","cols":["hematologie","infectiologie","medecine-interne"],"ref":["medecine-interne"]},
  {"n":219,"t":"Pathologies du fer","cols":["hge","osteo","endocrinologie","medecine-interne"]},
- {"n":220,"t":"Adénopathie superficielle de l’adulte et de l’enfant","cols":["orl","pediatrie","hematologie","infectiologie","medecine-interne"],"ref":["hematologie"]},
+ {"n":220,"t":"Adénopathie superficielle de l’adulte et de l’enfant","cols":["orl","pediatrie","hematologie","infectiologie","medecine-interne"],"ref":["orl","hematologie"]},
  {"n":221,"t":"Athérome et patient polyathéromateux","cols":["cardiologie","sante-publique"],"ref":["cardiologie"]},
  {"n":222,"t":"Facteurs de risque cardiovasculaires et prévention","cols":["cardiologie","sante-publique"],"ref":["cardiologie"]},
  {"n":223,"t":"Dyslipidémies","cols":["cardiologie","endocrinologie"],"ref":["cardiologie","endocrinologie"]},

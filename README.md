@@ -65,7 +65,7 @@ leur étoile, comme partout ailleurs.
 Un même item peut être traité par plusieurs collèges. Le site propose donc deux
 vues, permutables depuis la liste des items :
 
-- **Par collège** — 779 lignes, une par couple item-collège. Les tours sont
+- **Par collège** — 780 lignes, une par couple item-collège. Les tours sont
   suivis séparément dans chaque collège, et le collège de référence porte
   l'étoile ★.
 - **Par item** — 367 lignes, une par numéro d'item, les collèges concernés
@@ -94,7 +94,7 @@ regroupements (« Cardiologie - Chir Vasc. » fond à elle seule quatre collège
 officiels). Chaque collège officiel est donc ramené à son groupe, et deux
 conséquences en découlent :
 
-- **37 items ont plusieurs étoiles** d'après le tableau — 48 avec les
+- **37 items ont plusieurs étoiles** d'après le tableau — 49 avec les
   corrections manuelles décrites plus bas —, soit parce qu'il leur donne
   plusieurs collèges en écriture, soit parce que ces collèges tombent dans des
   groupes différents. Elles sont toutes affichées, sur le même plan.
@@ -107,13 +107,13 @@ conséquences en découlent :
   site ».
 
 **Trente corrections manuelles** s'écartent du tableau, consignées en
-tête de `items.js`. Quinze ajoutent un collège en écriture à côté de celui que donne
+tête de `items.js`. Seize ajoutent un collège en écriture à côté de celui que donne
 le tableau ; cinq, les 45, 148, 149, 168 et 350, donnent sa seule étoile à un item qui n'en avait
 aucune, son collège en écriture — génétique médicale, médecine générale —
-n'étant pas parmi les 24 ; dix
+n'étant pas parmi les 24 ; neuf
 retirent la cardiologie — son étoile, que le tableau donnait par la chirurgie
 thoracique et cardio-vasculaire ou par la médecine vasculaire, deux collèges que
-le site range en cardiologie, et pour huit d'entre eux la ligne elle-même :
+le site range en cardiologie, et pour sept d'entre eux la ligne elle-même :
 
 | Item | Correction | Ce qu'en dit le tableau |
 |---|---|---|
@@ -135,7 +135,7 @@ le site range en cardiologie, et pour huit d'entre eux la ligne elle-même :
 | 211 — sarcoïdose | + Pneumologie | relecture |
 | 213 — anémie | + Hématologie | ne la cite pas (relecture : pédiatrie) |
 | 220 — adénopathie superficielle | + ORL - CMF | écriture : hématologie seule |
-| 223 — dyslipidémies | − Cardiologie (ligne retirée) | relecture (médecine vasculaire) |
+| 223 — dyslipidémies | + Cardiologie | relecture (médecine vasculaire) |
 | 227 — insuffisance veineuse chronique | − Cardiologie (plus aucune étoile) | écriture (médecine vasculaire) |
 | 228 — ulcère de jambe | − Cardiologie (plus aucune étoile) | écriture (médecine vasculaire) |
 | 239 — acrosyndromes | − Cardiologie (ligne retirée), + Médecine interne | écriture (médecine vasculaire) ; MI en relecture |
@@ -149,7 +149,7 @@ le site range en cardiologie, et pour huit d'entre eux la ligne elle-même :
 | 360 — pneumothorax | + Pneumologie | relecture |
 
 Pour 227 et 228, la ligne item-collège de cardiologie est conservée sans
-étoile. Pour les huit autres, elle est supprimée et la cardiologie n'apparaît
+étoile. Pour les sept autres, elle est supprimée et la cardiologie n'apparaît
 plus du tout pour l'item ; les tours éventuellement saisis sur ces lignes
 restent dans les données, mais ne s'affichent plus.
 
@@ -160,9 +160,9 @@ Les collèges où figure un item, eux, restent ceux de la donnée d'origine : se
 l'étoile vient du tableau. Trente-quatre couples item-collège ont été ajoutés —
 trente-trois à l'import, un pour la correction de l'item 136 —, uniquement là où
 un collège en écriture n'était pas rattaché à son item ; sans quoi l'étoile
-n'aurait eu nulle part où s'afficher. Huit lignes de cardiologie ont ensuite
-été retirées (113, 190, 207, 208, 223, 239, 241, 248). D'où 779 lignes pour 753
-à l'origine.
+n'aurait eu nulle part où s'afficher. Sept lignes de cardiologie ont ensuite
+été retirées (113, 190, 207, 208, 239, 241, 248). D'où 780 lignes pour 753 à
+l'origine.
 
 ## Trouver un item à planifier
 

@@ -44,7 +44,7 @@
      pneumologie est retirée de l'item : sa ligne, intitulée « Infections
      broncho-pulmonaires », est supprimée et le collège ôté de « cols ». Elle
      n'avait pas d'étoile ; la dermatologie reste seule en écriture. D'où,
-     avec les retraits de cardiologie plus bas, 776 lignes.
+     avec les retraits de cardiologie plus bas et l'ajout du 230, 777 lignes.
    · item 163 (coqueluche) — la pédiatrie est ajoutée aux collèges en écriture,
      à côté de l'infectiologie. Le tableau la place en relecture, avec les
      maladies infectieuses, derrière la bactériologie-virologie.
@@ -82,6 +82,9 @@
      cite pas : il met la pédiatrie en relecture.
    · item 220 (adénopathie superficielle) — l'ORL est ajoutée aux collèges en
      écriture, à côté de l'hématologie, seule étoilée par le tableau.
+   · item 230 (douleur thoracique) — la pneumologie est ajoutée à l'item,
+     sans étoile : la ligne item-collège a été créée, la cardiologie reste
+     seule en écriture.
    · items 113, 190, 201, 207, 208, 227, 228, 239, 241 et 248 — la
      cardiologie est retirée de l'item, et non plus seulement de son étoile : la ligne
      item-collège est supprimée et le collège ôté de « cols ». Le 113
@@ -216,6 +219,7 @@ window.EDN_LIGNES = [
  {"id":"FC19@pneumologie","n":359,"t":"Détresse respiratoire et corps étrangers des voies aériennes","c":"pneumologie","fc":"FC19","ref":0},
  {"id":"FC21@pneumologie","n":205,"t":"Hémoptysie","c":"pneumologie","fc":"FC21","ref":1},
  {"id":"FC22@pneumologie","n":359,"t":"Détresse respiratoire","c":"pneumologie","fc":"FC22","ref":0},
+ {"id":"REF230@pneumologie","n":230,"t":"Douleur thoracique","c":"pneumologie","fc":"REF230","ref":0},
  {"id":"FC01@gynecologie","n":12,"t":"Violences sexuelles","c":"gynecologie","fc":"FC01","ref":0},
  {"id":"FC02@gynecologie","n":23,"t":"Grossesse normale","c":"gynecologie","fc":"FC02","ref":0},
  {"id":"FC03@gynecologie","n":25,"t":"Grossesse extra-utérine","c":"gynecologie","fc":"FC03","ref":1},
@@ -1150,7 +1154,7 @@ window.EDN_ITEMS = [
  {"n":227,"t":"Insuffisance veineuse chronique","cols":[]},
  {"n":228,"t":"Ulcère de jambe","cols":["dermatologie"]},
  {"n":229,"t":"Surveillance et complications des abords veineux","cols":["mir"],"ref":["mir"]},
- {"n":230,"t":"Douleur thoracique","cols":["cardiologie"],"ref":["cardiologie"]},
+ {"n":230,"t":"Douleur thoracique","cols":["cardiologie","pneumologie"],"ref":["cardiologie"]},
  {"n":231,"t":"Électrocardiogramme","cols":["cardiologie"],"ref":["cardiologie"]},
  {"n":232,"t":"Fibrillation atriale","cols":["cardiologie"],"ref":["cardiologie"]},
  {"n":233,"t":"Valvulopathies","cols":["cardiologie"],"ref":["cardiologie"]},

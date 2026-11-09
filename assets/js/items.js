@@ -45,8 +45,9 @@
      broncho-pulmonaires », est supprimée et le collège ôté de « cols ». Elle
      n'avait pas d'étoile ; la dermatologie reste seule en écriture. D'où,
      avec les retraits de cardiologie plus bas et l'ajout du 230, 777 lignes.
-   · item 159 (tuberculose) — la pneumologie est ajoutée aux collèges en
-     écriture, à côté de l'infectiologie, seule étoilée par le tableau.
+   · item 159 (tuberculose) — la pneumologie et la pédiatrie sont ajoutées
+     aux collèges en écriture, à côté de l'infectiologie, seule étoilée par
+     le tableau.
    · item 163 (coqueluche) — la pédiatrie est ajoutée aux collèges en écriture,
      à côté de l'infectiologie. Le tableau la place en relecture, avec les
      maladies infectieuses, derrière la bactériologie-virologie.
@@ -452,7 +453,7 @@ window.EDN_LIGNES = [
  {"id":"FC58@pediatrie","n":186,"t":"Hypersensibilités et allergies","c":"pediatrie","fc":"FC58","ref":0},
  {"id":"FC59@pediatrie","n":154,"t":"Pneumonies aiguës communautaires","c":"pediatrie","fc":"FC59","ref":1},
  {"id":"FC60@pediatrie","n":207,"t":"Opacités et masses intrathoraciques","c":"pediatrie","fc":"FC60","ref":0},
- {"id":"FC61@pediatrie","n":159,"t":"Tuberculose","c":"pediatrie","fc":"FC61","ref":0},
+ {"id":"FC61@pediatrie","n":159,"t":"Tuberculose","c":"pediatrie","fc":"FC61","ref":1},
  {"id":"FC62@pediatrie","n":110,"t":"Troubles du sommeil et SAOS","c":"pediatrie","fc":"FC62","ref":0},
  {"id":"FC63@pediatrie","n":45,"t":"Mucoviscidose chez l’enfant","c":"pediatrie","fc":"FC63","ref":1},
  {"id":"FC64@pediatrie","n":238,"t":"Souffle cardiaque","c":"pediatrie","fc":"FC64","ref":1},
@@ -1085,7 +1086,7 @@ window.EDN_ITEMS = [
  {"n":156,"t":"Infections ostéo-articulaires de l’adulte et de l’enfant","cols":["osteo","infectiologie"],"ref":["infectiologie"]},
  {"n":157,"t":"Septicémie, bactériémie et fongémie de l’adulte et de l’enfant","cols":["pediatrie","infectiologie"],"ref":["infectiologie"]},
  {"n":158,"t":"Sepsis et choc septique de l’enfant et de l’adulte","cols":["mir","infectiologie"],"ref":["infectiologie"]},
- {"n":159,"t":"Tuberculose de l’adulte et de l’enfant","cols":["pneumologie","pediatrie","infectiologie"],"ref":["pneumologie","infectiologie"]},
+ {"n":159,"t":"Tuberculose de l’adulte et de l’enfant","cols":["pneumologie","pediatrie","infectiologie"],"ref":["pediatrie","pneumologie","infectiologie"]},
  {"n":160,"t":"Tétanos","cols":["infectiologie"],"ref":["infectiologie"]},
  {"n":161,"t":"Infections urinaires de l’adulte et de l’enfant","cols":["pediatrie","mir","nephrologie","infectiologie","urologie"],"ref":["urologie"]},
  {"n":162,"t":"Infections sexuellement transmissibles","cols":["gynecologie","infectiologie","dermatologie"],"ref":["dermatologie"]},

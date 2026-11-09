@@ -127,7 +127,7 @@ du 155, une l'ajoute au 230, sans étoile :
 | 149 — angines et rhinopharyngites | + Pédiatrie | écriture : médecine générale |
 | 154 — infections broncho-pulmonaires | + Pédiatrie | écriture : pneumologie seule |
 | 155 — infections cutanéo-muqueuses | − Pneumologie (ligne retirée) | pas d'étoile en pneumologie |
-| 159 — tuberculose | + Pneumologie | écriture : infectiologie seule |
+| 159 — tuberculose | + Pneumologie, + Pédiatrie | écriture : infectiologie seule |
 | 163 — coqueluche | + Pédiatrie | relecture |
 | 168 — infections à herpès virus | + Dermatologie | ne la cite pas (écriture : médecine générale) |
 | 171 — gale et pédiculose | + Dermatologie | relecture |

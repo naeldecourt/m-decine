@@ -77,14 +77,16 @@
      cite pas : il met la pédiatrie en relecture.
    · item 220 (adénopathie superficielle) — l'ORL est ajoutée aux collèges en
      écriture, à côté de l'hématologie, seule étoilée par le tableau.
-   · items 113, 190, 207, 208, 227, 228, 239, 241 et 248 — la cardiologie est
-     retirée de l'item, et non plus seulement de son étoile : la ligne
+   · items 113, 190, 201, 207, 208, 227, 228, 239, 241 et 248 — la
+     cardiologie est retirée de l'item, et non plus seulement de son étoile : la ligne
      item-collège est supprimée et le collège ôté de « cols ». Le 113
-     (hémangiomes) n'avait pas d'étoile en cardiologie. Le 227 (insuffisance
+     (hémangiomes) n'avait pas d'étoile en cardiologie. Le 201 (transplantation
+     d'organes) en avait une, donnée par le tableau à côté de la néphrologie,
+     qui reste seule en écriture. Le 227 (insuffisance
      veineuse chronique) n'était qu'en cardiologie : il n'a plus aucun
      collège, et ne figure plus que dans la vue « par item ». Le 228 (ulcère
      de jambe) reste en dermatologie, sans étoile. Les tours saisis sur ces
-     lignes restent dans les données, sans ligne où s'afficher. D'où 778
+     lignes restent dans les données, sans ligne où s'afficher. D'où 777
      lignes.
    · item 223 (dyslipidémies) — la cardiologie est ajoutée aux collèges en
      écriture, à côté de l'endocrinologie. Le tableau y place la médecine
@@ -157,7 +159,6 @@ window.EDN_LIGNES = [
  {"id":"FC21@cardiologie","n":226,"t":"Thrombose veineuse profonde et embolie pulmonaire","c":"cardiologie","fc":"FC21","ref":1},
  {"id":"FC22@cardiologie","n":330,"t":"Antiagrégants plaquettaires et anticoagulants","c":"cardiologie","fc":"FC22","ref":0},
  {"id":"FC23@cardiologie","n":152,"t":"Endocardite infectieuse","c":"cardiologie","fc":"FC23","ref":0},
- {"id":"REF201@cardiologie","n":201,"t":"Transplantation d’organes","c":"cardiologie","fc":"REF201","ref":1},
  {"id":"FC01@hge","n":167,"t":"Hépatites virales","c":"hge","fc":"FC01","ref":1},
  {"id":"FC02@hge","n":219,"t":"Pathologies du fer","c":"hge","fc":"FC02","ref":0},
  {"id":"FC03@hge","n":269,"t":"Douleurs abdominales aiguës","c":"hge","fc":"FC03","ref":1},
@@ -1117,7 +1118,7 @@ window.EDN_ITEMS = [
  {"n":198,"t":"Arthropathies microcristallines","cols":["osteo","medecine-interne"],"ref":["osteo","medecine-interne"]},
  {"n":199,"t":"Syndrome douloureux régional complexe","cols":["osteo","geriatrie","douleur"],"ref":["douleur"]},
  {"n":200,"t":"Douleur et épanchement articulaire, arthrite récente","cols":["osteo"],"ref":["osteo"]},
- {"n":201,"t":"Transplantation d’organes","cols":["hge","mir","nephrologie","dermatologie","medecine-interne","ophtalmologie","urologie","cardiologie"],"ref":["nephrologie","cardiologie"]},
+ {"n":201,"t":"Transplantation d’organes","cols":["hge","mir","nephrologie","dermatologie","medecine-interne","ophtalmologie","urologie"],"ref":["nephrologie"]},
  {"n":202,"t":"Biothérapies et thérapies ciblées","cols":["osteo","hematologie","medecine-interne"],"ref":["medecine-interne"]},
  {"n":203,"t":"Dyspnée aiguë et chronique","cols":["pneumologie","orl","pediatrie"],"ref":["pneumologie"]},
  {"n":204,"t":"Toux chez l’adulte","cols":["pneumologie","pediatrie"],"ref":["pneumologie"]},

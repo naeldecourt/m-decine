@@ -68,8 +68,8 @@
                                           relecture et prend l'étoile
        241 goitre, nodules thyroïdiens .. endocrinologie
        248 prévention par la nutrition .. endocrinologie
-     Dans un second temps, la cardiologie a été retirée de ces items eux-mêmes,
-     hormis 227 et 228 : voir plus bas.
+     Dans un second temps, la cardiologie a été retirée de ces items eux-mêmes :
+     voir plus bas.
    · item 211 (sarcoïdose) — la pneumologie est ajoutée aux collèges en
      écriture, à côté de la médecine interne. Le tableau la place en relecture.
    · item 213 (anémie chez l'adulte et l'enfant) — l'hématologie est ajoutée
@@ -77,11 +77,15 @@
      cite pas : il met la pédiatrie en relecture.
    · item 220 (adénopathie superficielle) — l'ORL est ajoutée aux collèges en
      écriture, à côté de l'hématologie, seule étoilée par le tableau.
-   · items 113, 190, 207, 208, 239, 241 et 248 — la cardiologie est retirée
-     de l'item, et non plus seulement de son étoile : la ligne item-collège
-     est supprimée et le collège ôté de « cols ». Le 113 (hémangiomes)
-     n'avait pas d'étoile en cardiologie. Les tours saisis sur ces lignes
-     restent dans les données, sans ligne où s'afficher. D'où 780 lignes.
+   · items 113, 190, 207, 208, 227, 228, 239, 241 et 248 — la cardiologie est
+     retirée de l'item, et non plus seulement de son étoile : la ligne
+     item-collège est supprimée et le collège ôté de « cols ». Le 113
+     (hémangiomes) n'avait pas d'étoile en cardiologie. Le 227 (insuffisance
+     veineuse chronique) n'était qu'en cardiologie : il n'a plus aucun
+     collège, et ne figure plus que dans la vue « par item ». Le 228 (ulcère
+     de jambe) reste en dermatologie, sans étoile. Les tours saisis sur ces
+     lignes restent dans les données, sans ligne où s'afficher. D'où 778
+     lignes.
    · item 223 (dyslipidémies) — la cardiologie est ajoutée aux collèges en
      écriture, à côté de l'endocrinologie. Le tableau y place la médecine
      vasculaire en relecture, laquelle tombe dans le groupe cardiologie.
@@ -140,7 +144,6 @@ window.EDN_LIGNES = [
  {"id":"FC07@cardiologie","n":231,"t":"Électrocardiogramme","c":"cardiologie","fc":"FC07","ref":1},
  {"id":"FC08@cardiologie","n":232,"t":"Fibrillation atriale","c":"cardiologie","fc":"FC08","ref":1},
  {"id":"FC09@cardiologie","n":233,"t":"Valvulopathies","c":"cardiologie","fc":"FC09","ref":1},
- {"id":"FC10@cardiologie","n":227,"t":"Insuffisance veineuse chronique","c":"cardiologie","fc":"FC10","ref":0},
  {"id":"FC11@cardiologie","n":235,"t":"Péricardite aiguë","c":"cardiologie","fc":"FC11","ref":1},
  {"id":"FC12@cardiologie","n":236,"t":"Troubles de la conduction","c":"cardiologie","fc":"FC12","ref":1},
  {"id":"FC13@cardiologie","n":237,"t":"Palpitations et troubles du rythme","c":"cardiologie","fc":"FC13","ref":1},
@@ -154,7 +157,6 @@ window.EDN_LIGNES = [
  {"id":"FC21@cardiologie","n":226,"t":"Thrombose veineuse profonde et embolie pulmonaire","c":"cardiologie","fc":"FC21","ref":1},
  {"id":"FC22@cardiologie","n":330,"t":"Antiagrégants plaquettaires et anticoagulants","c":"cardiologie","fc":"FC22","ref":0},
  {"id":"FC23@cardiologie","n":152,"t":"Endocardite infectieuse","c":"cardiologie","fc":"FC23","ref":0},
- {"id":"FC24@cardiologie","n":228,"t":"Ulcère de jambe","c":"cardiologie","fc":"FC24","ref":0},
  {"id":"REF201@cardiologie","n":201,"t":"Transplantation d’organes","c":"cardiologie","fc":"REF201","ref":1},
  {"id":"FC01@hge","n":167,"t":"Hépatites virales","c":"hge","fc":"FC01","ref":1},
  {"id":"FC02@hge","n":219,"t":"Pathologies du fer","c":"hge","fc":"FC02","ref":0},
@@ -1141,8 +1143,8 @@ window.EDN_ITEMS = [
  {"n":224,"t":"Hypertension artérielle","cols":["cardiologie","pediatrie","endocrinologie","mir","nephrologie","medecine-interne","ophtalmologie"],"ref":["cardiologie"]},
  {"n":225,"t":"Artériopathies aorte et membres inférieurs","cols":["cardiologie"],"ref":["cardiologie"]},
  {"n":226,"t":"Thrombose veineuse profonde et embolie pulmonaire","cols":["cardiologie","pneumologie","hematologie","mir","medecine-interne"],"ref":["cardiologie"]},
- {"n":227,"t":"Insuffisance veineuse chronique","cols":["cardiologie"]},
- {"n":228,"t":"Ulcère de jambe","cols":["cardiologie","dermatologie"]},
+ {"n":227,"t":"Insuffisance veineuse chronique","cols":[]},
+ {"n":228,"t":"Ulcère de jambe","cols":["dermatologie"]},
  {"n":229,"t":"Surveillance et complications des abords veineux","cols":["mir"],"ref":["mir"]},
  {"n":230,"t":"Douleur thoracique","cols":["cardiologie"],"ref":["cardiologie"]},
  {"n":231,"t":"Électrocardiogramme","cols":["cardiologie"],"ref":["cardiologie"]},

@@ -31,6 +31,11 @@
       }
       e.cols.push({ id: l.c, ref: l.ref ? 1 : 0, titres: [l.t] });
     });
+    // Un item retiré de son seul collège (le 227) n'a plus de ligne : il
+    // reste dans la table, avec l'intitulé de la vue par item.
+    (window.EDN_ITEMS || []).forEach(function (it) {
+      if (it.n && !parNum[it.n]) parNum[it.n] = { n: it.n, cols: [], titre: it.t };
+    });
 
     var alpha = function (x, y) {
       return S.college(x.id).nom.localeCompare(S.college(y.id).nom, 'fr');
@@ -43,7 +48,7 @@
       var refs = e.cols.filter(function (c) { return c.ref; }).sort(alpha);
       var autres = e.cols.filter(function (c) { return !c.ref; }).sort(alpha);
       var cols = refs.concat(autres);
-      var titre = (refs[0] || cols[0]).titres[0];
+      var titre = cols.length ? (refs[0] || cols[0]).titres[0] : e.titre;
       return {
         n: e.n,
         titre: titre,                           // l'intitulé d'un collège en écriture fait foi
@@ -111,7 +116,9 @@
           (ref ? ' · collège en écriture (référent)' : ' · relecture');
         return '<span title="' + esc(titre) + '">' + pastille(c.id, ref) + '</span>';
       }).join('') + '</div>';
-    if (r.sansRef) {
+    if (!r.cols.length) {
+      html += '<div class="small muted">rattaché à aucun collège du site</div>';
+    } else if (r.sansRef) {
       html += '<div class="small muted" style="margin-top:3px">' +
         'aucun collège référent parmi les 24 du site</div>';
     }

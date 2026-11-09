@@ -40,6 +40,11 @@
      est ajoutée aux collèges en écriture, à côté de la pneumologie, seule
      étoilée par le tableau. Ses deux lignes de pédiatrie (bronchiolite aiguë
      du nourrisson, pneumonies aiguës communautaires) sont étoilées.
+   · item 155 (infections cutanéo-muqueuses bactériennes et mycosiques) — la
+     pneumologie est retirée de l'item : sa ligne, intitulée « Infections
+     broncho-pulmonaires », est supprimée et le collège ôté de « cols ». Elle
+     n'avait pas d'étoile ; la dermatologie reste seule en écriture. D'où,
+     avec les retraits de cardiologie plus bas, 776 lignes.
    · item 163 (coqueluche) — la pédiatrie est ajoutée aux collèges en écriture,
      à côté de l'infectiologie. Le tableau la place en relecture, avec les
      maladies infectieuses, derrière la bactériologie-virologie.
@@ -86,8 +91,7 @@
      veineuse chronique) n'était qu'en cardiologie : il n'a plus aucun
      collège, et ne figure plus que dans la vue « par item ». Le 228 (ulcère
      de jambe) reste en dermatologie, sans étoile. Les tours saisis sur ces
-     lignes restent dans les données, sans ligne où s'afficher. D'où 777
-     lignes.
+     lignes restent dans les données, sans ligne où s'afficher.
    · item 223 (dyslipidémies) — la cardiologie est ajoutée aux collèges en
      écriture, à côté de l'endocrinologie. Le tableau y place la médecine
      vasculaire en relecture, laquelle tombe dans le groupe cardiologie.
@@ -210,7 +214,6 @@ window.EDN_LIGNES = [
  {"id":"FC17@pneumologie","n":338,"t":"Œdème de Quincke et anaphylaxie","c":"pneumologie","fc":"FC17","ref":0},
  {"id":"FC18@pneumologie","n":154,"t":"Infections broncho-pulmonaires communautaires de l’adulte","c":"pneumologie","fc":"FC18","ref":1},
  {"id":"FC19@pneumologie","n":359,"t":"Détresse respiratoire et corps étrangers des voies aériennes","c":"pneumologie","fc":"FC19","ref":0},
- {"id":"FC20@pneumologie","n":155,"t":"Infections broncho-pulmonaires","c":"pneumologie","fc":"FC20","ref":0},
  {"id":"FC21@pneumologie","n":205,"t":"Hémoptysie","c":"pneumologie","fc":"FC21","ref":1},
  {"id":"FC22@pneumologie","n":359,"t":"Détresse respiratoire","c":"pneumologie","fc":"FC22","ref":0},
  {"id":"FC01@gynecologie","n":12,"t":"Violences sexuelles","c":"gynecologie","fc":"FC01","ref":0},
@@ -1072,7 +1075,7 @@ window.EDN_ITEMS = [
  {"n":152,"t":"Endocardite infectieuse","cols":["cardiologie","mir","infectiologie","medecine-interne"],"ref":["infectiologie"]},
  {"n":153,"t":"Surveillance des porteurs de valves cardiaques","cols":["cardiologie","infectiologie"],"ref":["cardiologie"]},
  {"n":154,"t":"Infections broncho-pulmonaires communautaires de l’adulte","cols":["pneumologie","pediatrie","mir","infectiologie"],"ref":["pediatrie","pneumologie"]},
- {"n":155,"t":"Infections cutanéo-muqueuses bactériennes et mycosiques","cols":["pneumologie","orl","pediatrie","mir","infectiologie","dermatologie"],"ref":["dermatologie"]},
+ {"n":155,"t":"Infections cutanéo-muqueuses bactériennes et mycosiques","cols":["orl","pediatrie","mir","infectiologie","dermatologie"],"ref":["dermatologie"]},
  {"n":156,"t":"Infections ostéo-articulaires de l’adulte et de l’enfant","cols":["osteo","infectiologie"],"ref":["infectiologie"]},
  {"n":157,"t":"Septicémie, bactériémie et fongémie de l’adulte et de l’enfant","cols":["pediatrie","infectiologie"],"ref":["infectiologie"]},
  {"n":158,"t":"Sepsis et choc septique de l’enfant et de l’adulte","cols":["mir","infectiologie"],"ref":["infectiologie"]},

@@ -65,7 +65,7 @@ leur étoile, comme partout ailleurs.
 Un même item peut être traité par plusieurs collèges. Le site propose donc deux
 vues, permutables depuis la liste des items :
 
-- **Par collège** — 777 lignes, une par couple item-collège. Les tours sont
+- **Par collège** — 776 lignes, une par couple item-collège. Les tours sont
   suivis séparément dans chaque collège, et le collège de référence porte
   l'étoile ★.
 - **Par item** — 367 lignes, une par numéro d'item, les collèges concernés
@@ -106,14 +106,15 @@ conséquences en découlent :
   portent pas, et la page l'indique : « aucun collège référent parmi les 24 du
   site ».
 
-**Trente et une corrections manuelles** s'écartent du tableau, consignées en
+**Trente-deux corrections manuelles** s'écartent du tableau, consignées en
 tête de `items.js`. Seize ajoutent un collège en écriture à côté de celui que donne
 le tableau ; cinq, les 45, 148, 149, 168 et 350, donnent sa seule étoile à un item qui n'en avait
 aucune, son collège en écriture — génétique médicale, médecine générale —
 n'étant pas parmi les 24 ; dix
 retirent la cardiologie — son étoile, que le tableau donnait par la chirurgie
 thoracique et cardio-vasculaire ou par la médecine vasculaire, deux collèges que
-le site range en cardiologie, et la ligne elle-même :
+le site range en cardiologie, et la ligne elle-même ; une retire la pneumologie
+du 155 :
 
 | Item | Correction | Ce qu'en dit le tableau |
 |---|---|---|
@@ -125,6 +126,7 @@ le site range en cardiologie, et la ligne elle-même :
 | 148 — infections naso-sinusiennes | + Pédiatrie | écriture : médecine générale |
 | 149 — angines et rhinopharyngites | + Pédiatrie | écriture : médecine générale |
 | 154 — infections broncho-pulmonaires | + Pédiatrie | écriture : pneumologie seule |
+| 155 — infections cutanéo-muqueuses | − Pneumologie (ligne retirée) | pas d'étoile en pneumologie |
 | 163 — coqueluche | + Pédiatrie | relecture |
 | 168 — infections à herpès virus | + Dermatologie | ne la cite pas (écriture : médecine générale) |
 | 171 — gale et pédiculose | + Dermatologie | relecture |
@@ -163,8 +165,8 @@ l'étoile vient du tableau. Trente-quatre couples item-collège ont été ajout�
 trente-trois à l'import, un pour la correction de l'item 136 —, uniquement là où
 un collège en écriture n'était pas rattaché à son item ; sans quoi l'étoile
 n'aurait eu nulle part où s'afficher. Dix lignes de cardiologie ont ensuite
-été retirées (113, 190, 201, 207, 208, 227, 228, 239, 241, 248). D'où 777
-lignes pour 753 à l'origine.
+été retirées (113, 190, 201, 207, 208, 227, 228, 239, 241, 248), et une de
+pneumologie (155). D'où 776 lignes pour 753 à l'origine.
 
 ## Trouver un item à planifier
 

@@ -94,7 +94,7 @@ regroupements (« Cardiologie - Chir Vasc. » fond à elle seule quatre collège
 officiels). Chaque collège officiel est donc ramené à son groupe, et deux
 conséquences en découlent :
 
-- **37 items ont plusieurs étoiles** d'après le tableau — 49 avec les
+- **37 items ont plusieurs étoiles** d'après le tableau — 50 avec les
   corrections manuelles décrites plus bas —, soit parce qu'il leur donne
   plusieurs collèges en écriture, soit parce que ces collèges tombent dans des
   groupes différents. Elles sont toutes affichées, sur le même plan.
@@ -106,8 +106,8 @@ conséquences en découlent :
   portent pas, et la page l'indique : « aucun collège référent parmi les 24 du
   site ».
 
-**Trente-quatre corrections manuelles** s'écartent du tableau, consignées en
-tête de `items.js`. Dix-sept ajoutent un collège en écriture à côté de celui que donne
+**Trente-cinq corrections manuelles** s'écartent du tableau, consignées en
+tête de `items.js`. Dix-huit ajoutent un collège en écriture à côté de celui que donne
 le tableau ; cinq, les 45, 148, 149, 168 et 350, donnent sa seule étoile à un item qui n'en avait
 aucune, son collège en écriture — génétique médicale, médecine générale —
 n'étant pas parmi les 24 ; dix
@@ -125,6 +125,7 @@ du 155, une l'ajoute au 230, sans étoile :
 | 136 — anesthésie | + Douleur - Soins pal. | ne le cite pas (ligne créée) |
 | 148 — infections naso-sinusiennes | + Pédiatrie | écriture : médecine générale |
 | 149 — angines et rhinopharyngites | + Pédiatrie | écriture : médecine générale |
+| 151 — méningites, méningo-encéphalites | + Pédiatrie | écriture : infectiologie seule |
 | 154 — infections broncho-pulmonaires | + Pédiatrie | écriture : pneumologie seule |
 | 155 — infections cutanéo-muqueuses | − Pneumologie (ligne retirée) | pas d'étoile en pneumologie |
 | 159 — tuberculose | + Pneumologie, + Pédiatrie | écriture : infectiologie seule |

@@ -108,6 +108,9 @@
    · item 336 (coma non traumatique) — la neurologie est ajoutée aux collèges
      en écriture. Le tableau ne lui donne que la réanimation, et met la
      pédiatrie en relecture ; la neurologie n'y figure pas.
+   · item 339 (angor chronique stable et syndrome coronarien aigu) — la MIR
+     est ajoutée aux collèges en écriture, à côté de la cardiologie, seule
+     étoilée par le tableau.
    · item 340 (AVC) — la neurologie est ajoutée aux collèges en écriture.
      Le tableau la place en relecture, derrière la réanimation.
    · item 341 (hémorragie méningée) — la neurologie est ajoutée aux collèges
@@ -536,7 +539,7 @@ window.EDN_LIGNES = [
  {"id":"FC12@mir","n":226,"t":"Thrombose veineuse profonde et embolie pulmonaire","c":"mir","fc":"FC12","ref":0},
  {"id":"FC13@mir","n":234,"t":"Insuffisance cardiaque de l’adulte","c":"mir","fc":"FC13","ref":0},
  {"id":"FC14@mir","n":224,"t":"Urgences hypertensives et HTA maligne","c":"mir","fc":"FC14","ref":0},
- {"id":"FC15@mir","n":339,"t":"Syndromes coronariens aigus","c":"mir","fc":"FC15","ref":0},
+ {"id":"FC15@mir","n":339,"t":"Syndromes coronariens aigus","c":"mir","fc":"FC15","ref":1},
  {"id":"FC16@mir","n":332,"t":"Choc hémorragique","c":"mir","fc":"FC16","ref":1},
  {"id":"FC17@mir","n":338,"t":"Anaphylaxie et œdème de Quincke","c":"mir","fc":"FC17","ref":1},
  {"id":"FC18@mir","n":359,"t":"PaO2, PaCO2 et insuffisance respiratoire aiguë de l’adulte","c":"mir","fc":"FC18","ref":1},
@@ -1270,7 +1273,7 @@ window.EDN_ITEMS = [
  {"n":336,"t":"Coma non traumatique de l’adulte","cols":["neurologie","mir"],"ref":["neurologie","mir"]},
  {"n":337,"t":"Intoxications aiguës","cols":["pediatrie","mir"],"ref":["mir"]},
  {"n":338,"t":"Anaphylaxie et œdème de Quincke","cols":["pneumologie","mir"],"ref":["mir"]},
- {"n":339,"t":"Angor chronique stable et syndrome coronarien aigu","cols":["cardiologie","mir"],"ref":["cardiologie"]},
+ {"n":339,"t":"Angor chronique stable et syndrome coronarien aigu","cols":["cardiologie","mir"],"ref":["cardiologie","mir"]},
  {"n":340,"t":"Accidents vasculaires cérébraux","cols":["neurologie","mir","geriatrie"],"ref":["neurologie","mir"]},
  {"n":341,"t":"Hémorragie sous-arachnoïdienne","cols":["neurologie","mir"],"ref":["neurologie","mir"]},
  {"n":342,"t":"Malaise, perte de connaissance et crise comitiale","cols":["cardiologie","neurologie","mir"],"ref":["neurologie","mir"]},

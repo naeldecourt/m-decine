@@ -6,9 +6,9 @@
 
    « ref » désigne le collège en écriture, celui qui fait foi pour les EDN :
    il vient du tableau officiel écriture / relecture. Un item peut en avoir
-   plusieurs — EDN_ITEMS.ref est donc une liste — et vingt-trois items n'en
+   plusieurs — EDN_ITEMS.ref est donc une liste — et vingt-deux items n'en
    ont aucun ici : vingt parce que leur collège en écriture n'existe
-   pas parmi les 24, trois parce que l'étoile en a été retirée à la main.
+   pas parmi les 24, deux parce que l'étoile en a été retirée à la main.
 
    CORRECTIONS MANUELLES, à conserver si le tableau est réimporté. Toutes sont
    demandées par l'utilisateur, et classées par numéro d'item :
@@ -99,7 +99,8 @@
      qui reste seule en écriture. Le 227 (insuffisance
      veineuse chronique) n'était qu'en cardiologie : il n'a plus aucun
      collège, et ne figure plus que dans la vue « par item ». Le 228 (ulcère
-     de jambe) reste en dermatologie, sans étoile. Les tours saisis sur ces
+     de jambe) reste en dermatologie, qui devient ensuite, à la demande de
+     l'utilisateur, son collège en écriture. Les tours saisis sur ces
      lignes restent dans les données, sans ligne où s'afficher.
    · item 223 (dyslipidémies) — la cardiologie est ajoutée aux collèges en
      écriture, à côté de l'endocrinologie. Le tableau y place la médecine
@@ -671,7 +672,7 @@ window.EDN_LIGNES = [
  {"id":"FC15@dermatologie","n":201,"t":"Transplantation d’organes : complications cutanées","c":"dermatologie","fc":"FC15","ref":0},
  {"id":"FC16@dermatologie","n":211,"t":"Sarcoïdose : aspects dermatologiques","c":"dermatologie","fc":"FC16","ref":0},
  {"id":"FC17@dermatologie","n":215,"t":"Purpura chez l’adulte et l’enfant","c":"dermatologie","fc":"FC17","ref":0},
- {"id":"FC18@dermatologie","n":228,"t":"Ulcère de jambe","c":"dermatologie","fc":"FC18","ref":0},
+ {"id":"FC18@dermatologie","n":228,"t":"Ulcère de jambe","c":"dermatologie","fc":"FC18","ref":1},
  {"id":"FC19@dermatologie","n":239,"t":"Acrosyndromes","c":"dermatologie","fc":"FC19","ref":0},
  {"id":"FC20@dermatologie","n":302,"t":"Tumeurs cutanées épithéliales et mélaniques","c":"dermatologie","fc":"FC20","ref":1},
  {"id":"FC21@dermatologie","n":319,"t":"Lymphomes malins cutanés","c":"dermatologie","fc":"FC21","ref":0},
@@ -1158,7 +1159,7 @@ window.EDN_ITEMS = [
  {"n":225,"t":"Artériopathies aorte et membres inférieurs","cols":["cardiologie"],"ref":["cardiologie"]},
  {"n":226,"t":"Thrombose veineuse profonde et embolie pulmonaire","cols":["cardiologie","pneumologie","hematologie","mir","medecine-interne"],"ref":["cardiologie"]},
  {"n":227,"t":"Insuffisance veineuse chronique","cols":[]},
- {"n":228,"t":"Ulcère de jambe","cols":["dermatologie"]},
+ {"n":228,"t":"Ulcère de jambe","cols":["dermatologie"],"ref":["dermatologie"]},
  {"n":229,"t":"Surveillance et complications des abords veineux","cols":["mir"],"ref":["mir"]},
  {"n":230,"t":"Douleur thoracique","cols":["cardiologie","pneumologie"],"ref":["cardiologie"]},
  {"n":231,"t":"Électrocardiogramme","cols":["cardiologie"],"ref":["cardiologie"]},

@@ -17,6 +17,9 @@
      absente des 24, et place la pédiatrie en relecture : l'item n'avait aucune
      étoile, il en a désormais une. Ses trois lignes de pédiatrie (trisomie 21,
      X fragile, mucoviscidose) sont étoilées toutes trois.
+   · item 50 (pathologie génito-scrotale chez le garçon et l'homme) — la
+     pédiatrie est ajoutée aux collèges en écriture, à côté de l'urologie,
+     seule étoilée par le tableau.
    · item 117 (psoriasis) — la rhumatologie est ajoutée aux collèges en
      écriture, à côté de la dermatologie. Le tableau ne donne l'item qu'à la
      dermatologie, et sa colonne relecture est vide.
@@ -105,6 +108,8 @@
    · item 223 (dyslipidémies) — la cardiologie est ajoutée aux collèges en
      écriture, à côté de l'endocrinologie. Le tableau y place la médecine
      vasculaire en relecture, laquelle tombe dans le groupe cardiologie.
+   · item 278 (ictère) — la pédiatrie est ajoutée aux collèges en écriture,
+     à côté de l'HGE, seule étoilée par le tableau.
    · item 336 (coma non traumatique) — la neurologie est ajoutée aux collèges
      en écriture. Le tableau ne lui donne que la réanimation, et met la
      pédiatrie en relecture ; la neurologie n'y figure pas.
@@ -421,7 +426,7 @@ window.EDN_LIGNES = [
  {"id":"FC19@pediatrie","n":271,"t":"Reflux gastro-œsophagien","c":"pediatrie","fc":"FC19","ref":0},
  {"id":"FC20@pediatrie","n":285,"t":"Diarrhée chronique","c":"pediatrie","fc":"FC20","ref":0},
  {"id":"FC21@pediatrie","n":283,"t":"Constipation","c":"pediatrie","fc":"FC21","ref":0},
- {"id":"FC22@pediatrie","n":50,"t":"Pathologies inguino-scrotales et du pénis","c":"pediatrie","fc":"FC22","ref":0},
+ {"id":"FC22@pediatrie","n":50,"t":"Pathologies inguino-scrotales et du pénis","c":"pediatrie","fc":"FC22","ref":1},
  {"id":"FC23@pediatrie","n":213,"t":"Anémie et pathologies du fer","c":"pediatrie","fc":"FC23","ref":0},
  {"id":"FC24@pediatrie","n":189,"t":"Déficits immunitaires héréditaires","c":"pediatrie","fc":"FC24","ref":0},
  {"id":"FC25@pediatrie","n":215,"t":"Purpuras de l’adulte et de l’enfant","c":"pediatrie","fc":"FC25","ref":0},
@@ -444,7 +449,7 @@ window.EDN_LIGNES = [
  {"id":"FC42@pediatrie","n":71,"t":"Troubles des conduites alimentaires de l’adolescent","c":"pediatrie","fc":"FC42","ref":0},
  {"id":"FC43@pediatrie","n":353,"t":"Risque et conduites suicidaires chez l’enfant et l’adolescent","c":"pediatrie","fc":"FC43","ref":0},
  {"id":"FC44@pediatrie","n":32,"t":"Prise en charge du nouveau-né","c":"pediatrie","fc":"FC44","ref":1},
- {"id":"FC45@pediatrie","n":278,"t":"Ictère néonatal","c":"pediatrie","fc":"FC45","ref":0},
+ {"id":"FC45@pediatrie","n":278,"t":"Ictère néonatal","c":"pediatrie","fc":"FC45","ref":1},
  {"id":"FC46@pediatrie","n":142,"t":"Soins palliatifs en néonatalogie et deuil périnatal","c":"pediatrie","fc":"FC46","ref":0},
  {"id":"FC47@pediatrie","n":259,"t":"Protéinurie, syndrome néphrotique et hématurie","c":"pediatrie","fc":"FC47","ref":0},
  {"id":"FC48@pediatrie","n":258,"t":"Insuffisance rénale aiguë et maladie rénale chronique","c":"pediatrie","fc":"FC48","ref":0},
@@ -984,7 +989,7 @@ window.EDN_ITEMS = [
  {"n":47,"t":"Suivi médical pédiatrique (+ITEM 59 et 256)","cols":["orl","osteo","pediatrie","ophtalmologie"],"ref":["pediatrie"]},
  {"n":48,"t":"Alimentation et besoins nutritionnels du nourrisson et de l’enfant","cols":["pediatrie"],"ref":["pediatrie"]},
  {"n":49,"t":"Puberté normale et pathologique","cols":["gynecologie","pediatrie"],"ref":["pediatrie"]},
- {"n":50,"t":"Pathologie génitoscrotale chez le garçon et l’homme","cols":["pediatrie","endocrinologie","urologie"],"ref":["urologie"]},
+ {"n":50,"t":"Pathologie génitoscrotale chez le garçon et l’homme","cols":["pediatrie","endocrinologie","urologie"],"ref":["pediatrie","urologie"]},
  {"n":51,"t":"Troubles mictionnels","cols":["pediatrie"],"ref":["pediatrie"]},
  {"n":52,"t":"Strabisme et amblyopie de l’enfant","cols":["ophtalmologie"],"ref":["ophtalmologie"]},
  {"n":53,"t":"Retard de croissance staturo-pondérale et hypothyroïdie","cols":["pediatrie"],"ref":["pediatrie"]},
@@ -1212,7 +1217,7 @@ window.EDN_ITEMS = [
  {"n":275,"t":"Splénomégalie","cols":["hematologie","medecine-interne"],"ref":["hematologie","medecine-interne"]},
  {"n":276,"t":"Hépatomégalie","cols":["hge"],"ref":["hge"]},
  {"n":277,"t":"Lithiase biliaire","cols":["hge"],"ref":["hge"]},
- {"n":278,"t":"Ictère de l’adulte","cols":["hge","pediatrie"],"ref":["hge"]},
+ {"n":278,"t":"Ictère de l’adulte","cols":["hge","pediatrie"],"ref":["hge","pediatrie"]},
  {"n":279,"t":"Cirrhose","cols":["hge","mir"],"ref":["hge"]},
  {"n":280,"t":"Ascite","cols":["hge"],"ref":["hge"]},
  {"n":281,"t":"Pancréatite chronique","cols":["hge"],"ref":["hge"]},

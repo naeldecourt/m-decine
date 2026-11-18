@@ -20,6 +20,9 @@
    · item 50 (pathologie génito-scrotale chez le garçon et l'homme) — la
      pédiatrie est ajoutée aux collèges en écriture, à côté de l'urologie,
      seule étoilée par le tableau.
+   · item 71 (troubles des conduites alimentaires) — la pédiatrie est ajoutée
+     aux collèges en écriture, à côté de la psychiatrie, seule étoilée par le
+     tableau.
    · item 117 (psoriasis) — la rhumatologie est ajoutée aux collèges en
      écriture, à côté de la dermatologie. Le tableau ne donne l'item qu'à la
      dermatologie, et sa colonne relecture est vide.
@@ -454,7 +457,7 @@ window.EDN_LIGNES = [
  {"id":"FC39@pediatrie","n":155,"t":"Infections cutanées bactériennes","c":"pediatrie","fc":"FC39","ref":0},
  {"id":"FC40@pediatrie","n":174,"t":"Pathologies infectieuses du migrant et de l’enfant voyageur","c":"pediatrie","fc":"FC40","ref":0},
  {"id":"FC41@pediatrie","n":146,"t":"Vaccinations","c":"pediatrie","fc":"FC41","ref":0},
- {"id":"FC42@pediatrie","n":71,"t":"Troubles des conduites alimentaires de l’adolescent","c":"pediatrie","fc":"FC42","ref":0},
+ {"id":"FC42@pediatrie","n":71,"t":"Troubles des conduites alimentaires de l’adolescent","c":"pediatrie","fc":"FC42","ref":1},
  {"id":"FC43@pediatrie","n":353,"t":"Risque et conduites suicidaires chez l’enfant et l’adolescent","c":"pediatrie","fc":"FC43","ref":0},
  {"id":"FC44@pediatrie","n":32,"t":"Prise en charge du nouveau-né","c":"pediatrie","fc":"FC44","ref":1},
  {"id":"FC45@pediatrie","n":278,"t":"Ictère néonatal","c":"pediatrie","fc":"FC45","ref":1},
@@ -1018,7 +1021,7 @@ window.EDN_ITEMS = [
  {"n":68,"t":"Troubles du comportement de l’enfant et de l’adolescent","cols":["psychiatrie"],"ref":["psychiatrie"]},
  {"n":69,"t":"Troubles psychiques de la grossesse et du post-partum","cols":["gynecologie","psychiatrie"],"ref":["psychiatrie"]},
  {"n":70,"t":"Troubles psychiques du sujet âgé","cols":["psychiatrie","geriatrie"],"ref":["psychiatrie"]},
- {"n":71,"t":"Troubles des conduites alimentaires chez l’adolescent et l’adulte","cols":["psychiatrie","pediatrie","endocrinologie"],"ref":["psychiatrie"]},
+ {"n":71,"t":"Troubles des conduites alimentaires chez l’adolescent et l’adulte","cols":["psychiatrie","pediatrie","endocrinologie"],"ref":["pediatrie","psychiatrie"]},
  {"n":72,"t":"Troubles à symptomatologie somatique et apparentés","cols":["psychiatrie","douleur","medecine-interne"]},
  {"n":73,"t":"Techniques psychothérapeutiques","cols":["psychiatrie"],"ref":["psychiatrie"]},
  {"n":74,"t":"Prescription et surveillance des psychotropes","cols":["psychiatrie","therapeutique"],"ref":["psychiatrie","therapeutique"]},

@@ -94,7 +94,7 @@ regroupements (« Cardiologie - Chir Vasc. » fond à elle seule quatre collège
 officiels). Chaque collège officiel est donc ramené à son groupe, et deux
 conséquences en découlent :
 
-- **37 items ont plusieurs étoiles** d'après le tableau — 56 avec les
+- **37 items ont plusieurs étoiles** d'après le tableau — 57 avec les
   corrections manuelles décrites plus bas —, soit parce qu'il leur donne
   plusieurs collèges en écriture, soit parce que ces collèges tombent dans des
   groupes différents. Elles sont toutes affichées, sur le même plan.
@@ -106,8 +106,8 @@ conséquences en découlent :
   portent pas, et la page l'indique : « aucun collège référent parmi les 24 du
   site ».
 
-**Quarante et une corrections manuelles** s'écartent du tableau, consignées en
-tête de `items.js`. Vingt-quatre ajoutent un collège en écriture à côté de celui que donne
+**Quarante-deux corrections manuelles** s'écartent du tableau, consignées en
+tête de `items.js`. Vingt-cinq ajoutent un collège en écriture à côté de celui que donne
 le tableau ; cinq, les 45, 148, 149, 168 et 350, donnent sa seule étoile à un item qui n'en avait
 aucune, son collège en écriture — génétique médicale, médecine générale —
 n'étant pas parmi les 24 ; dix
@@ -121,6 +121,7 @@ du 155, une l'ajoute au 230, sans étoile :
 | 45 — spécificités des maladies génétiques | + Pédiatrie | relecture (écriture : génétique médicale) |
 | 113 — hémangiomes et malformations vasculaires | − Cardiologie (ligne retirée) | pas d’étoile en cardiologie |
 | 50 — pathologie génito-scrotale | + Pédiatrie | écriture : urologie seule |
+| 71 — troubles des conduites alimentaires | + Pédiatrie | écriture : psychiatrie seule |
 | 117 — psoriasis | + Rhumato - Ortho. | ne le cite pas |
 | 120 — immobilité et décubitus | + Gériatrie - MPR | ne le cite pas |
 | 136 — anesthésie | + Douleur - Soins pal. | ne le cite pas (ligne créée) |

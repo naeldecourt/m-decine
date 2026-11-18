@@ -39,6 +39,8 @@
      n'avaient aucune étoile, ils en ont désormais une. Les lignes de pédiatrie
      (rhinopharyngite aiguë et sinusites pour le 148, angines pour le 149)
      sont toutes étoilées.
+   · item 150 (otites infectieuses) — la pédiatrie est ajoutée aux collèges
+     en écriture, à côté de l'ORL, seule étoilée par le tableau.
    · item 151 (méningites, méningo-encéphalites) — la pédiatrie est ajoutée
      aux collèges en écriture, à côté de l'infectiologie, seule étoilée par le
      tableau.
@@ -54,6 +56,9 @@
    · item 159 (tuberculose) — la pneumologie et la pédiatrie sont ajoutées
      aux collèges en écriture, à côté de l'infectiologie, seule étoilée par
      le tableau.
+   · item 161 (infections urinaires de l'adulte et de l'enfant) — la
+     pédiatrie est ajoutée aux collèges en écriture, à côté de l'urologie,
+     seule étoilée par le tableau.
    · item 163 (coqueluche) — la pédiatrie est ajoutée aux collèges en écriture,
      à côté de l'infectiologie. Le tableau la place en relecture, avec les
      maladies infectieuses, derrière la bactériologie-virologie.
@@ -439,11 +444,11 @@ window.EDN_LIGNES = [
  {"id":"FC29@pediatrie","n":147,"t":"Fièvre aiguë","c":"pediatrie","fc":"FC29","ref":0},
  {"id":"FC30@pediatrie","n":148,"t":"Rhinopharyngite aiguë","c":"pediatrie","fc":"FC30","ref":1},
  {"id":"FC31@pediatrie","n":149,"t":"Angines","c":"pediatrie","fc":"FC31","ref":1},
- {"id":"FC32@pediatrie","n":150,"t":"Otites","c":"pediatrie","fc":"FC32","ref":0},
+ {"id":"FC32@pediatrie","n":150,"t":"Otites","c":"pediatrie","fc":"FC32","ref":1},
  {"id":"FC33@pediatrie","n":148,"t":"Sinusites","c":"pediatrie","fc":"FC33","ref":1},
  {"id":"FC34@pediatrie","n":163,"t":"Coqueluche","c":"pediatrie","fc":"FC34","ref":1},
  {"id":"FC35@pediatrie","n":286,"t":"Diarrhée aiguë","c":"pediatrie","fc":"FC35","ref":1},
- {"id":"FC36@pediatrie","n":161,"t":"Infections urinaires","c":"pediatrie","fc":"FC36","ref":0},
+ {"id":"FC36@pediatrie","n":161,"t":"Infections urinaires","c":"pediatrie","fc":"FC36","ref":1},
  {"id":"FC37@pediatrie","n":151,"t":"Méningites et méningo-encéphalites","c":"pediatrie","fc":"FC37","ref":1},
  {"id":"FC38@pediatrie","n":164,"t":"Éruptions fébriles","c":"pediatrie","fc":"FC38","ref":1},
  {"id":"FC39@pediatrie","n":155,"t":"Infections cutanées bactériennes","c":"pediatrie","fc":"FC39","ref":0},
@@ -1092,7 +1097,7 @@ window.EDN_ITEMS = [
  {"n":147,"t":"Fièvre aiguë chez l’enfant et l’adulte","cols":["pediatrie","infectiologie"],"ref":["infectiologie"]},
  {"n":148,"t":"Infections naso-sinusiennes de l’adulte et de l’enfant","cols":["orl","pediatrie","infectiologie"],"ref":["pediatrie"]},
  {"n":149,"t":"Angines de l’adulte et de l’enfant et rhinopharyngites de l’enfant","cols":["orl","pediatrie","infectiologie"],"ref":["pediatrie"]},
- {"n":150,"t":"Otites infectieuses","cols":["orl","pediatrie","infectiologie"],"ref":["orl"]},
+ {"n":150,"t":"Otites infectieuses","cols":["orl","pediatrie","infectiologie"],"ref":["orl","pediatrie"]},
  {"n":151,"t":"Méningites, méningo-encéphalites et abcès cérébral de l’adulte et de l’enfant","cols":["neurologie","pediatrie","mir","infectiologie"],"ref":["pediatrie","infectiologie"]},
  {"n":152,"t":"Endocardite infectieuse","cols":["cardiologie","mir","infectiologie","medecine-interne"],"ref":["infectiologie"]},
  {"n":153,"t":"Surveillance des porteurs de valves cardiaques","cols":["cardiologie","infectiologie"],"ref":["cardiologie"]},
@@ -1103,7 +1108,7 @@ window.EDN_ITEMS = [
  {"n":158,"t":"Sepsis et choc septique de l’enfant et de l’adulte","cols":["mir","infectiologie"],"ref":["infectiologie"]},
  {"n":159,"t":"Tuberculose de l’adulte et de l’enfant","cols":["pneumologie","pediatrie","infectiologie"],"ref":["pediatrie","pneumologie","infectiologie"]},
  {"n":160,"t":"Tétanos","cols":["infectiologie"],"ref":["infectiologie"]},
- {"n":161,"t":"Infections urinaires de l’adulte et de l’enfant","cols":["pediatrie","mir","nephrologie","infectiologie","urologie"],"ref":["urologie"]},
+ {"n":161,"t":"Infections urinaires de l’adulte et de l’enfant","cols":["pediatrie","mir","nephrologie","infectiologie","urologie"],"ref":["pediatrie","urologie"]},
  {"n":162,"t":"Infections sexuellement transmissibles","cols":["gynecologie","infectiologie","dermatologie"],"ref":["dermatologie"]},
  {"n":163,"t":"Coqueluche","cols":["pediatrie","infectiologie"],"ref":["pediatrie","infectiologie"]},
  {"n":164,"t":"Éruptions fébriles","cols":["pediatrie"],"ref":["pediatrie"]},

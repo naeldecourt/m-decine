@@ -110,6 +110,9 @@
      vasculaire en relecture, laquelle tombe dans le groupe cardiologie.
    · item 278 (ictère) — la pédiatrie est ajoutée aux collèges en écriture,
      à côté de l'HGE, seule étoilée par le tableau.
+   · item 331 (arrêt cardiocirculatoire de l'adulte et de l'enfant) — la
+     pédiatrie est ajoutée aux collèges en écriture, à côté de la MIR, seule
+     étoilée par le tableau.
    · item 336 (coma non traumatique) — la neurologie est ajoutée aux collèges
      en écriture. Le tableau ne lui donne que la réanimation, et met la
      pédiatrie en relecture ; la neurologie n'y figure pas.
@@ -469,7 +472,7 @@ window.EDN_LIGNES = [
  {"id":"FC62@pediatrie","n":110,"t":"Troubles du sommeil et SAOS","c":"pediatrie","fc":"FC62","ref":0},
  {"id":"FC63@pediatrie","n":45,"t":"Mucoviscidose chez l’enfant","c":"pediatrie","fc":"FC63","ref":1},
  {"id":"FC64@pediatrie","n":238,"t":"Souffle cardiaque","c":"pediatrie","fc":"FC64","ref":1},
- {"id":"FC65@pediatrie","n":331,"t":"Arrêt cardiorespiratoire","c":"pediatrie","fc":"FC65","ref":0},
+ {"id":"FC65@pediatrie","n":331,"t":"Arrêt cardiorespiratoire","c":"pediatrie","fc":"FC65","ref":1},
  {"id":"FC66@pediatrie","n":345,"t":"Malaise grave du nourrisson","c":"pediatrie","fc":"FC66","ref":1},
  {"id":"FC67@pediatrie","n":157,"t":"Septicémie, bactériémie, fongémie et choc septique","c":"pediatrie","fc":"FC67","ref":0},
  {"id":"FC68@pediatrie","n":343,"t":"État confusionnel et troubles de la conscience","c":"pediatrie","fc":"FC68","ref":0},
@@ -1270,7 +1273,7 @@ window.EDN_ITEMS = [
  {"n":328,"t":"Thérapeutiques non médicamenteuses et dispositifs médicaux","cols":["geriatrie"],"ref":["geriatrie"]},
  {"n":329,"t":"Produits sanguins labiles : caractéristiques et spécificités","cols":["hematologie","mir","therapeutique"],"ref":["hematologie","mir"]},
  {"n":330,"t":"Anticancéreux","cols":["cardiologie","osteo","hematologie","mir","nephrologie","dermatologie","therapeutique","medecine-interne"],"ref":["therapeutique"]},
- {"n":331,"t":"Arrêt cardiocirculatoire de l’adulte et de l’enfant","cols":["cardiologie","pediatrie","mir"],"ref":["mir"]},
+ {"n":331,"t":"Arrêt cardiocirculatoire de l’adulte et de l’enfant","cols":["cardiologie","pediatrie","mir"],"ref":["pediatrie","mir"]},
  {"n":332,"t":"Choc hémorragique","cols":["mir"],"ref":["mir"]},
  {"n":333,"t":"Situations sanitaires exceptionnelles et afflux de victimes","cols":["mir"],"ref":["mir"]},
  {"n":334,"t":"Brûlures","cols":["osteo","mir","neurologie"],"ref":["osteo","mir","neurologie"]},

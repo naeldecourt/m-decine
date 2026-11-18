@@ -94,7 +94,7 @@ regroupements (« Cardiologie - Chir Vasc. » fond à elle seule quatre collège
 officiels). Chaque collège officiel est donc ramené à son groupe, et deux
 conséquences en découlent :
 
-- **37 items ont plusieurs étoiles** d'après le tableau — 53 avec les
+- **37 items ont plusieurs étoiles** d'après le tableau — 54 avec les
   corrections manuelles décrites plus bas —, soit parce qu'il leur donne
   plusieurs collèges en écriture, soit parce que ces collèges tombent dans des
   groupes différents. Elles sont toutes affichées, sur le même plan.
@@ -106,8 +106,8 @@ conséquences en découlent :
   portent pas, et la page l'indique : « aucun collège référent parmi les 24 du
   site ».
 
-**Trente-huit corrections manuelles** s'écartent du tableau, consignées en
-tête de `items.js`. Vingt et une ajoutent un collège en écriture à côté de celui que donne
+**Trente-neuf corrections manuelles** s'écartent du tableau, consignées en
+tête de `items.js`. Vingt-deux ajoutent un collège en écriture à côté de celui que donne
 le tableau ; cinq, les 45, 148, 149, 168 et 350, donnent sa seule étoile à un item qui n'en avait
 aucune, son collège en écriture — génétique médicale, médecine générale —
 n'étant pas parmi les 24 ; dix
@@ -149,6 +149,7 @@ du 155, une l'ajoute au 230, sans étoile :
 | 241 — goitre, nodules et cancers thyroïdiens | − Cardiologie (ligne retirée) | écriture (chir. thoracique et CV) |
 | 248 — prévention primaire par la nutrition | − Cardiologie (ligne retirée) | écriture (médecine vasculaire) |
 | 278 — ictère | + Pédiatrie | écriture : HGE seule |
+| 331 — arrêt cardiocirculatoire | + Pédiatrie | écriture : MIR seule |
 | 336 — coma non traumatique | + Neurologie | ne le cite pas |
 | 339 — angor stable et SCA | + MIR - Anesthésie | écriture : cardiologie seule |
 | 340 — AVC | + Neurologie | relecture |

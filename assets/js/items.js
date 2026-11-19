@@ -116,6 +116,11 @@
    · item 223 (dyslipidémies) — la cardiologie est ajoutée aux collèges en
      écriture, à côté de l'endocrinologie. Le tableau y place la médecine
      vasculaire en relecture, laquelle tombe dans le groupe cardiologie.
+   · items 226 (thrombose veineuse profonde et embolie pulmonaire) et 234
+     (insuffisance cardiaque) — la MIR est ajoutée aux collèges en écriture,
+     à côté de la cardiologie, seule étoilée par le tableau. Pour le 234, ses
+     deux lignes (choc cardiogénique, insuffisance cardiaque de l'adulte) sont
+     étoilées.
    · item 278 (ictère) — la pédiatrie est ajoutée aux collèges en écriture,
      à côté de l'HGE, seule étoilée par le tableau.
    · item 336 (coma non traumatique) — la neurologie est ajoutée aux collèges
@@ -547,10 +552,10 @@ window.EDN_LIGNES = [
  {"id":"FC07@mir","n":201,"t":"Transplantation d’organes","c":"mir","fc":"FC07","ref":0},
  {"id":"FC08@mir","n":332,"t":"État de choc : principales étiologies","c":"mir","fc":"FC08","ref":1},
  {"id":"FC09@mir","n":158,"t":"Sepsis et choc septique de l’enfant et de l’adulte","c":"mir","fc":"FC09","ref":0},
- {"id":"FC10@mir","n":234,"t":"Choc cardiogénique","c":"mir","fc":"FC10","ref":0},
+ {"id":"FC10@mir","n":234,"t":"Choc cardiogénique","c":"mir","fc":"FC10","ref":1},
  {"id":"FC11@mir","n":331,"t":"Arrêt cardiocirculatoire de l’adulte et de l’enfant","c":"mir","fc":"FC11","ref":1},
- {"id":"FC12@mir","n":226,"t":"Thrombose veineuse profonde et embolie pulmonaire","c":"mir","fc":"FC12","ref":0},
- {"id":"FC13@mir","n":234,"t":"Insuffisance cardiaque de l’adulte","c":"mir","fc":"FC13","ref":0},
+ {"id":"FC12@mir","n":226,"t":"Thrombose veineuse profonde et embolie pulmonaire","c":"mir","fc":"FC12","ref":1},
+ {"id":"FC13@mir","n":234,"t":"Insuffisance cardiaque de l’adulte","c":"mir","fc":"FC13","ref":1},
  {"id":"FC14@mir","n":224,"t":"Urgences hypertensives et HTA maligne","c":"mir","fc":"FC14","ref":0},
  {"id":"FC15@mir","n":339,"t":"Syndromes coronariens aigus","c":"mir","fc":"FC15","ref":1},
  {"id":"FC16@mir","n":332,"t":"Choc hémorragique","c":"mir","fc":"FC16","ref":1},
@@ -1173,7 +1178,7 @@ window.EDN_ITEMS = [
  {"n":223,"t":"Dyslipidémies","cols":["cardiologie","endocrinologie"],"ref":["cardiologie","endocrinologie"]},
  {"n":224,"t":"Hypertension artérielle","cols":["cardiologie","pediatrie","endocrinologie","mir","nephrologie","medecine-interne","ophtalmologie"],"ref":["cardiologie"]},
  {"n":225,"t":"Artériopathies aorte et membres inférieurs","cols":["cardiologie"],"ref":["cardiologie"]},
- {"n":226,"t":"Thrombose veineuse profonde et embolie pulmonaire","cols":["cardiologie","pneumologie","hematologie","mir","medecine-interne"],"ref":["cardiologie"]},
+ {"n":226,"t":"Thrombose veineuse profonde et embolie pulmonaire","cols":["cardiologie","pneumologie","hematologie","mir","medecine-interne"],"ref":["cardiologie","mir"]},
  {"n":227,"t":"Insuffisance veineuse chronique","cols":[]},
  {"n":228,"t":"Ulcère de jambe","cols":["dermatologie"],"ref":["dermatologie"]},
  {"n":229,"t":"Surveillance et complications des abords veineux","cols":["mir"],"ref":["mir"]},
@@ -1181,7 +1186,7 @@ window.EDN_ITEMS = [
  {"n":231,"t":"Électrocardiogramme","cols":["cardiologie"],"ref":["cardiologie"]},
  {"n":232,"t":"Fibrillation atriale","cols":["cardiologie"],"ref":["cardiologie"]},
  {"n":233,"t":"Valvulopathies","cols":["cardiologie"],"ref":["cardiologie"]},
- {"n":234,"t":"Insuffisance cardiaque","cols":["cardiologie","mir"],"ref":["cardiologie"]},
+ {"n":234,"t":"Insuffisance cardiaque","cols":["cardiologie","mir"],"ref":["cardiologie","mir"]},
  {"n":235,"t":"Péricardite aiguë","cols":["cardiologie"],"ref":["cardiologie"]},
  {"n":236,"t":"Troubles de la conduction","cols":["cardiologie"],"ref":["cardiologie"]},
  {"n":237,"t":"Palpitations et troubles du rythme","cols":["cardiologie"],"ref":["cardiologie"]},

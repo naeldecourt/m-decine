@@ -94,7 +94,7 @@ regroupements (« Cardiologie - Chir Vasc. » fond à elle seule quatre collège
 officiels). Chaque collège officiel est donc ramené à son groupe, et deux
 conséquences en découlent :
 
-- **37 items ont plusieurs étoiles** d'après le tableau — 56 avec les
+- **37 items ont plusieurs étoiles** d'après le tableau — 58 avec les
   corrections manuelles décrites plus bas —, soit parce qu'il leur donne
   plusieurs collèges en écriture, soit parce que ces collèges tombent dans des
   groupes différents. Elles sont toutes affichées, sur le même plan.
@@ -106,8 +106,8 @@ conséquences en découlent :
   portent pas, et la page l'indique : « aucun collège référent parmi les 24 du
   site ».
 
-**Quarante et une corrections manuelles** s'écartent du tableau, consignées en
-tête de `items.js`. Vingt-quatre ajoutent un collège en écriture à côté de celui que donne
+**Quarante-trois corrections manuelles** s'écartent du tableau, consignées en
+tête de `items.js`. Vingt-six ajoutent un collège en écriture à côté de celui que donne
 le tableau ; cinq, les 45, 148, 149, 168 et 350, donnent sa seule étoile à un item qui n'en avait
 aucune, son collège en écriture — génétique médicale, médecine générale —
 n'étant pas parmi les 24 ; dix
@@ -145,9 +145,11 @@ du 155, une l'ajoute au 230, sans étoile :
 | 213 — anémie | + Hématologie | ne la cite pas (relecture : pédiatrie) |
 | 220 — adénopathie superficielle | + ORL - CMF | écriture : hématologie seule |
 | 223 — dyslipidémies | + Cardiologie | relecture (médecine vasculaire) |
+| 226 — TVP et embolie pulmonaire | + MIR - Anesthésie | écriture : cardiologie seule |
 | 227 — insuffisance veineuse chronique | − Cardiologie (ligne retirée, plus aucun collège) | écriture (médecine vasculaire) |
 | 228 — ulcère de jambe | − Cardiologie (ligne retirée), + Dermatologie | écriture (médecine vasculaire) |
 | 230 — douleur thoracique | + Pneumologie, sans étoile (ligne créée) | écriture : cardiologie |
+| 234 — insuffisance cardiaque | + MIR - Anesthésie | écriture : cardiologie seule |
 | 239 — acrosyndromes | − Cardiologie (ligne retirée), + Médecine interne | écriture (médecine vasculaire) ; MI en relecture |
 | 241 — goitre, nodules et cancers thyroïdiens | − Cardiologie (ligne retirée) | écriture (chir. thoracique et CV) |
 | 248 — prévention primaire par la nutrition | − Cardiologie (ligne retirée) | écriture (médecine vasculaire) |

@@ -65,7 +65,7 @@ leur étoile, comme partout ailleurs.
 Un même item peut être traité par plusieurs collèges. Le site propose donc deux
 vues, permutables depuis la liste des items :
 
-- **Par collège** — 777 lignes, une par couple item-collège. Les tours sont
+- **Par collège** — 776 lignes, une par couple item-collège. Les tours sont
   suivis séparément dans chaque collège, et le collège de référence porte
   l'étoile ★.
 - **Par item** — 367 lignes, une par numéro d'item, les collèges concernés
@@ -106,7 +106,7 @@ conséquences en découlent :
   portent pas, et la page l'indique : « aucun collège référent parmi les 24 du
   site ».
 
-**Quarante-trois corrections manuelles** s'écartent du tableau, consignées en
+**Quarante-quatre corrections manuelles** s'écartent du tableau, consignées en
 tête de `items.js`. Vingt-six ajoutent un collège en écriture à côté de celui que donne
 le tableau ; cinq, les 45, 148, 149, 168 et 350, donnent sa seule étoile à un item qui n'en avait
 aucune, son collège en écriture — génétique médicale, médecine générale —
@@ -154,6 +154,7 @@ du 155, une l'ajoute au 230, sans étoile :
 | 241 — goitre, nodules et cancers thyroïdiens | − Cardiologie (ligne retirée) | écriture (chir. thoracique et CV) |
 | 248 — prévention primaire par la nutrition | − Cardiologie (ligne retirée) | écriture (médecine vasculaire) |
 | 278 — ictère | + Pédiatrie | écriture : HGE seule |
+| 331 — arrêt cardiocirculatoire | − Pédiatrie (ligne retirée) | écriture : MIR seule |
 | 336 — coma non traumatique | + Neurologie | ne le cite pas |
 | 339 — angor stable et SCA | + MIR - Anesthésie | écriture : cardiologie seule |
 | 340 — AVC | + Neurologie | relecture |
@@ -177,8 +178,8 @@ trente-trois à l'import, un pour la correction de l'item 136 —, uniquement l�
 un collège en écriture n'était pas rattaché à son item ; sans quoi l'étoile
 n'aurait eu nulle part où s'afficher. Dix lignes de cardiologie ont ensuite
 été retirées (113, 190, 201, 207, 208, 227, 228, 239, 241, 248), et une de
-pneumologie (155) ; une de pneumologie a été créée pour le 230, sans étoile.
-D'où 777 lignes pour 753 à l'origine.
+pneumologie (155), une de pédiatrie (331) ; une de pneumologie a été créée pour le 230, sans étoile.
+D'où 776 lignes pour 753 à l'origine.
 
 ## Trouver un item à planifier
 

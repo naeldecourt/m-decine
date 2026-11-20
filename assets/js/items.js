@@ -12,6 +12,10 @@
 
    CORRECTIONS MANUELLES, à conserver si le tableau est réimporté. Toutes sont
    demandées par l'utilisateur, et classées par numéro d'item :
+   · item 27 (prévention des risques fœtaux) — la pédiatrie est ajoutée aux
+     collèges en écriture, à côté de la gynécologie, seule étoilée par le
+     tableau. Ce collège n'était pas rattaché à l'item : la ligne
+     item-collège a été créée.
    · item 45 (spécificités des maladies génétiques) — la pédiatrie devient le
      collège en écriture. Le tableau donne l'item à la génétique médicale,
      absente des 24, et place la pédiatrie en relecture : l'item n'avait aucune
@@ -56,7 +60,7 @@
      broncho-pulmonaires », est supprimée et le collège ôté de « cols ». Elle
      n'avait pas d'étoile ; la dermatologie reste seule en écriture. D'où,
      avec les retraits de cardiologie plus bas, celui du 331 en pédiatrie et
-     l'ajout du 230, 776 lignes.
+     les ajouts du 27 et du 230, 777 lignes.
    · item 159 (tuberculose) — la pneumologie et la pédiatrie sont ajoutées
      aux collèges en écriture, à côté de l'infectiologie, seule étoilée par
      le tableau.
@@ -494,6 +498,7 @@ window.EDN_LIGNES = [
  {"id":"FC70@pediatrie","n":54,"t":"Boiteries et infections ostéo-articulaires","c":"pediatrie","fc":"FC70","ref":1},
  {"id":"FC71@pediatrie","n":364,"t":"Traumatismes","c":"pediatrie","fc":"FC71","ref":1},
  {"id":"REF030@pediatrie","n":30,"t":"Prématurité et retard de croissance intra-utérin","c":"pediatrie","fc":"REF030","ref":1},
+ {"id":"REF027@pediatrie","n":27,"t":"Prévention des risques fœtaux","c":"pediatrie","fc":"REF027","ref":1},
  {"id":"FC01@hematologie","n":212,"t":"Hémogramme chez l’adulte et l’enfant : indications","c":"hematologie","fc":"FC01","ref":1},
  {"id":"FC02@hematologie","n":213,"t":"Anémie chez l’adulte et l’enfant","c":"hematologie","fc":"FC02","ref":1},
  {"id":"FC03@hematologie","n":315,"t":"Leucémies aiguës","c":"hematologie","fc":"FC03","ref":1},
@@ -983,7 +988,7 @@ window.EDN_ITEMS = [
  {"n":24,"t":"Principales complications de la grossesse","cols":["gynecologie"],"ref":["gynecologie"]},
  {"n":25,"t":"Grossesse extra-utérine","cols":["gynecologie"],"ref":["gynecologie"]},
  {"n":26,"t":"Douleur abdominale aiguë chez la femme enceinte","cols":["gynecologie"],"ref":["gynecologie"]},
- {"n":27,"t":"Prévention des risques fœtaux : toxiques et irradiations","cols":["gynecologie","infectiologie"],"ref":["gynecologie"]},
+ {"n":27,"t":"Prévention des risques fœtaux : toxiques et irradiations","cols":["gynecologie","infectiologie","pediatrie"],"ref":["gynecologie","pediatrie"]},
  {"n":28,"t":"Infection urinaire pendant la grossesse","cols":["gynecologie"],"ref":["gynecologie"]},
  {"n":29,"t":"Risques professionnels et maternité","cols":["gynecologie","medecine-legale"],"ref":["gynecologie"]},
  {"n":30,"t":"Prématurité et retard de croissance intra-utérin","cols":["gynecologie","pediatrie"],"ref":["gynecologie","pediatrie"]},
